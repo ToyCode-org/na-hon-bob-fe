@@ -68,9 +68,10 @@ const ListItem = styled.li`
   flex-direction: column;
   width: 90%;
   height: 380px;
-  border: 1px solid black;
+  border: 1px solid lightgray;
   border-radius: 5px;
   font-size: 1rem;
+  cursor: pointer;
   @media only all and (max-width: 767px) {
     width: 100%;
     height: 85%;

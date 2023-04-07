@@ -2,6 +2,7 @@ export const light = {
   // main
   mainFontColor: "#2F3438",
   subFontColor: "gray",
+  FontHoverColor: "gold",
   mainBorderColor: "gold",
 
   // input
