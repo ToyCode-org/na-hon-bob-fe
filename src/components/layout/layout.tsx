@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { LayoutHead } from "./layouthead";
-import { Header } from "./header";
+import { Header } from "./header/header";
 
 interface Props {
   children: React.ReactNode;

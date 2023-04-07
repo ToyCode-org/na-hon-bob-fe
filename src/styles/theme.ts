@@ -1,9 +1,16 @@
 export const light = {
+  // background
+  wholeBackground: "#80808080",
+
   // main
   mainFontColor: "#2F3438",
   subFontColor: "gray",
   FontHoverColor: "gold",
   mainBorderColor: "gold",
+
+  // side menu
+  menuBackground: "white",
+  menuBorder: "lightgray",
 
   // input
   inputBorderColor: "#efefef",
