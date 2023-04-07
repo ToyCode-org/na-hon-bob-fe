@@ -13,8 +13,12 @@ export const Header = () => {
     router.push("/post/add");
   };
 
+  const noHeader =
+    router.pathname === "/login" || router.pathname === "/login/signup"
+      ? { display: "none" }
+      : {};
   return (
-    <Container>
+    <Container style={noHeader}>
       {mediaData === 4 ? (
         <HeadersWrap>
           <FirstHeader>

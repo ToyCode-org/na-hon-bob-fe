@@ -3,10 +3,17 @@ import { ManuCategory } from "./category";
 import { useSideMenu } from "@/hooks/useSideMenu";
 import { MainButton, CancelButton } from "../../tagsComponents/buttons";
 import { TiThMenu } from "react-icons/ti";
+import { useRouter } from "next/router";
 
 export const SimpleHeader = () => {
+  const router = useRouter();
   const { isOpen, sideMenuHandler } = useSideMenu();
-
+  const goLogin = () => {
+    router.push("/login");
+  };
+  const goSignUp = () => {
+    router.push("/login/signup");
+  };
   return (
     <>
       <Identity style={{ textAlign: "center", fontSize: "1.6rem" }}>
@@ -28,8 +35,18 @@ export const SimpleHeader = () => {
           나혼밥 레시피
         </Identity>
         <Sign>
-          <MainButton width={8} height={35} content="로그인" />{" "}
-          <CancelButton width={8} height={35} content="회원가입" />
+          <MainButton
+            width={8}
+            height={35}
+            content="로그인"
+            onClick={goLogin}
+          />{" "}
+          <CancelButton
+            width={8}
+            height={35}
+            content="회원가입"
+            onClick={goSignUp}
+          />
         </Sign>
         <hr />
         <ManuCategory />
