@@ -5,8 +5,9 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { MainInpnut } from "@/components/tagsComponents/inputs";
 import { inputDataMaker } from "@/components/sign/signFNs";
-import { FormDataCheck, FormChange, InputTarget } from "@/components/sign";
+import { FormDataCheck, FormEvents, InputTarget } from "@/components/sign";
 import { inputBorderStyle, errMsgStyle } from "@/components/sign/signFNs";
+import { MainButton, SubButton } from "@/components/tagsComponents/buttons";
 
 export default function SignUp() {
   const router = useRouter();
@@ -50,7 +51,7 @@ export default function SignUp() {
     nickname: "",
   };
   const [formData, setFormData] = useState(formDataInit);
-  const formChangeHandler = (e: FormChange) => {
+  const formChangeHandler = (e: FormEvents) => {
     const target = e.target as InputTarget;
     const name = target.name;
     const value = target.value;
@@ -82,18 +83,31 @@ export default function SignUp() {
     setformDataCheck(prev => ({ ...prev, passwordCheck: passwordCheckRegex }));
   }, [formData.email, formData.password, formData.passwordCheck]);
 
+  const emailChecker = () => {
+    alert("이메일 체크");
+  };
+  const nicknameChecker = () => {
+    alert("닉네임 체크");
+  };
+  const onSubmitHandler = (e: FormEvents) => {
+    e.preventDefault();
+  };
+
   return (
     <Container>
       <FormHead onClick={goHome}>
         <Image width={50} height={50} src={"/images/egg.png"} alt="logo" />
         <Identity>나혼밥 레시피</Identity>
       </FormHead>
-      <SignUpWrap onChange={e => formChangeHandler(e)}>
+      <SignUpWrap
+        onChange={e => formChangeHandler(e)}
+        onSubmit={onSubmitHandler}
+      >
         <h2>회원가입</h2>
         {inputArray?.map((value, index) => {
           const { type, name, placeholder, regex, error } = value;
           return (
-            <div key={index}>
+            <InputWrap key={index}>
               <p>{placeholder}</p>
               <RegexText>{regex}</RegexText>
               <MainInpnut
@@ -107,9 +121,37 @@ export default function SignUp() {
                 border={inputBorderStyle(formDataCheck, name)}
               />
               <ErrMsg style={errMsgStyle(formDataCheck, name)}>{error}</ErrMsg>
-            </div>
+              {index === 0 ? (
+                <EmailCheckBtn>
+                  <SubButton
+                    type="button"
+                    width="100%"
+                    height="40px"
+                    content="이메일 중복 확인"
+                    onClick={emailChecker}
+                  />
+                </EmailCheckBtn>
+              ) : null}
+            </InputWrap>
           );
         })}
+        <ButtonWrap>
+          <SubButton
+            type="button"
+            width="100%"
+            height="40px"
+            content="닉네임 중복 확인"
+            onClick={nicknameChecker}
+          />
+        </ButtonWrap>
+        <ButtonWrap>
+          <MainButton
+            type="submit"
+            width="100%"
+            height="40px"
+            content="회원가입"
+          />
+        </ButtonWrap>
         <Sign>
           <Link href={"/"}>홈으로</Link> | <Link href={"/login"}>로그인</Link>
         </Sign>
@@ -137,11 +179,11 @@ const FormHead = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  width: 222px;
+  width: 300px;
   cursor: pointer;
 `;
 const Identity = styled.span`
-  margin: 0 10px;
+  margin: 0 25px;
   font-size: 1.3rem;
   font-weight: bold;
 `;
@@ -153,12 +195,19 @@ const SignUpWrap = styled.form`
   width: 360px;
   & h2 {
     width: 100%;
-    margin-bottom: 20px;
   }
   & p {
-    margin: 30px 0 10px 0;
+    margin: 20px 0 0 0;
     padding: 5px;
   }
+`;
+
+const InputWrap = styled.div`
+  margin-bottom: 15px;
+`;
+const ButtonWrap = styled.div`
+  width: 100%;
+  margin-bottom: 10px;
 `;
 
 const RegexText = styled.div`
@@ -174,8 +223,11 @@ const ErrMsg = styled.div`
   color: red;
 `;
 
+const EmailCheckBtn = styled.div`
+  margin-top: 30px;
+`;
+
 const Sign = styled.div`
-  margin: 20px 0;
   text-align: center;
   & a {
     margin: 0 20px;

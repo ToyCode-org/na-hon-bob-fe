@@ -32,8 +32,8 @@ export const Header = () => {
               <Link href={"/login/signup"}>회원가입</Link>
             </Sign>
             <MainButton
-              width={7}
-              height={30}
+              width="80px"
+              height="30px"
               content="글쓰기"
               onClick={goAddPost}
             />

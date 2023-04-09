@@ -36,14 +36,14 @@ export const SimpleHeader = () => {
         </Identity>
         <Sign>
           <MainButton
-            width={8}
-            height={35}
+            width="80px"
+            height="35px"
             content="로그인"
             onClick={goLogin}
           />{" "}
           <CancelButton
-            width={8}
-            height={35}
+            width="80px"
+            height="35px"
             content="회원가입"
             onClick={goSignUp}
           />

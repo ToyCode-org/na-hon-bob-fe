@@ -6,8 +6,8 @@ type Props = React.HTMLAttributes<HTMLButtonElement> & ButtonProps;
 interface ButtonProps {
   type?: "button" | "submit" | "reset" | undefined;
   content: string;
-  width: number;
-  height: number;
+  width: string;
+  height: string;
 }
 
 export const MainButton = ({
@@ -21,7 +21,7 @@ export const MainButton = ({
     <Main
       {...props}
       type={type || "button"}
-      style={{ width: `${width}vw`, height: `${height}px` }}
+      style={{ width: `${width}`, height: `${height}` }}
     >
       {content}
     </Main>
@@ -53,7 +53,7 @@ export const SubButton = ({
     <Sub
       {...props}
       type={type || "button"}
-      style={{ width: `${width}vw`, height: `${height}px` }}
+      style={{ width: `${width}`, height: `${height}` }}
     >
       {content}
     </Sub>
@@ -86,7 +86,7 @@ export const CancelButton = ({
     <Cancel
       {...props}
       type={type || "button"}
-      style={{ width: `${width}vw`, height: `${height}px` }}
+      style={{ width: `${width}`, height: `${height}` }}
     >
       {content}
     </Cancel>

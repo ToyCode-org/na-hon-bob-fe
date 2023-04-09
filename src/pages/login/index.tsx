@@ -5,20 +5,38 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { inputDataMaker } from "@/components/sign/signFNs";
+import { useState } from "react";
+import { FormEvents, InputTarget } from "@/components/sign";
 
 export default function Login() {
+  const router = useRouter();
   const inputArray = [
     inputDataMaker("email", "email", "이메일"),
     inputDataMaker("password", "password", "비밀번호"),
   ];
-  const router = useRouter();
 
   const goHome = () => {
     router.push("/");
   };
+
+  const formDataInit = {
+    email: "",
+    password: "",
+  };
+  const [formData, setformData] = useState(formDataInit);
+  const formChnageHandler = (e: FormEvents) => {
+    const target = e.target as InputTarget;
+    const name = target.name;
+    const value = target.value;
+    setformData(prev => ({ ...prev, [name]: value }));
+  };
+  const onSubmitHandler = (e: FormEvents) => {
+    e.preventDefault();
+    alert("로그인 성공");
+  };
   return (
     <Container>
-      <LoginWrap>
+      <LoginWrap onChange={formChnageHandler} onSubmit={onSubmitHandler}>
         <FormHead onClick={goHome}>
           <Image width={50} height={50} src={"/images/egg.png"} alt="logo" />
           <Identity>나혼밥 레시피</Identity>
@@ -34,14 +52,19 @@ export default function Login() {
                   name={name}
                   placeholder={placeholder}
                   autoComplete="off"
-                  width="20vw"
+                  width="300px"
                   height="40px"
                 />
               </div>
             );
         })}
         <ButtonWrap>
-          <MainButton type="submit" width={20} height={40} content="로그인" />
+          <MainButton
+            type="submit"
+            width="300px"
+            height="40px"
+            content="로그인"
+          />
         </ButtonWrap>
         <Sign>
           <Link href={"/"}>홈으로</Link> |{" "}
@@ -76,7 +99,7 @@ const FormHead = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  width: 20vw;
+  width: 300px;
   cursor: pointer;
 `;
 
@@ -88,7 +111,7 @@ const Identity = styled.h1`
 
 const ButtonWrap = styled.div`
   margin: 20px 0;
-  width: 20vw;
+  width: 300px;
   display: flex;
   flex-direction: column;
 
