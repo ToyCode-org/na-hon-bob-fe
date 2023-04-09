@@ -1,0 +1,16 @@
+import router from "next/router";
+
+export const goHome = () => {
+  router.push("/");
+};
+
+export const goLogin = () => {
+  router.push("/login");
+};
+export const goSignUp = () => {
+  router.push("/login/signup");
+};
+
+export const goAddPost = () => {
+  router.push("/post/add");
+};

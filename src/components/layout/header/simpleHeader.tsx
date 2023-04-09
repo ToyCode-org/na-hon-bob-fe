@@ -3,35 +3,35 @@ import { ManuCategory } from "./category";
 import { useSideMenu } from "@/hooks/useSideMenu";
 import { MainButton, CancelButton } from "../../tagsComponents/buttons";
 import { TiThMenu } from "react-icons/ti";
-import { useRouter } from "next/router";
+import { goHome, goLogin, goSignUp } from "@/components/router/router";
 
 export const SimpleHeader = () => {
-  const router = useRouter();
-  const { isOpen, sideMenuHandler } = useSideMenu();
-  const goLogin = () => {
-    router.push("/login");
-  };
-  const goSignUp = () => {
-    router.push("/login/signup");
-  };
+  const { isOpen, sideMenuOpen, sideMenuClose } = useSideMenu();
+
   return (
     <>
-      <Identity style={{ textAlign: "center", fontSize: "1.6rem" }}>
+      <Identity
+        onClick={goHome}
+        style={{ textAlign: "center", fontSize: "1.6rem" }}
+      >
         나혼밥 레시피
       </Identity>
       <Menu>
-        <TiThMenu onClick={sideMenuHandler} />
+        <TiThMenu onClick={sideMenuOpen} />
       </Menu>
       <Background
         style={isOpen ? {} : { display: "none" }}
-        onClick={sideMenuHandler}
+        onClick={sideMenuClose}
       />
       <SideMenu
         style={
           isOpen ? { transform: "translate(-37%, -16%)", opacity: "1" } : {}
         }
       >
-        <Identity style={{ textAlign: "center", fontSize: "1.6rem" }}>
+        <Identity
+          onClick={sideMenuOpen}
+          style={{ textAlign: "center", fontSize: "1.6rem" }}
+        >
           나혼밥 레시피
         </Identity>
         <Sign>
@@ -58,6 +58,7 @@ export const SimpleHeader = () => {
 const Identity = styled.h1`
   font-size: 1.3rem;
   font-weight: bold;
+  cursor: pointer;
 `;
 
 const Menu = styled.span`

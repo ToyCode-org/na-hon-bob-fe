@@ -4,17 +4,15 @@ import { useRouter } from "next/router";
 import { MediaQuery } from "@/hooks/useMediaQuery";
 import { MainCategory } from "./category";
 import { SimpleHeader } from "./simpleHeader";
+import { goHome, goAddPost } from "@/components/router/router";
 import Link from "next/link";
 
 export const Header = () => {
-  const router = useRouter();
+  const { pathname } = useRouter();
   const mediaData = MediaQuery();
-  const goAddPost = () => {
-    router.push("/post/add");
-  };
 
   const noHeader =
-    router.pathname === "/login" || router.pathname === "/login/signup"
+    pathname === "/login" || pathname === "/login/signup"
       ? { display: "none" }
       : {};
   return (
@@ -22,7 +20,7 @@ export const Header = () => {
       {mediaData === 4 ? (
         <HeadersWrap>
           <FirstHeader>
-            <Identity>나혼밥 레시피</Identity>
+            <Identity onClick={goHome}>나혼밥 레시피</Identity>
             <MainCategory />
           </FirstHeader>
           <SecondHeader>
@@ -75,6 +73,7 @@ const FirstHeader = styled.div`
 const Identity = styled.h1`
   font-size: 1.3rem;
   font-weight: bold;
+  cursor: pointer;
 `;
 
 const SecondHeader = styled.div`
