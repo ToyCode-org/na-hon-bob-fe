@@ -4,11 +4,12 @@ import { MainButton } from "@/components/tagsComponents/buttons";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { inputDataMaker } from "@/components/sign/signFNs";
 
 export default function Login() {
   const inputArray = [
-    { name: "email", placeholder: "이메일" },
-    { name: "password", placeholder: "비밀번호" },
+    inputDataMaker("email", "email", "이메일"),
+    inputDataMaker("password", "password", "비밀번호"),
   ];
   const router = useRouter();
 
@@ -23,16 +24,18 @@ export default function Login() {
           <Identity>나혼밥 레시피</Identity>
         </FormHead>
         {inputArray.map((value, index) => {
-          const { name, placeholder } = value;
+          const { type, name, placeholder } = value;
           if (index < 2)
             return (
               <div key={index}>
                 <MainInpnut
                   id={name}
+                  type={type}
+                  name={name}
                   placeholder={placeholder}
                   autoComplete="off"
-                  width={20}
-                  height={40}
+                  width="20vw"
+                  height="40px"
                 />
               </div>
             );

@@ -5,24 +5,33 @@ type Props = React.HTMLAttributes<HTMLInputElement> & InputProps;
 
 interface InputProps {
   type?: string | undefined;
+  name?: string | undefined;
   autoComplete?: string | undefined;
-  width: number;
-  height: number;
+  width: string;
+  height: string;
+  border?: string | undefined;
 }
 
 export const MainInpnut = ({
   type,
+  name,
   autoComplete,
   width,
   height,
+  border,
   ...props
 }: Props) => {
   return (
     <Main
       {...props}
+      name={name}
       autoComplete={autoComplete || "on"}
       type={type || "text"}
-      style={{ width: `${width}vw`, height: `${height}px` }}
+      style={{
+        width: `${width}`,
+        height: `${height}`,
+        border: `${border && border !== "" ? `1px solid ${border}` : ""}`,
+      }}
     />
   );
 };

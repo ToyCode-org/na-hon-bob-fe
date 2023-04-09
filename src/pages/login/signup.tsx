@@ -1,20 +1,86 @@
 import styled from "styled-components";
 import Image from "next/image";
 import Link from "next/link";
-import { MainInpnut } from "@/components/tagsComponents/inputs";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import { MainInpnut } from "@/components/tagsComponents/inputs";
+import { inputDataMaker } from "@/components/sign/signFNs";
+import { FormDataCheck, FormChange, InputTarget } from "@/components/sign";
+import { inputBorderStyle, errMsgStyle } from "@/components/sign/signFNs";
 
 export default function SignUp() {
   const router = useRouter();
   const inputArray = [
-    { name: "email", placeholder: "이메일" },
-    { name: "password", placeholder: "비밀번호" },
-    { name: "password", placeholder: "비밀번호 확인" },
-    { name: "text", placeholder: "닉네임" },
+    inputDataMaker(
+      "email",
+      "email",
+      "이메일",
+      "",
+      "이메일 형식이 올바르지 않습니다.",
+    ),
+    inputDataMaker(
+      "password",
+      "password",
+      "비밀번호",
+      "영문, 숫자를 포함한 8자 이상의 비밀번호를 입력해주세요.",
+      "비밀번호를 확인해주세요.",
+    ),
+    inputDataMaker(
+      "password",
+      "passwordCheck",
+      "비밀번호 확인",
+      "",
+      "비밀번호가 일치하지 않습니다.",
+    ),
+    inputDataMaker(
+      "text",
+      "nickname",
+      "닉네임",
+      "다른 유저와 겹치지 않도록 입력해주세요. (2~15자)",
+    ),
   ];
   const goHome = () => {
     router.push("/");
   };
+
+  const formDataInit = {
+    email: "",
+    password: "",
+    passwordCheck: "",
+    nickname: "",
+  };
+  const [formData, setFormData] = useState(formDataInit);
+  const formChangeHandler = (e: FormChange) => {
+    const target = e.target as InputTarget;
+    const name = target.name;
+    const value = target.value;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+  const [formDataCheck, setformDataCheck] =
+    useState<FormDataCheck>(formDataInit);
+
+  useEffect(() => {
+    const emailRegex =
+      /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+    const passwordRegex =
+      /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*()_+\-={}|[\]\\;':",./<>?]*.{8,}$/;
+    const passwordCheckRegex =
+      formData.passwordCheck !== ""
+        ? formData.password === formData.passwordCheck
+          ? true
+          : false
+        : "";
+    setformDataCheck(prev => ({
+      ...prev,
+      email: formData.email !== "" ? emailRegex.test(formData.email) : "",
+    }));
+    setformDataCheck(prev => ({
+      ...prev,
+      password:
+        formData.password !== "" ? passwordRegex.test(formData.password) : "",
+    }));
+    setformDataCheck(prev => ({ ...prev, passwordCheck: passwordCheckRegex }));
+  }, [formData.email, formData.password, formData.passwordCheck]);
 
   return (
     <Container>
@@ -22,19 +88,25 @@ export default function SignUp() {
         <Image width={50} height={50} src={"/images/egg.png"} alt="logo" />
         <Identity>나혼밥 레시피</Identity>
       </FormHead>
-      <SignUpWrap>
+      <SignUpWrap onChange={e => formChangeHandler(e)}>
         <h2>회원가입</h2>
         {inputArray?.map((value, index) => {
-          const { name, placeholder } = value;
+          const { type, name, placeholder, regex, error } = value;
           return (
             <div key={index}>
+              <p>{placeholder}</p>
+              <RegexText>{regex}</RegexText>
               <MainInpnut
                 id={name}
+                type={type}
+                name={name}
                 placeholder={placeholder}
                 autoComplete="off"
-                width={20}
-                height={40}
+                width="360px"
+                height="40px"
+                border={inputBorderStyle(formDataCheck, name)}
               />
+              <ErrMsg style={errMsgStyle(formDataCheck, name)}>{error}</ErrMsg>
             </div>
           );
         })}
@@ -65,7 +137,7 @@ const FormHead = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  width: 20vw;
+  width: 222px;
   cursor: pointer;
 `;
 const Identity = styled.span`
@@ -78,10 +150,28 @@ const SignUpWrap = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
-
+  width: 360px;
   & h2 {
+    width: 100%;
     margin-bottom: 20px;
   }
+  & p {
+    margin: 30px 0 10px 0;
+    padding: 5px;
+  }
+`;
+
+const RegexText = styled.div`
+  font-size: 12px;
+  margin-bottom: 5px;
+  padding: 5px;
+`;
+
+const ErrMsg = styled.div`
+  position: absolute;
+  padding: 5px;
+  font-size: 12px;
+  color: red;
 `;
 
 const Sign = styled.div`
