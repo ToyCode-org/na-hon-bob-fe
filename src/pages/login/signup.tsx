@@ -91,6 +91,7 @@ export default function SignUp() {
   };
   const onSubmitHandler = (e: FormEvents) => {
     e.preventDefault();
+    alert("회원가입 완료");
   };
 
   return (

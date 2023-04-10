@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Image from "next/image";
 import { BoringAvatar } from "../post/boringAvatar";
 import { MediaQuery } from "@/hooks/useMediaQuery";
+import { goPost } from "../router/router";
 
 export const HomeGrid = () => {
   const mediaData = MediaQuery();
@@ -22,7 +23,7 @@ export const HomeGrid = () => {
         {mock.map((recipy, index) => {
           const { thumnail, title, discription, avatar, nickname } = recipy;
           return (
-            <ListItem key={index}>
+            <ListItem key={index} onClick={() => goPost(index + 1)}>
               <Image
                 src={thumnail}
                 width={100}
@@ -37,7 +38,6 @@ export const HomeGrid = () => {
                   ) : (
                     <Image src={avatar} width={40} height={40} alt="avatar" />
                   )}
-
                   <span>{nickname}</span>
                 </UserInfo>
                 <Title>{title}</Title>

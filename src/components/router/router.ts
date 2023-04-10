@@ -14,3 +14,7 @@ export const goSignUp = () => {
 export const goAddPost = () => {
   router.push("/post/add");
 };
+
+export const goPost = (id: number) => {
+  router.push(`/post/${id}`);
+};

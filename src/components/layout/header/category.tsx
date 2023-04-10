@@ -10,6 +10,8 @@ const makeCategory = (name: string, link: string) => {
 };
 
 const categories = [
+  makeCategory("글쓰기", "/post/add"),
+  makeCategory("마이페이지", "/mypage"),
   makeCategory("레시피", "/"),
   makeCategory("커뮤니티", "/community"),
 ];
@@ -20,15 +22,17 @@ export const MainCategory = () => {
     <Category>
       {categories.map((cate, index) => {
         const { name, link } = cate;
-        return (
-          <Link
-            key={index}
-            href={link}
-            style={router.pathname === link ? { color: "gold" } : {}}
-          >
-            {name}
-          </Link>
-        );
+        if (index >= 2) {
+          return (
+            <Link
+              key={index}
+              href={link}
+              style={router.pathname === link ? { color: "gold" } : {}}
+            >
+              {name}
+            </Link>
+          );
+        }
       })}
     </Category>
   );
@@ -45,20 +49,9 @@ const Category = styled.nav`
 
 export const ManuCategory = () => {
   const router = useRouter();
+
   return (
     <MenuCategory>
-      <Link
-        href={"/post/add"}
-        style={router.pathname === "/post/add" ? { color: "gold" } : {}}
-      >
-        글쓰기
-      </Link>
-      <Link
-        href={"/mypage"}
-        style={router.pathname === "/mypage" ? { color: "gold" } : {}}
-      >
-        마이페이지
-      </Link>
       {categories.map((cate, index) => {
         const { name, link } = cate;
         return (

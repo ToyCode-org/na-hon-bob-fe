@@ -3,6 +3,7 @@ export const light = {
   wholeBackground: "#80808080",
 
   // main
+  mainColor: "gold",
   mainFontColor: "#2F3438",
   subFontColor: "gray",
   FontHoverColor: "gold",
