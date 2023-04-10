@@ -2,7 +2,10 @@ import styled from "styled-components";
 import Image from "next/image";
 import { useState } from "react";
 import { BsCameraFill } from "react-icons/bs";
-import { InputEvent, InputTarget } from "@/components/sign";
+import { InputEvent, InputTarget, FormEvents } from "@/components/sign";
+import { MainInpnut, MainTextArea } from "@/components/tagsComponents/inputs";
+import { MainButton, CancelButton } from "@/components/tagsComponents/buttons";
+import { goHome } from "@/components/router/router";
 
 export default function AddPost() {
   const [viewImage, setViewImage] = useState<string | ArrayBuffer | null>("");
@@ -34,11 +37,25 @@ export default function AddPost() {
     ingredient: "",
     description: "",
   };
+  const keyArray = Object.keys(formDataInit);
+  const placeholderArray = ["오늘의 요리는?", "재료", "레시피"];
   const [formState, setFormState] = useState(formDataInit);
+
+  const onChangehansler = (e: FormEvents) => {
+    const target = e.target as InputTarget;
+    const name = target.name;
+    const value = target.value;
+    setFormState(prev => ({ ...prev, [name]: value }));
+  };
+
+  const onSubmitHandler = (e: FormEvents) => {
+    e.preventDefault();
+    alert("포스팅완료");
+  };
 
   return (
     <Container>
-      <AddRecipyForm>
+      <AddRecipyForm onChange={onChangehansler} onSubmit={onSubmitHandler}>
         <label htmlFor="addImage">
           <AddImage style={viewImage === "" ? {} : { display: "none" }}>
             <BsCameraFill />
@@ -61,6 +78,47 @@ export default function AddPost() {
           style={{ display: "none" }}
           onChange={imageUploader}
         />
+        <InputsWrap>
+          {keyArray.map((name, index) => {
+            if (index < keyArray.length - 1) {
+              return (
+                <MainInpnut
+                  key={index}
+                  name={name}
+                  placeholder={placeholderArray[index]}
+                  autoComplete="off"
+                  width="350px"
+                  height="50px"
+                />
+              );
+            } else {
+              return (
+                <MainTextArea
+                  key={index}
+                  name="name"
+                  placeholder={placeholderArray[index]}
+                  width="350px"
+                  height="280px"
+                />
+              );
+            }
+          })}
+        </InputsWrap>
+        <ButtonsWrap>
+          <MainButton
+            type="submit"
+            width="80px"
+            height="40px"
+            content="포스팅"
+          />
+          <CancelButton
+            type="button"
+            width="80px"
+            height="40px"
+            content="홈으로"
+            onClick={goHome}
+          />
+        </ButtonsWrap>
       </AddRecipyForm>
     </Container>
   );
@@ -75,7 +133,6 @@ const AddRecipyForm = styled.form`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  height: 800px;
 `;
 
 const AddImage = styled.div`
@@ -107,5 +164,22 @@ const ViewImage = styled.div`
   & img {
     border: 1px solid ${props => props.theme.mainBorderColor};
     border-radius: 10px;
+  }
+`;
+
+const InputsWrap = styled.div`
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+
+  & input {
+    margin-bottom: 30px;
+  }
+`;
+
+const ButtonsWrap = styled.div`
+  margin-top: 30px;
+  & button {
+    margin: 0 10px;
   }
 `;
