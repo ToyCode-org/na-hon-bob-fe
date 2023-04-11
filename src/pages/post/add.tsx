@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { BsCameraFill } from "react-icons/bs";
 import { InputEvent, InputTarget, FormEvents } from "@/components/sign";
-import { MainInpnut, MainTextArea } from "@/components/tagsComponents/inputs";
+import { MainInput, MainTextArea } from "@/components/tagsComponents/inputs";
 import { MainButton, CancelButton } from "@/components/tagsComponents/buttons";
 import { goHome } from "@/components/router/router";
 
@@ -82,7 +82,7 @@ export default function AddPost() {
           {keyArray.map((name, index) => {
             if (index < keyArray.length - 1) {
               return (
-                <MainInpnut
+                <MainInput
                   key={index}
                   name={name}
                   placeholder={placeholderArray[index]}

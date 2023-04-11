@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { MainInpnut } from "@/components/tagsComponents/inputs";
+import { MainInput } from "@/components/tagsComponents/inputs";
 import { MainButton } from "@/components/tagsComponents/buttons";
 import Image from "next/image";
 import Link from "next/link";
@@ -46,7 +46,7 @@ export default function Login() {
           if (index < 2)
             return (
               <div key={index}>
-                <MainInpnut
+                <MainInput
                   id={name}
                   type={type}
                   name={name}

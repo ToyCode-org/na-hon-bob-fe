@@ -7,6 +7,7 @@ import { SimpleHeader } from "./simpleHeader";
 import { goHome, goAddPost } from "@/components/router/router";
 import Link from "next/link";
 import { useLoginCheck } from "@/hooks/useLoginCheck";
+import { Search } from "./Search";
 
 export const Header = () => {
   const { pathname } = useRouter();
@@ -27,7 +28,7 @@ export const Header = () => {
             <MainCategory />
           </FirstHeader>
           <SecondHeader>
-            <div>검색</div>
+            <Search />
             <Sign>
               <Link href={"/login"}>로그인</Link> |{" "}
               <Link href={"/login/signup"}>회원가입</Link>

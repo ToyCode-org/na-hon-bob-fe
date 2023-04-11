@@ -4,6 +4,7 @@ import { useSideMenu } from "@/hooks/useSideMenu";
 import { MainButton, CancelButton } from "../../tagsComponents/buttons";
 import { TiThMenu } from "react-icons/ti";
 import { goHome, goLogin, goSignUp } from "@/components/router/router";
+import { Search } from "./Search";
 
 export const SimpleHeader = () => {
   const { isOpen, sideMenuOpen, sideMenuClose } = useSideMenu();
@@ -72,6 +73,7 @@ const Menu = styled.span`
     }
   }
 `;
+
 const Background = styled.div`
   position: absolute;
   top: 0;

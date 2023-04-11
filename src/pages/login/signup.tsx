@@ -3,11 +3,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { MainInpnut } from "@/components/tagsComponents/inputs";
+import { MainInput } from "@/components/tagsComponents/inputs";
 import { inputDataMaker } from "@/components/sign/signFNs";
 import { FormDataCheck, FormEvents, InputTarget } from "@/components/sign";
 import { inputBorderStyle, errMsgStyle } from "@/components/sign/signFNs";
 import { MainButton, SubButton } from "@/components/tagsComponents/buttons";
+import { userAPI } from "@/api/api";
 
 export default function SignUp() {
   const router = useRouter();
@@ -83,7 +84,11 @@ export default function SignUp() {
     setformDataCheck(prev => ({ ...prev, passwordCheck: passwordCheckRegex }));
   }, [formData.email, formData.password, formData.passwordCheck]);
 
-  const emailChecker = () => {
+  const emailVerifi = () => {
+    alert("이메일 인증");
+    userAPI.sendVerificationCode("yhl0078@naver.com");
+  };
+  const emailCheck = () => {
     alert("이메일 체크");
   };
   const nicknameChecker = () => {
@@ -111,7 +116,7 @@ export default function SignUp() {
             <InputWrap key={index}>
               <p>{placeholder}</p>
               <RegexText>{regex}</RegexText>
-              <MainInpnut
+              <MainInput
                 id={name}
                 type={type}
                 name={name}
@@ -128,8 +133,8 @@ export default function SignUp() {
                     type="button"
                     width="100%"
                     height="40px"
-                    content="이메일 중복 확인"
-                    onClick={emailChecker}
+                    content="이메일 인증"
+                    onClick={emailVerifi}
                   />
                 </EmailCheckBtn>
               ) : null}

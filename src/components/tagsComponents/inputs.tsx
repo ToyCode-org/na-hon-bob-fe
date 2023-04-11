@@ -12,7 +12,7 @@ interface InputProps {
   border?: string | undefined;
 }
 
-export const MainInpnut = ({
+export const MainInput = ({
   type,
   name,
   autoComplete,
