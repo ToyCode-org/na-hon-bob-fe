@@ -26,6 +26,10 @@ export const light = {
   cancelButtonHover: "#ffe975",
 
   // component
+  componentBorderColor: "#efefef",
+  componentBackground: "gold",
+  hoverBackground: "#fff09d",
+  componentSubBackground: "lightgray",
 };
 
 export const dark = {

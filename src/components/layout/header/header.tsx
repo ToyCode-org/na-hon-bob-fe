@@ -6,15 +6,18 @@ import { MainCategory } from "./category";
 import { SimpleHeader } from "./simpleHeader";
 import { goHome, goAddPost } from "@/components/router/router";
 import Link from "next/link";
+import { useLoginCheck } from "@/hooks/useLoginCheck";
 
 export const Header = () => {
   const { pathname } = useRouter();
+  const isLogin = useLoginCheck();
   const mediaData = MediaQuery();
 
   const noHeader =
     pathname === "/login" || pathname === "/login/signup"
       ? { display: "none" }
       : {};
+
   return (
     <Container style={noHeader}>
       {mediaData === 4 ? (
