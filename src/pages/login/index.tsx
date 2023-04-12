@@ -3,21 +3,16 @@ import { MainInput } from "@/components/tagsComponents/inputs";
 import { MainButton } from "@/components/tagsComponents/buttons";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { inputDataMaker } from "@/components/sign/signFNs";
 import { useState } from "react";
 import { FormEvents, InputTarget } from "@/components/sign";
+import { goHome } from "@/components/router/router";
 
 export default function Login() {
-  const router = useRouter();
   const inputArray = [
     inputDataMaker("email", "email", "이메일"),
     inputDataMaker("password", "password", "비밀번호"),
   ];
-
-  const goHome = () => {
-    router.push("/");
-  };
 
   const formDataInit = {
     email: "",

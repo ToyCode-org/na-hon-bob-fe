@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { InputEvent } from "@/components/sign";
 import { useRouter } from "next/router";
 import { MainInput } from "@/components/tagsComponents/inputs";
 import { inputDataMaker } from "@/components/sign/signFNs";
@@ -9,6 +10,12 @@ import { FormDataCheck, FormEvents, InputTarget } from "@/components/sign";
 import { inputBorderStyle, errMsgStyle } from "@/components/sign/signFNs";
 import { MainButton, SubButton } from "@/components/tagsComponents/buttons";
 import { userAPI } from "@/api/api";
+import {
+  emailVerifi,
+  emailCheck,
+  nicknameChecker,
+} from "@/components/sign/signFNs";
+import { goHome } from "@/components/router/router";
 
 export default function SignUp() {
   const router = useRouter();
@@ -41,9 +48,6 @@ export default function SignUp() {
       "다른 유저와 겹치지 않도록 입력해주세요. (2~15자)",
     ),
   ];
-  const goHome = () => {
-    router.push("/");
-  };
 
   const formDataInit = {
     email: "",
@@ -84,21 +88,17 @@ export default function SignUp() {
     setformDataCheck(prev => ({ ...prev, passwordCheck: passwordCheckRegex }));
   }, [formData.email, formData.password, formData.passwordCheck]);
 
-  const emailVerifi = () => {
-    alert("이메일 인증");
-    userAPI.sendVerificationCode("yhl0078@naver.com");
-  };
-  const emailCheck = () => {
-    alert("이메일 체크");
-  };
-  const nicknameChecker = () => {
-    alert("닉네임 체크");
-  };
   const onSubmitHandler = (e: FormEvents) => {
     e.preventDefault();
     alert("회원가입 완료");
   };
 
+  const verifiCode = useRef("");
+  const verifiChangeHandler = (e: InputEvent) => {
+    const target = e.target as InputTarget;
+    verifiCode.current = target.value;
+  };
+  console.log(verifiCode.current);
   return (
     <Container>
       <FormHead onClick={goHome}>
@@ -128,15 +128,40 @@ export default function SignUp() {
               />
               <ErrMsg style={errMsgStyle(formDataCheck, name)}>{error}</ErrMsg>
               {index === 0 ? (
-                <EmailCheckBtn>
-                  <SubButton
-                    type="button"
-                    width="100%"
-                    height="40px"
-                    content="이메일 인증"
-                    onClick={emailVerifi}
-                  />
-                </EmailCheckBtn>
+                <>
+                  <EmailCheckBtn>
+                    <SubButton
+                      type="button"
+                      width="100%"
+                      height="40px"
+                      content="이메일 인증"
+                      onClick={() => emailVerifi(formData.email)}
+                    />
+                  </EmailCheckBtn>
+                  <Verification>
+                    <MainInput
+                      name="verifi-code"
+                      width="200px"
+                      height="40px"
+                      placeholder="인증코드 6자리"
+                      onChange={verifiChangeHandler}
+                    />
+                    <MainButton
+                      type="button"
+                      width="60px"
+                      height="40px"
+                      content="확인"
+                      onClick={() => emailCheck(verifiCode.current)}
+                    />
+                    <SubButton
+                      type="button"
+                      width="60px"
+                      height="40px"
+                      content="재발급"
+                      onClick={() => emailVerifi(formData.email)}
+                    />
+                  </Verification>
+                </>
               ) : null}
             </InputWrap>
           );
@@ -241,5 +266,14 @@ const Sign = styled.div`
     &:hover {
       color: ${props => props.theme.FontHoverColor};
     }
+  }
+`;
+
+const Verification = styled.div`
+  margin-top: 20px;
+  display: flex;
+
+  & button {
+    margin: 0 10px;
   }
 `;

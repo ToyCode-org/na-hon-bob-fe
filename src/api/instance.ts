@@ -1,6 +1,10 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:3001";
+const BASE_URL = "https://localhost:3001";
+
+axios.defaults.withCredentials = true;
+axios.defaults.headers["Content-Type"] = "application/json";
+// axios.defaults.headers["X-Requested-With"] = "XMLHttpRequest";
 
 export const base = axios.create({
   baseURL: BASE_URL,
@@ -12,12 +16,12 @@ export const auth = axios.create({
 
 auth.interceptors.request.use(config => {
   const access_token = localStorage.getItem("access_token");
-
   if (!access_token) {
     config.headers["Authorization"] = null;
   } else {
     config.headers["Authorization"] = access_token;
   }
+
   return config;
 });
 
