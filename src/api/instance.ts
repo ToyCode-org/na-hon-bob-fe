@@ -4,7 +4,6 @@ const BASE_URL = "https://localhost:3001";
 
 axios.defaults.withCredentials = true;
 axios.defaults.headers["Content-Type"] = "application/json";
-// axios.defaults.headers["X-Requested-With"] = "XMLHttpRequest";
 
 export const base = axios.create({
   baseURL: BASE_URL,

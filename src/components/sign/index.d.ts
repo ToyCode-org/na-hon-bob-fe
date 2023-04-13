@@ -11,3 +11,17 @@ export type FormDataCheck = {
   passwordCheck: string | boolean;
   nickname: string | boolean;
 };
+
+export type FormData = {
+  email: string;
+  password: string;
+  passwordCheck: string;
+  nickname: string;
+};
+
+export type Verify = {
+  sendCode: boolean;
+  email: boolean;
+  nickname: boolean;
+};
+export type VerifyDispatch = Dispatch<SetStateAction<Verify>>;

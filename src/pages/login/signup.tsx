@@ -3,22 +3,21 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import { InputEvent } from "@/components/sign";
-import { useRouter } from "next/router";
 import { MainInput } from "@/components/tagsComponents/inputs";
-import { inputDataMaker } from "@/components/sign/signFNs";
 import { FormDataCheck, FormEvents, InputTarget } from "@/components/sign";
-import { inputBorderStyle, errMsgStyle } from "@/components/sign/signFNs";
 import { MainButton, SubButton } from "@/components/tagsComponents/buttons";
-import { userAPI } from "@/api/api";
 import {
+  inputBorderStyle,
+  errMsgStyle,
+  inputDataMaker,
   emailVerifi,
   emailCheck,
   nicknameChecker,
+  createUser,
 } from "@/components/sign/signFNs";
 import { goHome } from "@/components/router/router";
 
 export default function SignUp() {
-  const router = useRouter();
   const inputArray = [
     inputDataMaker(
       "email",
@@ -49,6 +48,13 @@ export default function SignUp() {
     ),
   ];
 
+  const [verifiCheck, setVerifiCheck] = useState({
+    sendCode: false,
+    email: false,
+    nickname: false,
+  });
+  console.log(verifiCheck);
+
   const formDataInit = {
     email: "",
     password: "",
@@ -61,6 +67,8 @@ export default function SignUp() {
     const name = target.name;
     const value = target.value;
     setFormData(prev => ({ ...prev, [name]: value }));
+    if (name === "nickname")
+      setVerifiCheck(prev => ({ ...prev, nickname: false }));
   };
   const [formDataCheck, setformDataCheck] =
     useState<FormDataCheck>(formDataInit);
@@ -90,7 +98,7 @@ export default function SignUp() {
 
   const onSubmitHandler = (e: FormEvents) => {
     e.preventDefault();
-    alert("회원가입 완료");
+    createUser(verifiCheck, formDataCheck, formData);
   };
 
   const verifiCode = useRef("");
@@ -98,7 +106,7 @@ export default function SignUp() {
     const target = e.target as InputTarget;
     verifiCode.current = target.value;
   };
-  console.log(verifiCode.current);
+
   return (
     <Container>
       <FormHead onClick={goHome}>
@@ -135,10 +143,18 @@ export default function SignUp() {
                       width="100%"
                       height="40px"
                       content="이메일 인증"
-                      onClick={() => emailVerifi(formData.email)}
+                      onClick={() =>
+                        emailVerifi(formData.email, setVerifiCheck)
+                      }
                     />
                   </EmailCheckBtn>
-                  <Verification>
+                  <Verification
+                    style={
+                      !verifiCheck.sendCode || verifiCheck.email
+                        ? { display: "none" }
+                        : {}
+                    }
+                  >
                     <MainInput
                       name="verifi-code"
                       width="200px"
@@ -151,14 +167,18 @@ export default function SignUp() {
                       width="60px"
                       height="40px"
                       content="확인"
-                      onClick={() => emailCheck(verifiCode.current)}
+                      onClick={() =>
+                        emailCheck(verifiCode.current, setVerifiCheck)
+                      }
                     />
                     <SubButton
                       type="button"
                       width="60px"
                       height="40px"
                       content="재발급"
-                      onClick={() => emailVerifi(formData.email)}
+                      onClick={() =>
+                        emailVerifi(formData.email, setVerifiCheck)
+                      }
                     />
                   </Verification>
                 </>
@@ -172,7 +192,7 @@ export default function SignUp() {
             width="100%"
             height="40px"
             content="닉네임 중복 확인"
-            onClick={nicknameChecker}
+            onClick={() => nicknameChecker(formData.nickname, setVerifiCheck)}
           />
         </ButtonWrap>
         <ButtonWrap>
