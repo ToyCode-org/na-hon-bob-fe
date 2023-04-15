@@ -1,5 +1,5 @@
 import { auth, base } from "./instance";
-import { FormData } from "@/components/sign";
+import { FormData, LoginFormData } from "@/components/sign";
 
 export const userAPI = {
   sendVerificationCode: (email: string) =>
@@ -8,6 +8,9 @@ export const userAPI = {
   nicknameCheck: (nickname: string) =>
     base.post("/user/nickname", { nickname }),
   signUp: (formData: FormData) => base.post("/user/sign", formData),
-  login: (formData: FormData) => base.post("/user/login", formData),
+  login: (formData: LoginFormData) => base.post("/user/login", formData),
+  logout: () => auth.post("/user/signout"),
   getMyInfo: () => auth.get("/user/me"),
+  isLoginCheck: () => auth.get("/user"),
+  deleteUser: () => auth.delete("/user"),
 };

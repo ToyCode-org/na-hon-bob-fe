@@ -5,7 +5,7 @@ import { BsCameraFill } from "react-icons/bs";
 import { InputEvent, InputTarget, FormEvents } from "@/components/sign";
 import { MainInput, MainTextArea } from "@/components/tagsComponents/inputs";
 import { MainButton, CancelButton } from "@/components/tagsComponents/buttons";
-import { goHome } from "@/components/router/router";
+import { goHome } from "@/router/router";
 
 export default function AddPost() {
   const [viewImage, setViewImage] = useState<string | ArrayBuffer | null>("");

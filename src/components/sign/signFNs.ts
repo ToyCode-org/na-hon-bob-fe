@@ -1,7 +1,13 @@
-import { FormDataCheck, FormData, VerifyDispatch, Verify } from ".";
+import {
+  FormDataCheck,
+  FormData,
+  VerifyDispatch,
+  Verify,
+  LoginFormData,
+} from ".";
 import { userAPI } from "@/api/api";
 import Router from "next/router";
-import Swal from "sweetalert2";
+import { swalTimer, swalSuccess, swalError } from "@/swal/swal";
 
 export const inputDataMaker = (
   type: string,
@@ -34,14 +40,6 @@ export const errMsgStyle = (checkState: FormDataCheck, name: string) => {
   return { ...checkState }[name] === false ? {} : { display: "none" };
 };
 
-export const swalError = (title: string) => {
-  return Swal.fire({
-    icon: "error",
-    title: `${title}`,
-    confirmButtonColor: "gold",
-  });
-};
-
 export const emailVerifi = async (
   email: string,
   setVerifiCheck: VerifyDispatch,
@@ -49,13 +47,7 @@ export const emailVerifi = async (
   try {
     await userAPI.sendVerificationCode(email);
     setVerifiCheck((prev: Verify) => ({ ...prev, sendCode: true }));
-    Swal.fire({
-      icon: "success",
-      title: "인증번호가 발송되었습니다.",
-      timer: 1500,
-      timerProgressBar: true,
-      confirmButtonColor: "gold",
-    });
+    swalTimer("인증번호가 발송되었습니다.");
   } catch (error) {
     swalError("이미 가입된 이메일입니다.");
   }
@@ -68,14 +60,18 @@ export const emailCheck = async (
   try {
     const res = await userAPI.emailCheck(code);
     if (res.data.status === "ok") {
-      Swal.fire({
-        icon: "success",
-        title: "인증 완료",
-        confirmButtonColor: "gold",
-      }).then(() => {
+      swalSuccess("인증 완료").then(() => {
         setVerifiCheck((prev: Verify) => ({ ...prev, email: true }));
         document.getElementById("email")?.setAttribute("disabled", "");
       });
+      // Swal.fire({
+      //   icon: "success",
+      //   title: "인증 완료",
+      //   confirmButtonColor: "gold",
+      // }).then(() => {
+      //   setVerifiCheck((prev: Verify) => ({ ...prev, email: true }));
+      //   document.getElementById("email")?.setAttribute("disabled", "");
+      // });
     } else {
       swalError("인증코드가 일치하지 않습니다.");
     }
@@ -96,13 +92,16 @@ export const nicknameChecker = async (
     }
     const res = await userAPI.nicknameCheck(nickname);
     if (res.data.isUnique) {
-      Swal.fire({
-        icon: "success",
-        title: "사용할 수 있는 닉네임입니다.",
-        confirmButtonColor: "gold",
-      }).then(() => {
+      swalSuccess("사용할 수 있는 닉네임입니다.").then(() => {
         setVerifiCheck((prev: Verify) => ({ ...prev, nickname: true }));
       });
+      // Swal.fire({
+      //   icon: "success",
+      //   title: "사용할 수 있는 닉네임입니다.",
+      //   confirmButtonColor: "gold",
+      // }).then(() => {
+      //   setVerifiCheck((prev: Verify) => ({ ...prev, nickname: true }));
+      // });
     }
   } catch (error) {
     swalError("이미 사용중인 닉네임입니다.");
@@ -121,18 +120,23 @@ export const createUser = async (
   try {
     const res = await userAPI.signUp(formData);
     if (res.data.status === "ok") {
-      Swal.fire({
-        icon: "success",
-        title: "회원가입 완료!",
-        confirmButtonColor: "gold",
-      }).then(() => {
+      swalSuccess("회원가입 완료!").then(() => {
         Router.push("/login");
       });
+      // Swal.fire({
+      //   icon: "success",
+      //   title: "회원가입 완료!",
+      //   confirmButtonColor: "gold",
+      // }).then(() => {
+      //   Router.push("/login");
+      // });
     }
-  } catch (error) {}
+  } catch (error) {
+    return swalError("알 수 없는 오류입니다.");
+  }
 };
 
-export const userLogin = async (formData: FormData) => {
+export const userLogin = async (formData: LoginFormData) => {
   try {
     const res = await userAPI.login(formData);
     if (res.data.status === "ok") {
@@ -140,5 +144,16 @@ export const userLogin = async (formData: FormData) => {
     }
   } catch (e: any) {
     return swalError("회원정보가 일치하지 않습니다.");
+  }
+};
+
+export const userLogout = async () => {
+  try {
+    const res = await userAPI.logout();
+    if (res.data.status === "ok") {
+      return true;
+    }
+  } catch (error) {
+    return swalError("알 수 없는 오류입니다.");
   }
 };

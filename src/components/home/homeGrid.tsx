@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Image from "next/image";
 import { BoringAvatar } from "../post/boringAvatar";
 import { MediaQuery } from "@/hooks/useMediaQuery";
-import { goPost } from "../router/router";
+import { goPost } from "../../router/router";
 
 export const HomeGrid = () => {
   const mediaData = MediaQuery();

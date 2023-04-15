@@ -3,10 +3,10 @@ import { MainInput } from "@/components/tagsComponents/inputs";
 import { MainButton } from "@/components/tagsComponents/buttons";
 import Image from "next/image";
 import Link from "next/link";
-import { inputDataMaker } from "@/components/sign/signFNs";
+import { inputDataMaker, userLogin } from "@/components/sign/signFNs";
 import { useState } from "react";
 import { FormEvents, InputTarget } from "@/components/sign";
-import { goHome } from "@/components/router/router";
+import { goHome } from "@/router/router";
 
 export default function Login() {
   const inputArray = [
@@ -27,7 +27,7 @@ export default function Login() {
   };
   const onSubmitHandler = (e: FormEvents) => {
     e.preventDefault();
-    alert("로그인 성공");
+    userLogin(formData);
   };
   return (
     <Container>

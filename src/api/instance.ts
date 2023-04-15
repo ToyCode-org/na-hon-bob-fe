@@ -14,20 +14,19 @@ export const auth = axios.create({
 });
 
 auth.interceptors.request.use(config => {
-  const access_token = localStorage.getItem("access_token");
-  if (!access_token) {
-    config.headers["Authorization"] = null;
-  } else {
-    config.headers["Authorization"] = access_token;
-  }
+  // const access_token = localStorage.getItem("access_token");
+  // if (!access_token) {
+  //   config.headers["Authorization"] = null;
+  // } else {
+  //   config.headers["Authorization"] = access_token;
+  // }
 
   return config;
 });
 
 auth.interceptors.response.use(response => {
-  if (response.headers["Authorization"]) {
-    localStorage.removeItem("access_token");
-    localStorage.setItem("access_token", response.headers["Authorization"]);
-  }
+  // if (response.headers["Authorization"]) {
+  //   localStorage.setItem("access_token", response.headers["Authorization"]);
+  // }
   return response;
 });

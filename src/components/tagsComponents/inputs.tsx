@@ -27,11 +27,15 @@ export const MainInput = ({
       name={name}
       autoComplete={autoComplete || "on"}
       type={type || "text"}
-      style={{
-        width: `${width}`,
-        height: `${height}`,
-        border: `${border && border !== "" ? `1px solid ${border}` : ""}`,
-      }}
+      style={
+        border !== ""
+          ? {
+              width: `${width}`,
+              height: `${height}`,
+              border: `${`1px solid ${border}`}`,
+            }
+          : { width: `${width}`, height: `${height}` }
+      }
     />
   );
 };
@@ -72,11 +76,15 @@ export const MainTextArea = ({
       {...props}
       name={name}
       autoComplete="off"
-      style={{
-        width: `${width}`,
-        height: `${height}`,
-        border: `${border && border !== "" ? `1px solid ${border}` : ""}`,
-      }}
+      style={
+        border !== ""
+          ? {
+              width: `${width}`,
+              height: `${height}`,
+              border: `${`1px solid ${border}`}`,
+            }
+          : { width: `${width}`, height: `${height}` }
+      }
     />
   );
 };

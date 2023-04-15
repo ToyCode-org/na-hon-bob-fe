@@ -3,7 +3,7 @@ import { ManuCategory } from "./category";
 import { useSideMenu } from "@/hooks/useSideMenu";
 import { MainButton, CancelButton } from "../../tagsComponents/buttons";
 import { TiThMenu } from "react-icons/ti";
-import { goHome, goLogin, goSignUp } from "@/components/router/router";
+import { goHome, goLogin, goSignUp } from "@/router/router";
 import { Search } from "./Search";
 
 export const SimpleHeader = () => {

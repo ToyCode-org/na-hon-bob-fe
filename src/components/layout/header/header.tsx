@@ -4,20 +4,26 @@ import { useRouter } from "next/router";
 import { MediaQuery } from "@/hooks/useMediaQuery";
 import { MainCategory } from "./category";
 import { SimpleHeader } from "./simpleHeader";
-import { goHome, goAddPost } from "@/components/router/router";
+import { goHome, goAddPost } from "@/router/router";
 import Link from "next/link";
 import { useLoginCheck } from "@/hooks/useLoginCheck";
 import { Search } from "./Search";
+import { userLogout } from "@/components/sign/signFNs";
 
 export const Header = () => {
   const { pathname } = useRouter();
-  const isLogin = useLoginCheck();
+  const { isLogin, setisLogin } = useLoginCheck();
   const mediaData = MediaQuery();
 
   const noHeader =
     pathname === "/login" || pathname === "/login/signup"
       ? { display: "none" }
       : {};
+
+  const logoutHandler = () => {
+    userLogout();
+    setisLogin(false);
+  };
 
   return (
     <Container style={noHeader}>
@@ -29,10 +35,17 @@ export const Header = () => {
           </FirstHeader>
           <SecondHeader>
             <Search />
-            <Sign>
-              <Link href={"/login"}>로그인</Link> |{" "}
-              <Link href={"/login/signup"}>회원가입</Link>
-            </Sign>
+            {!isLogin ? (
+              <Sign>
+                <Link href={"/login"}>로그인 | </Link>
+                <Link href={"/login/signup"}>회원가입</Link>
+              </Sign>
+            ) : (
+              <Sign>
+                <Link href={"/mypage"}>마이페이지 | </Link>
+                <span onClick={logoutHandler}>로그아웃</span>
+              </Sign>
+            )}
             <MainButton
               width="80px"
               height="30px"
@@ -89,7 +102,8 @@ const SecondHeader = styled.div`
 const Sign = styled.div`
   margin: 0 40px 0 40px;
   text-align: center;
-  & a {
+  & a,
+  span {
     cursor: pointer;
     &:hover {
       color: ${props => props.theme.FontHoverColor};

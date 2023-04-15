@@ -12,6 +12,11 @@ export type FormDataCheck = {
   nickname: string | boolean;
 };
 
+export type LoginFormData = {
+  email: string;
+  password: string;
+};
+
 export type FormData = {
   email: string;
   password: string;

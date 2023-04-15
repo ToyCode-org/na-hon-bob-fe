@@ -15,7 +15,7 @@ import {
   nicknameChecker,
   createUser,
 } from "@/components/sign/signFNs";
-import { goHome } from "@/components/router/router";
+import { goHome } from "@/router/router";
 
 export default function SignUp() {
   const inputArray = [
