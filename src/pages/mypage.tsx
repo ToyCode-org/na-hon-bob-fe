@@ -20,15 +20,15 @@ export default function Mypage() {
   };
 
   const getOnePost = async () => {
-    const res = await postAPI.getPostOne(11);
+    const res = await postAPI.getPostOne(18);
     console.log(res);
   };
 
   const mock = {
-    thumbnail: "test",
+    thumbnail: "https://i.ibb.co/9YGz35x/React.png",
     title: "test",
     ingredient: "test",
-    description: "test",
+    description: "test    test",
   };
   const createJunk = async () => {
     const res = await postAPI.createPost(mock);

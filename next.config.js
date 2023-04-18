@@ -8,14 +8,8 @@ const nextConfig = {
     NEXT_IMG_API_KEY: process.env.NEXT_IMG_API_KEY,
   },
   images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "*",
-        port: "*",
-        pathname: "*",
-      },
-    ],
+    domains: ["i.ibb.co"],
+    unoptimized: true,
   },
 };
 

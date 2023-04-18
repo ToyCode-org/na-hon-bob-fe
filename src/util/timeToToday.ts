@@ -1,6 +1,6 @@
 /**
  *
- * @param createdAt new Date(someTime)
+ * @param createdAt +new Date(someTime)
  * @returns 00 분/시간/일/주/개월/년 전
  */
 export function TimeToToday(createdAt: number) {

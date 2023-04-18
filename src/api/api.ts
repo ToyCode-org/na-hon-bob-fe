@@ -17,8 +17,12 @@ export const userAPI = {
 };
 
 export const postAPI = {
+  getAllStaticPost: () => auth.get("/post"),
   getAllPost: (page: number) => auth.get(`/post?page=${page}&limit=20`),
-  getPostOne: (post_id: number) => auth.get(`/post/${post_id}`),
+  getPostOne: (post_id: number) =>
+    auth.get(`/post/${post_id}`, {
+      withCredentials: false,
+    }),
   getMyPost: (page: number) => auth.get(`/post/me?page=${page}&limit=10`),
   uploadImageToIBB: (base64Image: any) => auth.post("/post/imgbb", base64Image),
   createPost: (postData: postFormData) => auth.post("/post", postData),

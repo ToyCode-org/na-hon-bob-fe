@@ -5,6 +5,7 @@ import { BoringAvatar } from "../post/boringAvatar";
 import { MediaQuery } from "@/hooks/useMediaQuery";
 import { goPost } from "../../router/router";
 import { postAPI } from "@/api/api";
+import { TimeToToday } from "@/util/timeToToday";
 
 export const HomeGrid = () => {
   const mediaData = MediaQuery();
@@ -24,25 +25,24 @@ export const HomeGrid = () => {
     const res = await postAPI.getAllPost(1);
     setmockdata(res.data.data);
   };
-  // useEffect(() => {
-  //   getData();
-  // }, []);
-  // console.log(mockdata);
+  useEffect(() => {
+    getData();
+  }, []);
+  console.log(mockdata);
   return (
     <GridContainer>
       <GridWrap style={{ gridTemplateColumns: `repeat(${mediaData}, 1fr)` }}>
-        {mock?.map((recipy, index) => {
+        {mockdata?.map((recipy, index) => {
           const {
-            // post_id,
+            post_id,
             thumbnail,
             title,
             discription,
-            nickname,
-            avatar,
-            // user: { nickname, avatar },
+            createdAt,
+            user: { nickname, avatar },
           } = recipy;
           return (
-            <ListItem key={index} onClick={() => goPost(index + 1)}>
+            <ListItem key={index} onClick={() => goPost(post_id)}>
               <Image
                 src={`${thumbnail}`}
                 width={100}
@@ -50,7 +50,7 @@ export const HomeGrid = () => {
                 alt="thumnail"
                 priority
               />
-              <ContenWrap>
+              <ContentWrap>
                 <UserInfo>
                   {avatar === "" ? (
                     <BoringAvatar />
@@ -60,8 +60,8 @@ export const HomeGrid = () => {
                   <span>{nickname}</span>
                 </UserInfo>
                 <Title>{title}</Title>
-                <Discription>{discription}</Discription>
-              </ContenWrap>
+                <CreatedAt>{TimeToToday(+new Date(createdAt))}</CreatedAt>
+              </ContentWrap>
             </ListItem>
           );
         })}
@@ -86,18 +86,18 @@ const ListItem = styled.li`
   display: flex;
   flex-direction: column;
   width: 90%;
-  height: 380px;
+  height: 330px;
   border: 1px solid lightgray;
   border-radius: 5px;
   font-size: 1rem;
   cursor: pointer;
   @media only all and (max-width: 767px) {
     width: 100%;
-    height: 85%;
+    height: 83%;
     margin-bottom: 150px;
   }
   @media only all and (min-width: 768px) and (max-width: 1023px) {
-    height: 45vw;
+    height: 40vw;
   }
   & img {
     width: 100%;
@@ -105,7 +105,7 @@ const ListItem = styled.li`
   }
 `;
 
-const ContenWrap = styled.div`
+const ContentWrap = styled.div`
   padding: 10px;
   width: 100%;
   height: 100%;
@@ -122,7 +122,10 @@ const UserInfo = styled.div`
   }
 `;
 const Title = styled.p`
+  padding: 5px;
   font-weight: bold;
   font-size: 1.1rem;
 `;
-const Discription = styled.p``;
+const CreatedAt = styled.p`
+  text-align: right;
+`;

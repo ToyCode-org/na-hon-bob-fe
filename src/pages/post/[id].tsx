@@ -3,14 +3,39 @@ import Image from "next/image";
 import { BoringAvatar } from "@/components/post/boringAvatar";
 import { TimeToToday } from "@/util/timeToToday";
 import { MediaQuery } from "@/hooks/useMediaQuery";
+import { GetServerSideProps, GetStaticPaths } from "next";
+import { postAPI } from "@/api/api";
+import { ParsedUrlQuery } from "querystring";
 
-export default function Post() {
+type PostType = {
+  post_id: number;
+  user_id: number;
+  thumbnail: string;
+  title: string;
+  ingredient: string;
+  description: string;
+  createdAt: string;
+  avatar: string;
+  nickname: string;
+};
+
+export default function Post({
+  post_id,
+  user_id,
+  thumbnail,
+  title,
+  ingredient,
+  description,
+  createdAt,
+  avatar,
+  nickname,
+}: PostType) {
   const display = MediaQuery();
   const mockOb = {
-    thumnail: "/images/egg.png",
+    thumbnail: "/images/egg.png",
     title: "맛있는 라면모음",
     ingredient: ["라면", "스프", "참깨"],
-    discription: "어떻게 만들고 어떻게 만든다 웅웅",
+    description: "어떻게 만들고 어떻게 만든다 웅웅",
     avatar: "",
     nickname: "yamyam",
     createdAt: "2023-04-10",
@@ -20,20 +45,31 @@ export default function Post() {
     <Container>
       <ContentWrap>
         <Image
-          src={mockOb.thumnail}
+          src={thumbnail}
           alt="food Image"
           width={400}
           height={400}
+          priority
         />
         <UserInfo>
           <InfoHead>
-            <BoringAvatar />
-            <span>{mockOb.nickname}</span>
+            {avatar === "" ? (
+              <BoringAvatar />
+            ) : (
+              <Image
+                src={avatar}
+                width={36}
+                height={46}
+                alt="프로필"
+                priority
+              />
+            )}
+            <span>{nickname}</span>
           </InfoHead>
-          <InfoEnd>{TimeToToday(+new Date(mockOb.createdAt))}</InfoEnd>
+          <InfoEnd>{TimeToToday(+new Date(createdAt))}</InfoEnd>
         </UserInfo>
         <PreContent>
-          <h1>{mockOb.title}</h1>
+          <h1>{title}</h1>
           <IngredientGrid>
             {mockOb.ingredient.map((value, index) => {
               return <IngredientItem key={index}>{value}</IngredientItem>;
@@ -42,12 +78,43 @@ export default function Post() {
         </PreContent>
         <Content>
           <h2>레시피!</h2>
-          <pre>{mockOb.discription}</pre>
+          <pre>{description}</pre>
         </Content>
       </ContentWrap>
     </Container>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+  const param = params as ParsedUrlQuery;
+  const res = await postAPI.getPostOne(Number(param.id));
+  console.log(res.data);
+  const {
+    post_id,
+    user_id,
+    thumbnail,
+    title,
+    ingredient,
+    description,
+    createdAt,
+    user: { nickname, avatar },
+  } = res.data.data[0];
+  const data = {
+    post_id,
+    user_id,
+    thumbnail,
+    title,
+    ingredient,
+    description,
+    createdAt,
+    nickname,
+    avatar,
+  };
+  console.log(data);
+  return {
+    props: data,
+  };
+};
 
 const Container = styled.div`
   margin-top: 120px;
