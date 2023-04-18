@@ -85,7 +85,7 @@ const ListItem = styled.li`
   margin-bottom: 50px;
   display: flex;
   flex-direction: column;
-  width: 90%;
+  width: 250px;
   height: 330px;
   border: 1px solid lightgray;
   border-radius: 5px;
@@ -94,14 +94,19 @@ const ListItem = styled.li`
   @media only all and (max-width: 767px) {
     width: 100%;
     height: 83%;
-    margin-bottom: 150px;
+    margin-bottom: 50px;
   }
   @media only all and (min-width: 768px) and (max-width: 1023px) {
     height: 40vw;
   }
   & img {
+    width: 248px;
+    min-height: 190px;
     width: 100%;
     height: 100%;
+    @media only all and (max-width: 767px) {
+      height: 400px;
+    }
   }
 `;
 
@@ -110,6 +115,9 @@ const ContentWrap = styled.div`
   width: 100%;
   height: 100%;
   font-size: 1rem;
+  @media only all and (max-width: 767px) {
+    height: 150px;
+  }
 `;
 const UserInfo = styled.div`
   display: flex;

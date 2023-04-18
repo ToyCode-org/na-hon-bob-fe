@@ -88,7 +88,7 @@ export default function Post({
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const param = params as ParsedUrlQuery;
   const res = await postAPI.getPostOne(Number(param.id));
-  console.log(res.data);
+
   const {
     post_id,
     user_id,
@@ -110,7 +110,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     nickname,
     avatar,
   };
-  console.log(data);
+
   return {
     props: data,
   };

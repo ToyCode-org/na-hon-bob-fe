@@ -1,8 +1,14 @@
 import styled from "styled-components";
 import Image from "next/image";
-import { useState } from "react";
+import React, { useState } from "react";
 import { BsCameraFill } from "react-icons/bs";
-import { InputEvent, InputTarget, FormEvents } from "@/components/sign";
+import { AiOutlineCloseCircle } from "react-icons/ai";
+import {
+  InputEvent,
+  InputTarget,
+  FormEvents,
+  ButtonEvent,
+} from "@/components/sign";
 import { MainInput, MainTextArea } from "@/components/tagsComponents/inputs";
 import { MainButton, CancelButton } from "@/components/tagsComponents/buttons";
 import { goHome } from "@/router/router";
@@ -19,10 +25,10 @@ export default function AddPost() {
     let fileList = target.files as FileList;
     let file = fileList[0];
     if (file) {
-      let maxSize = 5 * 1024 * 1024;
+      let maxSize = 3 * 1024 * 1024;
       let fileSize = file.size;
       if (fileSize > maxSize) {
-        alert("첨부파일 사이즈는 5MB 이내로 등록 가능합니다.");
+        alert("첨부파일 사이즈는 3MB 이내로 등록 가능합니다.");
         return false;
       }
       setUploadImage(file);
@@ -43,7 +49,29 @@ export default function AddPost() {
   const keyArray = Object.keys(formDataInit);
   const placeholderArray = ["오늘의 요리는?", "재료", "레시피"];
 
+  const [ingredientArr, setIngredientArr] = useState<string[]>([]);
+  // ["라면", "스프", "참깨"]
   const [formState, setFormState] = useState(formDataInit);
+
+  const addIngredient = (e: ButtonEvent) => {
+    e.stopPropagation();
+    if (
+      formState.ingredient !== "" &&
+      (e.key === "Enter" || e.target.nodeName === "BUTTON")
+    ) {
+      e.preventDefault();
+      setIngredientArr(prev => prev.concat(formState.ingredient));
+      const ingredientInput = document.getElementById(
+        "ingredient",
+      ) as HTMLInputElement;
+      ingredientInput.value = "";
+      setFormState(prev => ({ ...prev, ["ingredient"]: "" }));
+    }
+  };
+  const removeIngredient = (index: number) => {
+    setIngredientArr(prev => prev.filter((v, i) => i !== index));
+  };
+
   const onChangehansler = (e: FormEvents) => {
     const target = e.target as InputTarget;
     const name = target.name;
@@ -92,7 +120,7 @@ export default function AddPost() {
           <AddImage style={viewImage === "" ? {} : { display: "none" }}>
             <BsCameraFill />
             <p>완성된 요리 사진을 올려보세요!</p>
-            <span>(최대 1장)</span>
+            <span>(최대 1장 3MB 이하)</span>
           </AddImage>
           <ViewImage style={viewImage === "" ? { display: "none" } : {}}>
             <Image
@@ -114,24 +142,65 @@ export default function AddPost() {
           {keyArray.map((name, index) => {
             if (index < keyArray.length - 1) {
               return (
-                <MainInput
-                  key={index}
-                  name={name}
-                  placeholder={placeholderArray[index]}
-                  autoComplete="off"
-                  width="350px"
-                  height="50px"
-                />
+                <React.Fragment key={index}>
+                  {index === 1 ? (
+                    <AddIngredientDiv>
+                      <MainInput
+                        id="ingredient"
+                        name={name}
+                        onKeyDown={addIngredient}
+                        placeholder={placeholderArray[index]}
+                        autoComplete="off"
+                        width="350px"
+                        height="50px"
+                      />
+                      <MainButton
+                        onClick={addIngredient}
+                        type="button"
+                        width="100%"
+                        height="40px"
+                        content="재료 추가"
+                      />
+                    </AddIngredientDiv>
+                  ) : (
+                    <MainInput
+                      name={name}
+                      placeholder={placeholderArray[index]}
+                      autoComplete="off"
+                      width="350px"
+                      height="50px"
+                    />
+                  )}
+                </React.Fragment>
               );
             } else {
               return (
-                <MainTextArea
-                  key={index}
-                  name={name}
-                  placeholder={placeholderArray[index]}
-                  width="350px"
-                  height="280px"
-                />
+                <React.Fragment key={index}>
+                  <PreContent>
+                    <IngredientGrid>
+                      {ingredientArr.map((value, index) => {
+                        return (
+                          <React.Fragment key={index}>
+                            <IngredientItem
+                              onClick={() => removeIngredient(index)}
+                            >
+                              <DeleteIcon>
+                                <AiOutlineCloseCircle />
+                              </DeleteIcon>
+                              {value}
+                            </IngredientItem>
+                          </React.Fragment>
+                        );
+                      })}
+                    </IngredientGrid>
+                  </PreContent>
+                  <MainTextArea
+                    name={name}
+                    placeholder={placeholderArray[index]}
+                    width="350px"
+                    height="280px"
+                  />
+                </React.Fragment>
               );
             }
           })}
@@ -205,8 +274,51 @@ const InputsWrap = styled.div`
   flex-direction: column;
 
   & input {
-    margin-bottom: 30px;
+    margin-bottom: 15px;
   }
+  & textarea {
+    margin-top: 30px;
+  }
+`;
+
+const PreContent = styled.div`
+  padding: 10px;
+  width: 350px;
+  & h1 {
+    margin-bottom: 10px;
+  }
+`;
+
+const IngredientGrid = styled.ul`
+  list-style: none;
+`;
+const IngredientItem = styled.li`
+  margin: 2px 4px;
+  margin-top: 10px;
+  padding: 5px 7px;
+  width: max-content;
+  border-radius: 10px;
+  background-color: ${props => props.theme.componentBackground};
+  font-weight: bold;
+  text-align: center;
+  user-select: none;
+  cursor: pointer;
+  &:hover {
+    background-color: ${props => props.theme.hoverBackground};
+  }
+`;
+
+const DeleteIcon = styled.span`
+  position: absolute;
+  transform: translate(-135%, 5%);
+  & svg {
+    cursor: pointer;
+  }
+`;
+
+const AddIngredientDiv = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 
 const ButtonsWrap = styled.div`
