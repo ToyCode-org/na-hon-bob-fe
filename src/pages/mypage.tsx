@@ -10,12 +10,12 @@ export default function Mypage() {
   };
 
   const getPostData = async () => {
-    const res = await postAPI.getAllPost();
+    const res = await postAPI.getAllPost(1);
     console.log(res);
   };
 
   const getMyPostData = async () => {
-    const res = await postAPI.getMyPost();
+    const res = await postAPI.getMyPost(1);
     console.log(res);
   };
 
@@ -25,7 +25,7 @@ export default function Mypage() {
   };
 
   const mock = {
-    thumnail: "test",
+    thumbnail: "test",
     title: "test",
     ingredient: "test",
     description: "test",
@@ -36,7 +36,7 @@ export default function Mypage() {
   };
 
   const editMock = {
-    thumnail: "est",
+    thumbnail: "est",
     title: "",
     ingredient: "",
     description: "",
@@ -58,16 +58,20 @@ export default function Mypage() {
     const res = await commentAPI.getCommentByPostId(11);
     console.log(res);
   };
+  const getPagingCommentsByPostId = async () => {
+    const res = await commentAPI.getCommentByPostIdPaging(11, 1);
+    console.log(res);
+  };
   const createComments = async () => {
     const res = await commentAPI.createComment(11, "test");
     console.log(res);
   };
   const editComments = async () => {
-    const res = await commentAPI.editComment(6, "ttteesssttt");
+    const res = await commentAPI.editComment(12, "ttteesssttt");
     console.log(res);
   };
   const deleteComments = async () => {
-    const res = await commentAPI.deleteComment(7);
+    const res = await commentAPI.deleteComment(13);
     console.log(res);
   };
 
@@ -88,6 +92,9 @@ export default function Mypage() {
         <div onClick={getComments}>댓글불러오기</div>
         <div onClick={getCommentsByPostId}>
           어떤 포스트에 해당된 댓글 불러오기
+        </div>
+        <div onClick={getPagingCommentsByPostId}>
+          어떤 포스트에 해당된 페이징된 댓글 불러오기
         </div>
         <div onClick={createComments}>댓글 생성</div>
         <div onClick={editComments}>댓글 수정</div>

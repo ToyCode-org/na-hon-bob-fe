@@ -6,6 +6,9 @@ import { InputEvent, InputTarget, FormEvents } from "@/components/sign";
 import { MainInput, MainTextArea } from "@/components/tagsComponents/inputs";
 import { MainButton, CancelButton } from "@/components/tagsComponents/buttons";
 import { goHome } from "@/router/router";
+import { postAPI } from "@/api/api";
+import { imageUpload } from "@/util/imageUploadTest";
+import { swalError, swalQuestion, swalSuccess } from "@/swal/swal";
 
 export default function AddPost() {
   const [viewImage, setViewImage] = useState<string | ArrayBuffer | null>("");
@@ -26,11 +29,28 @@ export default function AddPost() {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onloadend = () => {
-        let imageSubs = reader.result;
-        setViewImage(imageSubs);
+        const base64data = reader.result;
+        setViewImage(base64data);
       };
     }
   };
+
+  // const imageUploadTest = async () => {
+  //   const apiKey = "a01e5ff939ea7ac70e10e6c8acb557d0";
+  //   const imageFormData = new FormData();
+  //   imageFormData.append("image", uploadImage as Blob);
+  //   imageFormData.append("album", "nahonbob");
+
+  //   const apiUrl = `https://api.imgbb.com/1/upload?key=${apiKey}`;
+  //   const res = await axios.post(apiUrl, imageFormData, {
+  //     withCredentials: false,
+  //     headers: {
+  //       "Content-Type": "multipart/form-data",
+  //     },
+  //   });
+  //   console.log(res.data.data.url);
+  //   return res.data.data.url
+  // };
 
   const formDataInit = {
     title: "",
@@ -45,12 +65,41 @@ export default function AddPost() {
     const target = e.target as InputTarget;
     const name = target.name;
     const value = target.value;
-    setFormState(prev => ({ ...prev, [name]: value }));
+    if (name !== "") {
+      setFormState(prev => ({ ...prev, [name]: value }));
+    }
   };
-
-  const onSubmitHandler = (e: FormEvents) => {
+  console.log(formState);
+  const onSubmitHandler = async (e: FormEvents) => {
     e.preventDefault();
-    alert("포스팅완료");
+    const { title, ingredient, description } = formState;
+    if (
+      title === "" ||
+      ingredient === "" ||
+      description === "" ||
+      uploadImage === ""
+    ) {
+      swalError("내용을 입력해주세요");
+    } else {
+      swalQuestion("레시피를 저장할까요?", "").then(async res => {
+        if (res.value) {
+          try {
+            const uploadUrl = await imageUpload(uploadImage as Blob);
+            const formData = {
+              thumbnail: uploadUrl,
+              title,
+              ingredient,
+              description,
+            };
+            const res = await postAPI.createPost(formData);
+            const dispatchData = res.data.data;
+            swalSuccess("저장 완료!");
+          } catch (error) {
+            swalError("알 수 없는 오류입니다.");
+          }
+        }
+      });
+    }
   };
 
   return (
@@ -95,7 +144,7 @@ export default function AddPost() {
               return (
                 <MainTextArea
                   key={index}
-                  name="name"
+                  name={name}
                   placeholder={placeholderArray[index]}
                   width="350px"
                   height="280px"
@@ -118,6 +167,13 @@ export default function AddPost() {
             content="홈으로"
             onClick={goHome}
           />
+          {/* <CancelButton
+            type="button"
+            width="80px"
+            height="40px"
+            content="이미지 업로드 테스트"
+            onClick={imageUploadTest}
+          /> */}
         </ButtonsWrap>
       </AddRecipyForm>
     </Container>

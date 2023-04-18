@@ -17,9 +17,10 @@ export const userAPI = {
 };
 
 export const postAPI = {
-  getAllPost: () => auth.get("/post"),
+  getAllPost: (page: number) => auth.get(`/post?page=${page}&limit=20`),
   getPostOne: (post_id: number) => auth.get(`/post/${post_id}`),
-  getMyPost: () => auth.get("/post/me"),
+  getMyPost: (page: number) => auth.get(`/post/me?page=${page}&limit=10`),
+  uploadImageToIBB: (base64Image: any) => auth.post("/post/imgbb", base64Image),
   createPost: (postData: postFormData) => auth.post("/post", postData),
   updatePost: (post_id: number, postData: postFormData) =>
     auth.put(`/post/${post_id}`, postData),
@@ -29,6 +30,8 @@ export const postAPI = {
 export const commentAPI = {
   getAllComment: () => auth.get("/comment"),
   getCommentByPostId: (post_id: number) => auth.get(`/comment/post/${post_id}`),
+  getCommentByPostIdPaging: (post_id: number, page: number) =>
+    auth.get(`/comment/post/${post_id}?page=${page}&limit=20`),
   createComment: (post_id: number, content: string) =>
     auth.post(`/comment/post/${post_id}`, { content }),
   editComment: (comment_id: number, content: string) =>
