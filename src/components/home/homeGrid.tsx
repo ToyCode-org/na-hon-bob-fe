@@ -1,14 +1,16 @@
 import styled from "styled-components";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { BoringAvatar } from "../post/boringAvatar";
 import { MediaQuery } from "@/hooks/useMediaQuery";
 import { goPost } from "../../router/router";
+import { postAPI } from "@/api/api";
 
 export const HomeGrid = () => {
   const mediaData = MediaQuery();
 
   const mockOb = {
-    thumnail: "/images/egg.png",
+    thumbnail: "/images/egg.png",
     title: "mock",
     discription: "맛있는 라면모음",
     avatar: "",
@@ -17,15 +19,32 @@ export const HomeGrid = () => {
 
   const mock = new Array(50).fill(mockOb);
 
+  const [mockdata, setmockdata] = useState([]);
+  const getData = async () => {
+    const res = await postAPI.getAllPost(1);
+    setmockdata(res.data.data);
+  };
+  // useEffect(() => {
+  //   getData();
+  // }, []);
+  // console.log(mockdata);
   return (
     <GridContainer>
       <GridWrap style={{ gridTemplateColumns: `repeat(${mediaData}, 1fr)` }}>
-        {mock.map((recipy, index) => {
-          const { thumnail, title, discription, avatar, nickname } = recipy;
+        {mock?.map((recipy, index) => {
+          const {
+            // post_id,
+            thumbnail,
+            title,
+            discription,
+            nickname,
+            avatar,
+            // user: { nickname, avatar },
+          } = recipy;
           return (
             <ListItem key={index} onClick={() => goPost(index + 1)}>
               <Image
-                src={thumnail}
+                src={`${thumbnail}`}
                 width={100}
                 height={100}
                 alt="thumnail"

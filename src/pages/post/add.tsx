@@ -35,23 +35,6 @@ export default function AddPost() {
     }
   };
 
-  // const imageUploadTest = async () => {
-  //   const apiKey = "a01e5ff939ea7ac70e10e6c8acb557d0";
-  //   const imageFormData = new FormData();
-  //   imageFormData.append("image", uploadImage as Blob);
-  //   imageFormData.append("album", "nahonbob");
-
-  //   const apiUrl = `https://api.imgbb.com/1/upload?key=${apiKey}`;
-  //   const res = await axios.post(apiUrl, imageFormData, {
-  //     withCredentials: false,
-  //     headers: {
-  //       "Content-Type": "multipart/form-data",
-  //     },
-  //   });
-  //   console.log(res.data.data.url);
-  //   return res.data.data.url
-  // };
-
   const formDataInit = {
     title: "",
     ingredient: "",
@@ -59,8 +42,8 @@ export default function AddPost() {
   };
   const keyArray = Object.keys(formDataInit);
   const placeholderArray = ["오늘의 요리는?", "재료", "레시피"];
-  const [formState, setFormState] = useState(formDataInit);
 
+  const [formState, setFormState] = useState(formDataInit);
   const onChangehansler = (e: FormEvents) => {
     const target = e.target as InputTarget;
     const name = target.name;
@@ -69,7 +52,7 @@ export default function AddPost() {
       setFormState(prev => ({ ...prev, [name]: value }));
     }
   };
-  console.log(formState);
+
   const onSubmitHandler = async (e: FormEvents) => {
     e.preventDefault();
     const { title, ingredient, description } = formState;
@@ -167,13 +150,6 @@ export default function AddPost() {
             content="홈으로"
             onClick={goHome}
           />
-          {/* <CancelButton
-            type="button"
-            width="80px"
-            height="40px"
-            content="이미지 업로드 테스트"
-            onClick={imageUploadTest}
-          /> */}
         </ButtonsWrap>
       </AddRecipyForm>
     </Container>
