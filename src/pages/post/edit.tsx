@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BsCameraFill } from "react-icons/bs";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import {
@@ -11,12 +11,17 @@ import {
 } from "@/components/sign";
 import { MainInput, MainTextArea } from "@/components/tagsComponents/inputs";
 import { MainButton, CancelButton } from "@/components/tagsComponents/buttons";
-import { goHome } from "@/router/router";
-import { postAPI } from "@/api/api";
 import { imageUpload } from "@/util/imageUploadTest";
 import { swalError, swalQuestion, swalSuccess } from "@/swal/swal";
+import { useRouter } from "next/router";
+import { postAPI } from "@/api/api";
+import { goHome } from "@/router/router";
 
-export default function AddPost() {
+export default function Edit() {
+  const {
+    query: { id },
+  } = useRouter();
+
   const [viewImage, setViewImage] = useState<string | ArrayBuffer | null>("");
   const [uploadImage, setUploadImage] = useState<string | Blob>("");
 
@@ -50,8 +55,30 @@ export default function AddPost() {
   const placeholderArray = ["오늘의 요리는?", "재료", "레시피"];
 
   const [ingredientArr, setIngredientArr] = useState<string[]>([]);
-  // ["라면", "스프", "참깨"]
   const [formState, setFormState] = useState(formDataInit);
+
+  const getEditData = async () => {
+    const res = await postAPI.getPostOne(Number(id));
+    const { thumbnail, title, ingredient, description } = res.data.data[0];
+    const ingredientArr = ingredient.split(",");
+    const data = {
+      title,
+      ingredient: "",
+      description,
+    };
+    const titleInput = document.getElementById("title") as HTMLInputElement;
+    const descriptionInput = document.getElementById(
+      "description",
+    ) as HTMLTextAreaElement;
+    titleInput.value = title;
+    descriptionInput.value = description;
+    setViewImage(thumbnail);
+    setIngredientArr(ingredientArr);
+    setFormState(data);
+  };
+  useEffect(() => {
+    getEditData();
+  }, []);
 
   const addIngredient = (e: ButtonEvent) => {
     e.stopPropagation();
@@ -83,13 +110,8 @@ export default function AddPost() {
 
   const onSubmitHandler = async (e: FormEvents) => {
     e.preventDefault();
-    const { title, description } = formState;
-    if (
-      title === "" ||
-      ingredientArr.length !== 0 ||
-      description === "" ||
-      uploadImage === ""
-    ) {
+    const { title, ingredient, description } = formState;
+    if (title === "" || ingredientArr.length !== 0 || description === "") {
       swalError("내용을 입력해주세요");
     } else {
       swalQuestion("레시피를 저장할까요?", "").then(async res => {
@@ -129,7 +151,6 @@ export default function AddPost() {
               width={350}
               height={300}
               alt="업로드 이미지"
-              priority
             />
           </ViewImage>
         </label>
@@ -148,7 +169,7 @@ export default function AddPost() {
                   {index === 1 ? (
                     <AddIngredientDiv>
                       <MainInput
-                        id="ingredient"
+                        id={name}
                         name={name}
                         onKeyDown={addIngredient}
                         maxLength={10}
@@ -167,6 +188,7 @@ export default function AddPost() {
                     </AddIngredientDiv>
                   ) : (
                     <MainInput
+                      id={name}
                       name={name}
                       placeholder={placeholderArray[index]}
                       autoComplete="off"
@@ -198,6 +220,7 @@ export default function AddPost() {
                     </IngredientGrid>
                   </PreContent>
                   <MainTextArea
+                    id={name}
                     name={name}
                     placeholder={placeholderArray[index]}
                     width="350px"

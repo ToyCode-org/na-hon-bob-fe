@@ -29,7 +29,7 @@ export const light = {
   componentBorderColor: "#efefef",
   componentBackground: "gold",
   hoverBackground: "#fff09d",
-  componentSubBackground: "lightgray",
+  componentSubBackground: "#f0f0f0",
 };
 
 export const dark = {

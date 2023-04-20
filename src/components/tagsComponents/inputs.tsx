@@ -6,6 +6,7 @@ type Props = React.HTMLAttributes<HTMLInputElement> & InputProps;
 interface InputProps {
   type?: string | undefined;
   name?: string | undefined;
+  maxLength?: number | undefined;
   autoComplete?: string | undefined;
   width: string;
   height: string;
@@ -15,6 +16,7 @@ interface InputProps {
 export const MainInput = ({
   type,
   name,
+  maxLength,
   autoComplete,
   width,
   height,
@@ -27,6 +29,7 @@ export const MainInput = ({
       name={name}
       autoComplete={autoComplete || "on"}
       type={type || "text"}
+      maxLength={maxLength || 1000}
       style={
         border !== ""
           ? {

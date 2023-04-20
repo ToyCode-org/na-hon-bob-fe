@@ -18,3 +18,7 @@ export const goAddPost = () => {
 export const goPost = (id: number) => {
   router.push(`/post/${id}`);
 };
+
+export const goEditPost = (id: number) => {
+  router.push({ pathname: "/post/edit", query: { id: `${id}` } });
+};

@@ -25,9 +25,9 @@ export default function Mypage() {
   };
 
   const mock = {
-    thumbnail: "https://i.ibb.co/9YGz35x/React.png",
+    thumbnail: "https://i.ibb.co/6Z3qQVS/GITHUB.png",
     title: "test",
-    ingredient: "test",
+    ingredient: "test,test,test,test,test,test,test",
     description: "test    test",
   };
   const createJunk = async () => {

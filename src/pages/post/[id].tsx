@@ -3,9 +3,13 @@ import Image from "next/image";
 import { BoringAvatar } from "@/components/post/boringAvatar";
 import { TimeToToday } from "@/util/timeToToday";
 import { MediaQuery } from "@/hooks/useMediaQuery";
-import { GetServerSideProps, GetStaticPaths } from "next";
+import { GetServerSideProps } from "next";
 import { postAPI } from "@/api/api";
 import { ParsedUrlQuery } from "querystring";
+import { BiEdit } from "react-icons/bi";
+import { CgCloseR } from "react-icons/cg";
+import { goEditPost } from "@/router/router";
+import { useMyPostCheck } from "@/hooks/useMyPostCheck";
 
 type PostType = {
   post_id: number;
@@ -31,18 +35,14 @@ export default function Post({
   nickname,
 }: PostType) {
   const display = MediaQuery();
-  const mockOb = {
-    thumbnail: "/images/egg.png",
-    title: "맛있는 라면모음",
-    ingredient: ["라면", "스프", "참깨"],
-    description: "어떻게 만들고 어떻게 만든다 웅웅",
-    avatar: "",
-    nickname: "yamyam",
-    createdAt: "2023-04-10",
-  };
+  const isMyData = useMyPostCheck(user_id);
 
   return (
     <Container>
+      <IconBtn style={isMyData ? {} : { display: "none" }}>
+        <BiEdit onClick={() => goEditPost(post_id)} />
+        <CgCloseR className="delete" />
+      </IconBtn>
       <ContentWrap>
         <Image
           src={thumbnail}
@@ -70,9 +70,14 @@ export default function Post({
         </UserInfo>
         <PreContent>
           <h1>{title}</h1>
+          <h3>재료</h3>
           <IngredientGrid>
-            {mockOb.ingredient.map((value, index) => {
-              return <IngredientItem key={index}>{value}</IngredientItem>;
+            {ingredient.split(",").map((value, index) => {
+              return (
+                <IngredientItem key={index}>
+                  <span>{value}</span>
+                </IngredientItem>
+              );
             })}
           </IngredientGrid>
         </PreContent>
@@ -117,27 +122,55 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 };
 
 const Container = styled.div`
-  margin-top: 120px;
+  margin-top: 100px;
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
+
+const IconBtn = styled.div`
+  position: absolute;
+  transform: translate(185%, 50%);
+  & svg {
+    margin: 0 5px;
+    font-size: 30px;
+    cursor: pointer;
+    &.delete {
+      color: red;
+    }
+  }
+  @media only all and (max-width: 767px) {
+    position: absolute;
+    top: 120px;
+    right: 180px;
+  }
+`;
+
 const ContentWrap = styled.main`
   width: 400px;
-  height: 800px;
   & img {
+    object-fit: cover;
+  }
+  @media only all and (max-width: 767px) {
+    width: 100%;
+    & img {
+      width: 100%;
+      height: 90vw;
+    }
   }
 `;
 
 const UserInfo = styled.div`
   padding: 10px;
-  margin-top: 50px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   height: 80px;
   border-top: 1px solid ${props => props.theme.componentBorderColor};
   border-bottom: 1px solid ${props => props.theme.componentBorderColor};
+  @media only all and (max-width: 767px) {
+    padding: 30px 30px;
+  }
 `;
 const InfoHead = styled.div`
   display: flex;
@@ -157,21 +190,30 @@ const PreContent = styled.div`
   & h1 {
     margin-bottom: 10px;
   }
+  @media only all and (max-width: 767px) {
+    padding: 30px 30px;
+  }
 `;
 
 const IngredientGrid = styled.ul`
   list-style: none;
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 5px;
+  height: max-content;
 `;
 const IngredientItem = styled.li`
-  margin: 2px 4px;
-  padding: 2px 7px;
+  margin: 0 4px;
+  padding: 1px 7px;
+  width: max-content;
   border-radius: 10px;
   background-color: ${props => props.theme.componentBackground};
-  font-weight: bold;
-  cursor: pointer;
 
+  cursor: pointer;
+  & span {
+    font-weight: bold;
+    text-align: center;
+  }
   &:hover {
     background-color: ${props => props.theme.hoverBackground};
   }
@@ -184,5 +226,8 @@ const Content = styled.div`
   }
   & pre {
     font-size: 1rem;
+  }
+  @media only all and (max-width: 767px) {
+    padding: 30px 30px;
   }
 `;

@@ -104,6 +104,9 @@ const ListItem = styled.li`
     min-height: 190px;
     width: 100%;
     height: 100%;
+    border-bottom: 1px solid ${props => props.theme.componentBorderColor};
+    object-fit: cover;
+
     @media only all and (max-width: 767px) {
       height: 400px;
     }
