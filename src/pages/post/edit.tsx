@@ -107,11 +107,11 @@ export default function Edit() {
       setFormState(prev => ({ ...prev, [name]: value }));
     }
   };
-
+  console.log(formState);
   const onSubmitHandler = async (e: FormEvents) => {
     e.preventDefault();
     const { title, ingredient, description } = formState;
-    if (title === "" || ingredientArr.length !== 0 || description === "") {
+    if (title === "" || description === "") {
       swalError("내용을 입력해주세요");
     } else {
       swalQuestion("레시피를 저장할까요?", "").then(async res => {
@@ -125,7 +125,7 @@ export default function Edit() {
               ingredient,
               description,
             };
-            const res = await postAPI.createPost(formData);
+            const res = await postAPI.updatePost(Number(id), formData);
             const dispatchData = res.data.data;
             swalSuccess("저장 완료!");
           } catch (error) {

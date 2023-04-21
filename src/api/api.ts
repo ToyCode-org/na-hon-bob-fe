@@ -13,6 +13,8 @@ export const userAPI = {
   logout: () => auth.post("/user/signout"),
   getMyInfo: () => auth.get("/user/me"),
   isLoginCheck: () => auth.get("/user"),
+  editAvatar: (avatar: string) => auth.put("/user/avatar", { avatar }),
+  editNickname: (nickname: string) => auth.put("/user/nickname", { nickname }),
   deleteUser: () => auth.delete("/user"),
 };
 

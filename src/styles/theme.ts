@@ -30,6 +30,9 @@ export const light = {
   componentBackground: "gold",
   hoverBackground: "#fff09d",
   componentSubBackground: "#f0f0f0",
+
+  // createdAt
+  createdAt: "gray",
 };
 
 export const dark = {

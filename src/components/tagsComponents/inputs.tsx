@@ -29,7 +29,7 @@ export const MainInput = ({
       name={name}
       autoComplete={autoComplete || "on"}
       type={type || "text"}
-      maxLength={maxLength || 1000}
+      maxLength={maxLength || 500}
       style={
         border !== ""
           ? {
@@ -65,6 +65,7 @@ interface TextAreaProps {
   width: string;
   height: string;
   border?: string | undefined;
+  maxLength?: number | undefined;
 }
 
 export const MainTextArea = ({
@@ -72,6 +73,7 @@ export const MainTextArea = ({
   width,
   height,
   border,
+  maxLength,
   ...props
 }: TaProps) => {
   return (
@@ -79,6 +81,7 @@ export const MainTextArea = ({
       {...props}
       name={name}
       autoComplete="off"
+      maxLength={maxLength || 1000}
       style={
         border !== ""
           ? {

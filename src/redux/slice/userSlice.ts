@@ -1,43 +1,33 @@
+import { userAPI } from "@/api/api";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-export const getUserAll = createAsyncThunk(
-  "GET_ALL",
-  async (payload, thunkAPI) => {
-    try {
-      // const { data } = await request API
-      return thunkAPI.fulfillWithValue("data");
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  },
-);
-
-export const getUserOne = createAsyncThunk(
+export const getMyInfo = createAsyncThunk(
   "GET_ONE",
   async (payload, thunkAPI) => {
     try {
       // const { data } = await request API
-      return thunkAPI.fulfillWithValue("data");
+      const { data } = await userAPI.getMyInfo();
+      return thunkAPI.fulfillWithValue(data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
   },
 );
 
-export const addUser = createAsyncThunk(
-  "POST_ADD",
-  async (payload, thunkAPI) => {
+export const updateAvatar = createAsyncThunk(
+  "POST_UPDATAE_AVATAR",
+  async (payload: string, thunkAPI) => {
     try {
-      // const { data } = await request API
-      return thunkAPI.fulfillWithValue("data");
-    } catch (errer) {
-      return thunkAPI.rejectWithValue(errer);
+      console.log(payload);
+      const { data } = await userAPI.editAvatar(payload);
+      return thunkAPI.fulfillWithValue(data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
     }
   },
 );
-
-export const updateUser = createAsyncThunk(
-  "POST_UPDATAE",
+export const updateNickname = createAsyncThunk(
+  "POST_UPDATAE_NICKNAME",
   async (payload, thunkAPI) => {
     try {
       // const { data } = await request API
@@ -60,10 +50,19 @@ export const deleteUser = createAsyncThunk(
   },
 );
 
+type UserInit = {
+  id: number;
+  nickname: string;
+  avatar: string;
+};
 /* InitialState */
 // data, isLoading, error로 상태관리
 const initialState = {
-  user: [],
+  user: {
+    id: 0,
+    nickname: "",
+    avatar: "",
+  },
   isLoading: false,
   error: null,
 };
@@ -73,24 +72,16 @@ export const userSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: builder => {
-    builder.addCase(getUserAll.fulfilled, (state, action) => {
-      //   state.user = action.payload;
+    builder.addCase(getMyInfo.fulfilled, (state, action) => {
+      state.user = action.payload.data;
     });
-    builder.addCase(getUserOne.fulfilled, (state, action) => {
-      //   state.user = action.payload;
+
+    builder.addCase(updateAvatar.fulfilled, (state, action) => {
+      console.log(action.payload);
+      state.user = { ...state.user, avatar: action.payload.data.avatar };
     });
-    builder.addCase(addUser.fulfilled, (state, action) => {
-      // state.user.unshift(action.payload);
-    });
-    builder.addCase(updateUser.fulfilled, (state, action) => {
-      //   const newState = state.user.map((item) =>
-      //     action.meta.arg.id === item.id
-      //       ? {
-      //           ...action.payload,
-      //         }
-      //       : item
-      //   );
-      //   state.user = newState;
+    builder.addCase(updateNickname.fulfilled, (state, action) => {
+      // state.user = {...state.user,nickname:}
     });
     builder.addCase(deleteUser.fulfilled, (state, action) => {
       //   const newState = state.user.filter(

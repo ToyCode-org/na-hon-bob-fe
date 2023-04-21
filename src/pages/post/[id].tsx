@@ -1,15 +1,16 @@
 import styled from "styled-components";
 import Image from "next/image";
+import { GetServerSideProps } from "next";
 import { BoringAvatar } from "@/components/post/boringAvatar";
 import { TimeToToday } from "@/util/timeToToday";
 import { MediaQuery } from "@/hooks/useMediaQuery";
-import { GetServerSideProps } from "next";
 import { postAPI } from "@/api/api";
 import { ParsedUrlQuery } from "querystring";
 import { BiEdit } from "react-icons/bi";
 import { CgCloseR } from "react-icons/cg";
 import { goEditPost } from "@/router/router";
 import { useMyPostCheck } from "@/hooks/useMyPostCheck";
+import { Acodian } from "@/components/post/acodian";
 
 type PostType = {
   post_id: number;
@@ -86,6 +87,7 @@ export default function Post({
           <pre>{description}</pre>
         </Content>
       </ContentWrap>
+      <Acodian />
     </Container>
   );
 }
@@ -134,6 +136,8 @@ const IconBtn = styled.div`
   & svg {
     margin: 0 5px;
     font-size: 30px;
+    background-color: white;
+    border-radius: 5px;
     cursor: pointer;
     &.delete {
       color: red;

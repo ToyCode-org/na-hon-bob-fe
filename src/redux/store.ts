@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import userSlice from "./slice/userSlice";
 import postSlice from "./slice/postSlice";
+import commentSlice from "./slice/commentSlice";
 
 const store = configureStore({
   reducer: {
     userSlice,
     postSlice,
+    commentSlice,
   },
   middleware: getDefaultMiddleware => getDefaultMiddleware(),
   devTools: process.env.NODE_ENV !== "production",
