@@ -86,7 +86,7 @@ export default function AddPost() {
     const { title, description } = formState;
     if (
       title === "" ||
-      ingredientArr.length !== 0 ||
+      ingredientArr.length === 0 ||
       description === "" ||
       uploadImage === ""
     ) {

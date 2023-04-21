@@ -1,11 +1,12 @@
+import { postAPI } from "@/api/api";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 export const getPostAll = createAsyncThunk(
   "GET_ALL",
-  async (payload, thunkAPI) => {
+  async (payload: number, thunkAPI) => {
     try {
-      // const { data } = await request API
-      return thunkAPI.fulfillWithValue("data");
+      const { data } = await postAPI.getAllPost(payload);
+      return thunkAPI.fulfillWithValue(data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -66,6 +67,7 @@ const initialState = {
   post: [],
   isLoading: false,
   error: null,
+  totalPages: 1,
 };
 
 export const postSlice = createSlice({
@@ -74,7 +76,8 @@ export const postSlice = createSlice({
   reducers: {},
   extraReducers: builder => {
     builder.addCase(getPostAll.fulfilled, (state, action) => {
-      //   state.post = action.payload;
+      state.totalPages = action.payload.totalPages;
+      state.post = state.post.concat(action.payload.data);
     });
     builder.addCase(getPostOne.fulfilled, (state, action) => {
       //   state.post = action.payload;

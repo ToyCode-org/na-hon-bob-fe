@@ -6,8 +6,15 @@ import { MediaQuery } from "@/hooks/useMediaQuery";
 import { goPost } from "../../router/router";
 import { postAPI } from "@/api/api";
 import { TimeToToday } from "@/util/timeToToday";
+import { useAppDispatch, useAppSelector } from "@/redux/useRedux";
+import { getPostAll } from "@/redux/slice/postSlice";
 
 export const HomeGrid = () => {
+  const dispatch = useAppDispatch();
+  const { post, isLoading, error, totalPages } = useAppSelector(
+    state => state.postSlice,
+  );
+  console.log(post);
   const mediaData = MediaQuery();
 
   const mockOb = {
@@ -25,8 +32,13 @@ export const HomeGrid = () => {
     const res = await postAPI.getAllPost(1);
     setmockdata(res.data.data);
   };
+  const getPosts = async () => {
+    dispatch(getPostAll(1));
+  };
+
   useEffect(() => {
     getData();
+    getPosts();
   }, []);
   console.log(mockdata);
   return (

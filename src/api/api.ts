@@ -19,7 +19,6 @@ export const userAPI = {
 };
 
 export const postAPI = {
-  getAllStaticPost: () => auth.get("/post"),
   getAllPost: (page: number) => auth.get(`/post?page=${page}&limit=20`),
   getPostOne: (post_id: number) =>
     auth.get(`/post/${post_id}`, {
