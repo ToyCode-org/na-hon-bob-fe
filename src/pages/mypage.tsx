@@ -3,12 +3,19 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { BoringAvatar } from "@/components/post/boringAvatar";
 import { useAppDispatch, useAppSelector } from "@/redux/useRedux";
-import { getMyInfo, updateAvatar } from "@/redux/slice/userSlice";
+import {
+  getMyInfo,
+  updateAvatar,
+  updateNickname,
+} from "@/redux/slice/userSlice";
 import { BiEdit } from "react-icons/bi";
+import { RiCloseCircleLine } from "react-icons/ri";
 import { InputTarget } from "@/components/sign";
 import { swalError } from "@/swal/swal";
 import { InputEvent } from "@/components/sign";
 import { imageUpload } from "@/util/imageUploadTest";
+import { MainInput } from "@/components/tagsComponents/inputs";
+import { MainButton } from "@/components/tagsComponents/buttons";
 
 export default function Mypage() {
   const dispatch = useAppDispatch();
@@ -35,15 +42,38 @@ export default function Mypage() {
     }
   };
 
-  const editAvatarHandler = () => {};
-  const editNicknameHandler = () => {};
+  const [editNickname, setEditNickname] = useState({
+    editMode: false,
+    nickname: "",
+  });
+  const editmodeHandler = () => {
+    setEditNickname(prev => ({ ...prev, editMode: !prev.editMode }));
+  };
+
+  const editChangeHandler = (e: InputEvent) => {
+    const target = e.target as InputTarget;
+    const value = target.value;
+    setEditNickname(prev => ({ ...prev, nickname: value }));
+  };
+
+  const onSubmitHandler = async () => {
+    dispatch(updateNickname(editNickname.nickname));
+    editmodeHandler();
+  };
+
   return (
     <Container>
       <Avatar>
         {user.avatar === "" ? (
           <BoringAvatar />
         ) : (
-          <Image src={user.avatar} width={200} height={200} alt="프로필" />
+          <Image
+            src={user.avatar}
+            width={300}
+            height={300}
+            alt="프로필"
+            priority
+          />
         )}
       </Avatar>
       <EditBtn htmlFor="avatar">
@@ -57,7 +87,28 @@ export default function Mypage() {
         onChange={avatarChangeHanlder}
       />
       <UserInfo>
-        <strong>닉네임</strong> : {user.nickname} <BiEdit />
+        {editNickname.editMode ? (
+          <EditForm onSubmit={onSubmitHandler}>
+            <MainInput
+              width="200px"
+              height="30px"
+              placeholder="2~15자"
+              onChange={editChangeHandler}
+            />
+            <MainButton
+              type="submit"
+              width="50px"
+              height="30px"
+              content="수정"
+            />
+            <RiCloseCircleLine onClick={editmodeHandler} />
+          </EditForm>
+        ) : (
+          <>
+            <strong>닉네임 : {user.nickname} </strong>
+            <BiEdit onClick={editmodeHandler} />
+          </>
+        )}
       </UserInfo>
     </Container>
   );
@@ -75,8 +126,11 @@ const Container = styled.div`
 const Avatar = styled.div`
   display: flex;
   & svg {
-    width: 200px;
-    height: 200px;
+    width: 300px;
+    height: 300px;
+    &:hover {
+      color: ${props => props.theme.FontHoverColor};
+    }
   }
   & img {
     object-fit: cover;
@@ -87,7 +141,7 @@ const Avatar = styled.div`
 const EditBtn = styled.label`
   display: flex;
   position: absolute;
-  transform: translate(220%, 500%);
+  transform: translate(300%, 800%);
   width: 30px;
   height: 30px;
   font-size: 30px;
@@ -103,4 +157,16 @@ const UserInfo = styled.div`
   justify-content: center;
   align-items: center;
   font-size: 20px;
+
+  & svg {
+    cursor: pointer;
+    &:hover {
+      color: ${props => props.theme.FontHoverColor};
+    }
+  }
+`;
+
+const EditForm = styled.form`
+  display: flex;
+  align-items: center;
 `;

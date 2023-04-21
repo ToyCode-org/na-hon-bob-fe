@@ -28,10 +28,10 @@ export const updateAvatar = createAsyncThunk(
 );
 export const updateNickname = createAsyncThunk(
   "POST_UPDATAE_NICKNAME",
-  async (payload, thunkAPI) => {
+  async (payload: string, thunkAPI) => {
     try {
-      // const { data } = await request API
-      return thunkAPI.fulfillWithValue("data");
+      const { data } = await userAPI.editNickname(payload);
+      return thunkAPI.fulfillWithValue(data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -77,11 +77,10 @@ export const userSlice = createSlice({
     });
 
     builder.addCase(updateAvatar.fulfilled, (state, action) => {
-      console.log(action.payload);
       state.user = { ...state.user, avatar: action.payload.data.avatar };
     });
     builder.addCase(updateNickname.fulfilled, (state, action) => {
-      // state.user = {...state.user,nickname:}
+      state.user = { ...state.user, nickname: action.payload.data.nickname };
     });
     builder.addCase(deleteUser.fulfilled, (state, action) => {
       //   const newState = state.user.filter(
