@@ -1,18 +1,17 @@
 import styled from "styled-components";
 import Image from "next/image";
 import { BoringAvatar } from "./boringAvatar";
-import { CiMenuKebab } from "react-icons/ci";
-import { RiCloseLine } from "react-icons/ri";
 import { CommentsData } from ".";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { TimeToToday } from "@/util/timeToToday";
 import { MainInput } from "../tagsComponents/inputs";
 import { MainButton } from "../tagsComponents/buttons";
 import { FormEvents } from "../sign";
-import { commentAPI } from "@/api/api";
-import { swalQuestion, swalSuccess } from "@/swal/swal";
-import { useAppDispatch } from "@/redux/useRedux";
+import { swalQuestion } from "@/swal/swal";
+import { useAppDispatch, useAppSelector } from "@/redux/useRedux";
 import { deleteComment, updateComment } from "@/redux/slice/commentSlice";
+import { CiMenuKebab } from "react-icons/ci";
+import { RiCloseLine } from "react-icons/ri";
 
 interface Props {
   commentData: CommentsData;
@@ -20,6 +19,7 @@ interface Props {
 
 export const Comment = ({ commentData }: Props) => {
   const dispatch = useAppDispatch();
+  const { user } = useAppSelector(state => state.userSlice);
 
   const [menuOpen, setmenuOpen] = useState({
     menuOpen: false,
@@ -61,7 +61,11 @@ export const Comment = ({ commentData }: Props) => {
     <Container>
       <CommentsWrap>
         <UserInfo>
-          <BoringAvatar />
+          {user.avatar === "" ? (
+            <BoringAvatar />
+          ) : (
+            <Image src={user.avatar} width={40} height={40} alt="profile" />
+          )}
           <span>닉네임</span>
         </UserInfo>
         <MenuIcon
@@ -116,6 +120,9 @@ const UserInfo = styled.div`
   align-items: center;
   & span {
     margin: 0 5px;
+  }
+  & img {
+    border-radius: 50px;
   }
 `;
 const MenuIcon = styled.div`

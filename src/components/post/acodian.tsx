@@ -1,23 +1,21 @@
 import styled from "styled-components";
+import { useRouter } from "next/router";
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import { BoringAvatar } from "./boringAvatar";
 import { Comment } from "./comment";
-import { CommentsData } from ".";
 import { RiCloseLine } from "react-icons/ri";
 import { CommentModal } from "./commentModal";
 import { useAppDispatch, useAppSelector } from "@/redux/useRedux";
 import { getCommentAll } from "@/redux/slice/commentSlice";
-import { useRouter } from "next/router";
 
 export const Acodian = () => {
   const {
     query: { id },
   } = useRouter();
   const dispatch = useAppDispatch();
-  const { comment, isLoading, error, totalPages } = useAppSelector(
-    state => state.commentSlice,
-  );
+  const { user } = useAppSelector(state => state.userSlice);
+  const { comment } = useAppSelector(state => state.commentSlice);
 
   const closeDetailse = () => {
     const details = document.querySelector("details");
@@ -38,7 +36,7 @@ export const Acodian = () => {
   useEffect(() => {
     dispatch(getCommentAll({ post_id: Number(id), page: page.current }));
   }, []);
-  console.log(comment);
+
   return (
     <AcodianWrap>
       <CommentsLine>
@@ -51,7 +49,11 @@ export const Acodian = () => {
         </CommentsLineTop>
         <p>댓글을 사용할 때는 타인을 존중해주세요</p>
         <AddComment>
-          <BoringAvatar />
+          {user.avatar === "" ? (
+            <BoringAvatar />
+          ) : (
+            <Image src={user.avatar} width={40} height={40} alt="profile" />
+          )}
           <span onClick={openModal}>댓글 추가 ...</span>
         </AddComment>
         {comment.map(comment => {
@@ -143,6 +145,7 @@ const AddComment = styled.div`
   align-items: center;
   & img {
     margin-right: 10px;
+    border-radius: 50px;
   }
   & span {
     margin: 0 5px;

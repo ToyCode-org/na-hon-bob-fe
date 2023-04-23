@@ -1,12 +1,12 @@
 import styled from "styled-components";
-import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { BoringAvatar } from "../post/boringAvatar";
-import { MediaQuery } from "@/hooks/useMediaQuery";
+import { useRef } from "react";
 import { goPost } from "../../router/router";
-import { TimeToToday } from "@/util/timeToToday";
+import { BoringAvatar } from "../post/boringAvatar";
 import { useAppDispatch, useAppSelector } from "@/redux/useRedux";
 import { getPostAll } from "@/redux/slice/postSlice";
+import { MediaQuery } from "@/hooks/useMediaQuery";
+import { TimeToToday } from "@/util/timeToToday";
 import { EclipsLoadingSpinner } from "@/util/eclipsLoadingSpinner";
 
 export const HomeGrid = () => {

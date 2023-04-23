@@ -1,21 +1,21 @@
 import styled from "styled-components";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { BoringAvatar } from "@/components/post/boringAvatar";
 import { useAppDispatch, useAppSelector } from "@/redux/useRedux";
 import {
   getMyInfo,
   updateAvatar,
   updateNickname,
 } from "@/redux/slice/userSlice";
-import { BiEdit } from "react-icons/bi";
-import { RiCloseCircleLine } from "react-icons/ri";
-import { InputTarget } from "@/components/sign";
 import { swalError } from "@/swal/swal";
-import { InputEvent } from "@/components/sign";
 import { imageUpload } from "@/util/imageUploadTest";
+import { InputTarget } from "@/components/sign";
+import { InputEvent } from "@/components/sign";
 import { MainInput } from "@/components/tagsComponents/inputs";
 import { MainButton } from "@/components/tagsComponents/buttons";
+import { BoringAvatar } from "@/components/post/boringAvatar";
+import { BiEdit } from "react-icons/bi";
+import { RiCloseCircleLine } from "react-icons/ri";
 
 export default function Mypage() {
   const dispatch = useAppDispatch();
@@ -24,7 +24,6 @@ export default function Mypage() {
   useEffect(() => {
     dispatch(getMyInfo());
   }, []);
-  console.log(user);
 
   const avatarChangeHanlder = async (e: InputEvent) => {
     let target = e.target as InputTarget;

@@ -1,22 +1,21 @@
 import styled from "styled-components";
 import Image from "next/image";
 import React, { useState } from "react";
-import { BsCameraFill } from "react-icons/bs";
-import { AiOutlineCloseCircle } from "react-icons/ai";
+import { goHome } from "@/router/router";
+import { imageUpload } from "@/util/imageUploadTest";
+import { swalError, swalQuestion, swalSuccess } from "@/swal/swal";
+import { useAppDispatch } from "@/redux/useRedux";
+import { addPost } from "@/redux/slice/postSlice";
+import { MainInput, MainTextArea } from "@/components/tagsComponents/inputs";
+import { MainButton, CancelButton } from "@/components/tagsComponents/buttons";
 import {
   InputEvent,
   InputTarget,
   FormEvents,
   ButtonEvent,
 } from "@/components/sign";
-import { MainInput, MainTextArea } from "@/components/tagsComponents/inputs";
-import { MainButton, CancelButton } from "@/components/tagsComponents/buttons";
-import { goHome } from "@/router/router";
-import { postAPI } from "@/api/api";
-import { imageUpload } from "@/util/imageUploadTest";
-import { swalError, swalQuestion, swalSuccess } from "@/swal/swal";
-import { useAppDispatch } from "@/redux/useRedux";
-import { addPost } from "@/redux/slice/postSlice";
+import { BsCameraFill } from "react-icons/bs";
+import { AiOutlineCloseCircle } from "react-icons/ai";
 
 export default function AddPost() {
   const dispatch = useAppDispatch();

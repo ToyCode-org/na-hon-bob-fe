@@ -2,9 +2,9 @@ import styled from "styled-components";
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
+import { goHome } from "@/router/router";
 import { InputEvent } from "@/components/sign";
 import { MainInput } from "@/components/tagsComponents/inputs";
-import { FormDataCheck, FormEvents, InputTarget } from "@/components/sign";
 import { MainButton, SubButton } from "@/components/tagsComponents/buttons";
 import {
   inputBorderStyle,
@@ -15,7 +15,7 @@ import {
   nicknameChecker,
   createUser,
 } from "@/components/sign/signFNs";
-import { goHome } from "@/router/router";
+import { FormDataCheck, FormEvents, InputTarget } from "@/components/sign";
 
 export default function SignUp() {
   const inputArray = [
@@ -53,7 +53,6 @@ export default function SignUp() {
     email: false,
     nickname: false,
   });
-  console.log(verifiCheck);
 
   const formDataInit = {
     email: "",

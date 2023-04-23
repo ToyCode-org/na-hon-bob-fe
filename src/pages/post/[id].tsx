@@ -1,20 +1,19 @@
 import styled from "styled-components";
 import Image from "next/image";
 import { GetServerSideProps } from "next";
-import { BoringAvatar } from "@/components/post/boringAvatar";
-import { TimeToToday } from "@/util/timeToToday";
-import { MediaQuery } from "@/hooks/useMediaQuery";
-import { postAPI } from "@/api/api";
 import { ParsedUrlQuery } from "querystring";
-import { BiEdit } from "react-icons/bi";
-import { CgCloseR } from "react-icons/cg";
 import { goEditPost, goHome } from "@/router/router";
-import { useMyPostCheck } from "@/hooks/useMyPostCheck";
+import { BoringAvatar } from "@/components/post/boringAvatar";
 import { Acodian } from "@/components/post/acodian";
-import { swalQuestion } from "@/swal/swal";
-import { swalSuccess } from "@/swal/swal";
+import { MediaQuery } from "@/hooks/useMediaQuery";
+import { useMyPostCheck } from "@/hooks/useMyPostCheck";
+import { TimeToToday } from "@/util/timeToToday";
+import { postAPI } from "@/api/api";
+import { swalSuccess, swalQuestion } from "@/swal/swal";
 import { useAppDispatch } from "@/redux/useRedux";
 import { deletePost } from "@/redux/slice/postSlice";
+import { BiEdit } from "react-icons/bi";
+import { CgCloseR } from "react-icons/cg";
 
 type PostType = {
   post_id: number;
@@ -52,9 +51,7 @@ export default function Post({
             swalSuccess("삭제 완료!").then(() => {
               goHome();
             });
-          } catch (e) {
-            console.log(e);
-          }
+          } catch (e) {}
         }
       },
     );

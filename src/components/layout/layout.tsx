@@ -11,8 +11,8 @@ export const Layout = ({ children }: Props) => {
   return (
     <LayoutWrap>
       <LayoutHead />
-      <ContentWrap>{children}</ContentWrap>
       <Header />
+      <ContentWrap>{children}</ContentWrap>
     </LayoutWrap>
   );
 };

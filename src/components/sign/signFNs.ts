@@ -64,14 +64,6 @@ export const emailCheck = async (
         setVerifiCheck((prev: Verify) => ({ ...prev, email: true }));
         document.getElementById("email")?.setAttribute("disabled", "");
       });
-      // Swal.fire({
-      //   icon: "success",
-      //   title: "인증 완료",
-      //   confirmButtonColor: "gold",
-      // }).then(() => {
-      //   setVerifiCheck((prev: Verify) => ({ ...prev, email: true }));
-      //   document.getElementById("email")?.setAttribute("disabled", "");
-      // });
     } else {
       swalError("인증코드가 일치하지 않습니다.");
     }
@@ -95,13 +87,6 @@ export const nicknameChecker = async (
       swalSuccess("사용할 수 있는 닉네임입니다.").then(() => {
         setVerifiCheck((prev: Verify) => ({ ...prev, nickname: true }));
       });
-      // Swal.fire({
-      //   icon: "success",
-      //   title: "사용할 수 있는 닉네임입니다.",
-      //   confirmButtonColor: "gold",
-      // }).then(() => {
-      //   setVerifiCheck((prev: Verify) => ({ ...prev, nickname: true }));
-      // });
     }
   } catch (error) {
     swalError("이미 사용중인 닉네임입니다.");
@@ -123,13 +108,6 @@ export const createUser = async (
       swalSuccess("회원가입 완료!").then(() => {
         Router.push("/login");
       });
-      // Swal.fire({
-      //   icon: "success",
-      //   title: "회원가입 완료!",
-      //   confirmButtonColor: "gold",
-      // }).then(() => {
-      //   Router.push("/login");
-      // });
     }
   } catch (error) {
     return swalError("알 수 없는 오류입니다.");

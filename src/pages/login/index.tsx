@@ -1,12 +1,12 @@
+import Link from "next/link";
+import Image from "next/image";
+import { useState } from "react";
+import { goHome } from "@/router/router";
 import styled from "styled-components";
 import { MainInput } from "@/components/tagsComponents/inputs";
 import { MainButton } from "@/components/tagsComponents/buttons";
-import Image from "next/image";
-import Link from "next/link";
 import { inputDataMaker, userLogin } from "@/components/sign/signFNs";
-import { useState } from "react";
 import { FormEvents, InputTarget } from "@/components/sign";
-import { goHome } from "@/router/router";
 
 export default function Login() {
   const inputArray = [
