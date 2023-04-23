@@ -5,7 +5,6 @@ export const getMyInfo = createAsyncThunk(
   "GET_ONE",
   async (payload, thunkAPI) => {
     try {
-      // const { data } = await request API
       const { data } = await userAPI.getMyInfo();
       return thunkAPI.fulfillWithValue(data);
     } catch (error) {
@@ -18,7 +17,6 @@ export const updateAvatar = createAsyncThunk(
   "POST_UPDATAE_AVATAR",
   async (payload: string, thunkAPI) => {
     try {
-      console.log(payload);
       const { data } = await userAPI.editAvatar(payload);
       return thunkAPI.fulfillWithValue(data);
     } catch (error) {
@@ -42,19 +40,14 @@ export const deleteUser = createAsyncThunk(
   "DELETE_ONE",
   async (payload, thunkAPI) => {
     try {
-      // await delete request API
-      return thunkAPI.fulfillWithValue(payload);
+      const { data } = await userAPI.deleteUser();
+      return thunkAPI.fulfillWithValue(data.data.status);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
   },
 );
 
-type UserInit = {
-  id: number;
-  nickname: string;
-  avatar: string;
-};
 /* InitialState */
 // data, isLoading, error로 상태관리
 const initialState = {
@@ -72,21 +65,26 @@ export const userSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: builder => {
+    builder.addCase(getMyInfo.pending, (state, action) => {
+      state.isLoading = true;
+    });
     builder.addCase(getMyInfo.fulfilled, (state, action) => {
       state.user = action.payload.data;
+      state.isLoading = false;
     });
-
+    builder.addCase(updateAvatar.pending, (state, action) => {
+      state.isLoading = true;
+    });
     builder.addCase(updateAvatar.fulfilled, (state, action) => {
       state.user = { ...state.user, avatar: action.payload.data.avatar };
+      state.isLoading = false;
+    });
+    builder.addCase(updateNickname.pending, (state, action) => {
+      state.isLoading = true;
     });
     builder.addCase(updateNickname.fulfilled, (state, action) => {
       state.user = { ...state.user, nickname: action.payload.data.nickname };
-    });
-    builder.addCase(deleteUser.fulfilled, (state, action) => {
-      //   const newState = state.user.filter(
-      //     (item) => item.id !== action.payload
-      //   );
-      //   state.user = newState;
+      state.isLoading = false;
     });
   },
 });

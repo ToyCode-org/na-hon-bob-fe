@@ -35,7 +35,7 @@ export const Acodian = () => {
   return (
     <AcodianWrap>
       <CommentsLine>
-        <summary>댓글보기</summary>
+        <summary>댓글보기 ({commentData.length})</summary>
         <CommentsLineTop>
           <span>댓글 ({commentData.length})</span>
           <CloseBtn onClick={closeDetailse}>
@@ -47,7 +47,7 @@ export const Acodian = () => {
           <BoringAvatar />
           <span onClick={openModal}>댓글 추가 ...</span>
         </AddComment>
-        {commentData.map((comment, index) => {
+        {commentData.map(comment => {
           return <Comment key={comment.comment_id} commentData={comment} />;
         })}
       </CommentsLine>
@@ -64,6 +64,9 @@ const AcodianWrap = styled.div`
   width: 400px;
   border-top: 1px solid ${props => props.theme.componentBorderColor};
   border-bottom: 1px solid ${props => props.theme.componentBorderColor};
+  @media only all and (max-width: 767px) {
+    width: 100%;
+  }
 `;
 
 const CommentsLine = styled.details`
@@ -73,6 +76,7 @@ const CommentsLine = styled.details`
     padding: 5px;
   }
   & summary {
+    cursor: pointer;
   }
   & summary::marker {
     content: "";
@@ -130,6 +134,7 @@ const AddComment = styled.div`
     margin-right: 10px;
   }
   & span {
+    margin: 0 5px;
     color: gray;
     font-size: 14px;
   }

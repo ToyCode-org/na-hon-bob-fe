@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { MdSend } from "react-icons/md";
 import { BoringAvatar } from "./boringAvatar";
+import { MainTextArea } from "../tagsComponents/inputs";
 
 interface Props {
   closeModal: () => void;
@@ -16,7 +17,7 @@ export const CommentModal = ({ closeModal, showModal }: Props) => {
       <ModalContainer onClick={e => e.stopPropagation()}>
         <Modal>
           <BoringAvatar />
-          <textarea placeholder="댓글추가 ..." />
+          <MainTextArea width="80vw" height="40px" placeholder="댓글추가 ..." />
           <SendCommentBtn>
             <MdSend />
           </SendCommentBtn>
@@ -41,7 +42,7 @@ const ModalBackground = styled.div`
 const ModalContainer = styled.div`
   position: fixed;
   left: 50%;
-  bottom: 10px;
+  bottom: -40px;
   transform: translate(-50%, -50%);
 `;
 
@@ -50,7 +51,7 @@ const Modal = styled.div`
   height: 80px;
   background-color: white;
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   & img {
     width: 60px;
@@ -59,12 +60,12 @@ const Modal = styled.div`
     margin-right: 5px;
   }
   & textarea {
-    width: 80vw;
-    height: 40px;
-    resize: none;
+    /* width: 80vw;
+    height: 40px; */
+    /* resize: none;
     border: none;
     font-size: 20px;
-    font-weight: bold;
+    font-weight: bold; */
   }
 `;
 
@@ -72,9 +73,13 @@ const SendCommentBtn = styled.button`
   background: none;
   border: none;
   border-radius: 10px;
-  & img {
+  & svg {
     width: 40px;
     height: 40px;
+    cursor: pointer;
+    &:hover {
+      color: ${props => props.theme.mainColor};
+    }
   }
   &:active {
     background-color: #dfdfdf;

@@ -55,7 +55,7 @@ export const Header = () => {
           </SecondHeader>
         </HeadersWrap>
       ) : (
-        <SimpleHeader />
+        <SimpleHeader isLogin={isLogin} logoutHandler={logoutHandler} />
       )}
     </Container>
   );

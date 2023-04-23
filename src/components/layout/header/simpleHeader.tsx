@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Link from "next/link";
 import { ManuCategory } from "./category";
 import { useSideMenu } from "@/hooks/useSideMenu";
 import { MainButton, CancelButton } from "../../tagsComponents/buttons";
@@ -6,7 +7,11 @@ import { TiThMenu } from "react-icons/ti";
 import { goHome, goLogin, goSignUp } from "@/router/router";
 import { Search } from "./Search";
 
-export const SimpleHeader = () => {
+interface Props {
+  isLogin: boolean;
+  logoutHandler: () => void;
+}
+export const SimpleHeader = ({ isLogin, logoutHandler }: Props) => {
   const { isOpen, sideMenuOpen, sideMenuClose } = useSideMenu();
 
   return (
@@ -26,7 +31,7 @@ export const SimpleHeader = () => {
       />
       <SideMenu
         style={
-          isOpen ? { transform: "translate(-37%, -16%)", opacity: "1" } : {}
+          isOpen ? { transform: "translate(-37%, -18%)", opacity: "1" } : {}
         }
       >
         <Identity
@@ -36,18 +41,27 @@ export const SimpleHeader = () => {
           나혼밥 레시피
         </Identity>
         <Sign>
-          <MainButton
-            width="80px"
-            height="35px"
-            content="로그인"
-            onClick={goLogin}
-          />{" "}
-          <CancelButton
-            width="80px"
-            height="35px"
-            content="회원가입"
-            onClick={goSignUp}
-          />
+          {!isLogin ? (
+            <>
+              <MainButton
+                width="80px"
+                height="35px"
+                content="로그인"
+                onClick={goLogin}
+              />{" "}
+              <CancelButton
+                width="80px"
+                height="35px"
+                content="회원가입"
+                onClick={goSignUp}
+              />
+            </>
+          ) : (
+            <>
+              <Link href={"/mypage"}>마이페이지 | </Link>
+              <span onClick={logoutHandler}>로그아웃</span>
+            </>
+          )}
         </Sign>
         <hr />
         <ManuCategory />
@@ -94,12 +108,12 @@ const Background = styled.div`
 const SideMenu = styled.div`
   padding: 10px;
   width: 270px;
-  height: 100vh;
+  height: 103vh;
   background-color: ${props => props.theme.menuBackground};
   border-right: 1px solid ${props => props.theme.menuBorder};
   transition: 0.4s;
   opacity: 0.7;
-  transform: translate(-150%, -16%);
+  transform: translate(-150%, -18%);
 `;
 
 const Sign = styled.div`
@@ -107,6 +121,11 @@ const Sign = styled.div`
   text-align: center;
   & span {
     cursor: pointer;
+    &:hover {
+      color: ${props => props.theme.FontHoverColor};
+    }
+  }
+  & a {
     &:hover {
       color: ${props => props.theme.FontHoverColor};
     }

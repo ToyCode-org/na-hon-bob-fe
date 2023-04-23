@@ -15,8 +15,11 @@ import { goHome } from "@/router/router";
 import { postAPI } from "@/api/api";
 import { imageUpload } from "@/util/imageUploadTest";
 import { swalError, swalQuestion, swalSuccess } from "@/swal/swal";
+import { useAppDispatch } from "@/redux/useRedux";
+import { addPost } from "@/redux/slice/postSlice";
 
 export default function AddPost() {
+  const dispatch = useAppDispatch();
   const [viewImage, setViewImage] = useState<string | ArrayBuffer | null>("");
   const [uploadImage, setUploadImage] = useState<string | Blob>("");
 
@@ -103,9 +106,10 @@ export default function AddPost() {
               ingredient,
               description,
             };
-            const res = await postAPI.createPost(formData);
-            const dispatchData = res.data.data;
-            swalSuccess("저장 완료!");
+            dispatch(addPost(formData));
+            swalSuccess("저장 완료!").then(() => {
+              goHome();
+            });
           } catch (error) {
             swalError("알 수 없는 오류입니다.");
           }

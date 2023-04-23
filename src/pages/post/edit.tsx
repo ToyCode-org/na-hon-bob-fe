@@ -15,13 +15,15 @@ import { imageUpload } from "@/util/imageUploadTest";
 import { swalError, swalQuestion, swalSuccess } from "@/swal/swal";
 import { useRouter } from "next/router";
 import { postAPI } from "@/api/api";
-import { goHome } from "@/router/router";
+import { goHome, goPost } from "@/router/router";
+import { useAppDispatch } from "@/redux/useRedux";
+import { updatePost } from "@/redux/slice/postSlice";
 
 export default function Edit() {
   const {
     query: { id },
   } = useRouter();
-
+  const dispatch = useAppDispatch();
   const [viewImage, setViewImage] = useState<string | ArrayBuffer | null>("");
   const [uploadImage, setUploadImage] = useState<string | Blob>("");
 
@@ -107,7 +109,7 @@ export default function Edit() {
       setFormState(prev => ({ ...prev, [name]: value }));
     }
   };
-  console.log(formState);
+
   const onSubmitHandler = async (e: FormEvents) => {
     e.preventDefault();
     const { title, ingredient, description } = formState;
@@ -125,9 +127,15 @@ export default function Edit() {
               ingredient,
               description,
             };
-            const res = await postAPI.updatePost(Number(id), formData);
-            const dispatchData = res.data.data;
-            swalSuccess("저장 완료!");
+            dispatch(
+              updatePost({
+                post_id: Number(id),
+                formData,
+              }),
+            );
+            swalSuccess("저장 완료!").then(() => {
+              goPost(Number(id));
+            });
           } catch (error) {
             swalError("알 수 없는 오류입니다.");
           }

@@ -8,9 +8,13 @@ import { postAPI } from "@/api/api";
 import { ParsedUrlQuery } from "querystring";
 import { BiEdit } from "react-icons/bi";
 import { CgCloseR } from "react-icons/cg";
-import { goEditPost } from "@/router/router";
+import { goEditPost, goHome } from "@/router/router";
 import { useMyPostCheck } from "@/hooks/useMyPostCheck";
 import { Acodian } from "@/components/post/acodian";
+import { swalQuestion } from "@/swal/swal";
+import { swalSuccess } from "@/swal/swal";
+import { useAppDispatch } from "@/redux/useRedux";
+import { deletePost } from "@/redux/slice/postSlice";
 
 type PostType = {
   post_id: number;
@@ -36,13 +40,31 @@ export default function Post({
   nickname,
 }: PostType) {
   const display = MediaQuery();
+  const dispatch = useAppDispatch();
   const isMyData = useMyPostCheck(user_id);
+
+  const deletePostById = async () => {
+    swalQuestion("게시글을 삭제할까요?", "삭제한 글은 복구되지 않습니다.").then(
+      async res => {
+        if (res.value) {
+          try {
+            dispatch(deletePost(post_id));
+            swalSuccess("삭제 완료!").then(() => {
+              goHome();
+            });
+          } catch (e) {
+            console.log(e);
+          }
+        }
+      },
+    );
+  };
 
   return (
     <Container>
       <IconBtn style={isMyData ? {} : { display: "none" }}>
         <BiEdit onClick={() => goEditPost(post_id)} />
-        <CgCloseR className="delete" />
+        <CgCloseR className="delete" onClick={deletePostById} />
       </IconBtn>
       <ContentWrap>
         <Image
@@ -59,8 +81,8 @@ export default function Post({
             ) : (
               <Image
                 src={avatar}
-                width={36}
-                height={46}
+                width={50}
+                height={50}
                 alt="프로필"
                 priority
               />
@@ -183,6 +205,13 @@ const InfoHead = styled.div`
 
   & span {
     margin: 0 5px;
+  }
+  & img {
+    border-radius: 50px;
+    @media only all and (max-width: 767px) {
+      width: 50px;
+      height: 50px;
+    }
   }
 `;
 

@@ -1,50 +1,45 @@
 import styled from "styled-components";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { BoringAvatar } from "../post/boringAvatar";
 import { MediaQuery } from "@/hooks/useMediaQuery";
 import { goPost } from "../../router/router";
-import { postAPI } from "@/api/api";
 import { TimeToToday } from "@/util/timeToToday";
 import { useAppDispatch, useAppSelector } from "@/redux/useRedux";
 import { getPostAll } from "@/redux/slice/postSlice";
+import { EclipsLoadingSpinner } from "@/util/eclipsLoadingSpinner";
 
 export const HomeGrid = () => {
+  const mediaData = MediaQuery();
   const dispatch = useAppDispatch();
-  const { post, isLoading, error, totalPages } = useAppSelector(
+  const { post, isLoading, error, page, hasNextPage } = useAppSelector(
     state => state.postSlice,
   );
   console.log(post);
-  const mediaData = MediaQuery();
 
-  const mockOb = {
-    thumbnail: "/images/egg.png",
-    title: "mock",
-    discription: "맛있는 라면모음",
-    avatar: "",
-    nickname: "yamyam",
-  };
-
-  const mock = new Array(50).fill(mockOb);
-
-  const [mockdata, setmockdata] = useState([]);
-  const getData = async () => {
-    const res = await postAPI.getAllPost(1);
-    setmockdata(res.data.data);
-  };
   const getPosts = async () => {
-    dispatch(getPostAll(1));
+    if (hasNextPage && !isLoading) {
+      dispatch(getPostAll(page));
+    }
   };
 
-  useEffect(() => {
-    getData();
-    getPosts();
-  }, []);
-  console.log(mockdata);
+  const observerRef: any = useRef();
+  const observer = (node: any) => {
+    if (isLoading) return;
+    if (observerRef.current) observerRef.current.disconnect();
+    observerRef.current = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && hasNextPage) {
+        getPosts();
+      }
+    });
+    node && observerRef.current.observe(node);
+  };
+
   return (
     <GridContainer>
+      {isLoading ? <EclipsLoadingSpinner /> : null}
       <GridWrap style={{ gridTemplateColumns: `repeat(${mediaData}, 1fr)` }}>
-        {mockdata?.map((recipy, index) => {
+        {post?.map((recipy, index) => {
           const {
             post_id,
             thumbnail,
@@ -79,6 +74,11 @@ export const HomeGrid = () => {
           );
         })}
       </GridWrap>
+      <IoTarget
+        id="observeTarget"
+        ref={observer}
+        style={isLoading ? { display: "none" } : { display: "block" }}
+      ></IoTarget>
     </GridContainer>
   );
 };
@@ -156,3 +156,5 @@ const Title = styled.p`
 const CreatedAt = styled.p`
   text-align: right;
 `;
+
+const IoTarget = styled.div``;

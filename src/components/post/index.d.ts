@@ -5,6 +5,11 @@ export type postFormData = {
   description: string;
 };
 
+export type UpdateDispatch = {
+  post_id: number;
+  formData: postFormData;
+};
+
 export type CommentsData = {
   comment_id: number;
   content: string;

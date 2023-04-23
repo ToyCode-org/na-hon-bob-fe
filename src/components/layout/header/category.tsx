@@ -11,7 +11,6 @@ const makeCategory = (name: string, link: string) => {
 
 const categories = [
   makeCategory("글쓰기", "/post/add"),
-  makeCategory("마이페이지", "/mypage"),
   makeCategory("레시피", "/"),
   makeCategory("커뮤니티", "/community"),
 ];
@@ -22,7 +21,7 @@ export const MainCategory = () => {
     <Category>
       {categories.map((cate, index) => {
         const { name, link } = cate;
-        if (index >= 2) {
+        if (index >= 1) {
           return (
             <Link
               key={index}

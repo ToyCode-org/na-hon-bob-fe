@@ -146,6 +146,9 @@ const CommentMenu = styled.div`
   border-radius: 8px;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
   border: none;
+  @media only all and (max-width: 767px) {
+    right: 300px;
+  }
 `;
 const Buttons = styled.button`
   padding: 5px;
