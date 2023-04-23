@@ -244,7 +244,7 @@ export default function Edit() {
             type="submit"
             width="80px"
             height="40px"
-            content="포스팅"
+            content="수정하기"
           />
           <CancelButton
             type="button"

@@ -1,16 +1,20 @@
 import styled from "styled-components";
+import Link from "next/link";
+import { useEffect } from "react";
 import { MainButton } from "../../tagsComponents/buttons";
 import { useRouter } from "next/router";
 import { MediaQuery } from "@/hooks/useMediaQuery";
 import { MainCategory } from "./category";
 import { SimpleHeader } from "./simpleHeader";
 import { goHome, goAddPost } from "@/router/router";
-import Link from "next/link";
 import { useLoginCheck } from "@/hooks/useLoginCheck";
 import { Search } from "./Search";
 import { userLogout } from "@/components/sign/signFNs";
+import { useAppDispatch } from "@/redux/useRedux";
+import { getMyInfo } from "@/redux/slice/userSlice";
 
 export const Header = () => {
+  const dispatch = useAppDispatch();
   const { pathname } = useRouter();
   const { isLogin, setisLogin } = useLoginCheck();
   const mediaData = MediaQuery();
@@ -24,6 +28,10 @@ export const Header = () => {
     userLogout();
     setisLogin(false);
   };
+
+  useEffect(() => {
+    dispatch(getMyInfo());
+  }, []);
 
   return (
     <Container style={noHeader}>

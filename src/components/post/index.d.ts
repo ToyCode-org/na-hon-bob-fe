@@ -20,3 +20,21 @@ export type CommentsData = {
   user: { nickname: string; avatar: string };
   user_id: number;
 };
+
+export type GetCommentDispatch = {
+  post_id: number;
+  page: number;
+};
+
+export type AddCommentDispatch = {
+  post_id: number;
+  content: string;
+  page: number;
+  nickname: string;
+  avatar: string;
+};
+
+export type EditCommentDispatch = {
+  comment_id: number;
+  content: string;
+};

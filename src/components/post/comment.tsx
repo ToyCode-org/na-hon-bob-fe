@@ -11,12 +11,16 @@ import { MainButton } from "../tagsComponents/buttons";
 import { FormEvents } from "../sign";
 import { commentAPI } from "@/api/api";
 import { swalQuestion, swalSuccess } from "@/swal/swal";
+import { useAppDispatch } from "@/redux/useRedux";
+import { deleteComment, updateComment } from "@/redux/slice/commentSlice";
 
 interface Props {
   commentData: CommentsData;
 }
 
 export const Comment = ({ commentData }: Props) => {
+  const dispatch = useAppDispatch();
+
   const [menuOpen, setmenuOpen] = useState({
     menuOpen: false,
     editMode: false,
@@ -32,8 +36,11 @@ export const Comment = ({ commentData }: Props) => {
     e.preventDefault();
     const target = document.getElementById("editComment") as HTMLInputElement;
     const value = target.value;
-    const res = await commentAPI.editComment(commentData.comment_id, value);
-    // console.log(res.data.data.content);
+    const payload = {
+      comment_id: commentData.comment_id,
+      content: value,
+    };
+    dispatch(updateComment(payload));
     setmenuOpen(prev => ({ ...prev, editMode: false }));
   };
   const onDelete = () => {
@@ -41,10 +48,7 @@ export const Comment = ({ commentData }: Props) => {
       async res => {
         if (res.value) {
           try {
-            const res = await commentAPI.deleteComment(commentData.comment_id);
-            if (res.data.status === "ok") {
-              swalSuccess("삭제 완료!");
-            }
+            dispatch(deleteComment(commentData.comment_id));
           } catch (e) {
             console.log(e);
           }
@@ -123,7 +127,7 @@ const MenuIcon = styled.div`
     }
   }
 `;
-const Content = styled.div`
+const Content = styled.pre`
   padding: 10px;
 `;
 const CreatedAt = styled.div`

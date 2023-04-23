@@ -2,22 +2,58 @@ import styled from "styled-components";
 import { MdSend } from "react-icons/md";
 import { BoringAvatar } from "./boringAvatar";
 import { MainTextArea } from "../tagsComponents/inputs";
+import { useRef } from "react";
+import { FormEvents, TextAreaEvent } from "../sign";
+import { useAppDispatch, useAppSelector } from "@/redux/useRedux";
+import { addComment } from "@/redux/slice/commentSlice";
+import { useRouter } from "next/router";
 
 interface Props {
   closeModal: () => void;
   showModal: boolean;
+  page: number;
 }
 
-export const CommentModal = ({ closeModal, showModal }: Props) => {
+export const CommentModal = ({ closeModal, showModal, page }: Props) => {
+  const {
+    query: { id },
+  } = useRouter();
+  const dispatch = useAppDispatch();
+  const { user, isLoading, error } = useAppSelector(state => state.userSlice);
+  const comment = useRef("");
+  const onChangeHandler = (e: TextAreaEvent) => {
+    const target = e.target as HTMLTextAreaElement;
+    const value = target.value;
+    comment.current = value;
+  };
+  const onSubmitHandler = async (e: FormEvents) => {
+    e.preventDefault();
+    const userData = {
+      post_id: Number(id),
+      nickname: user.nickname,
+      avatar: user.avatar,
+      page,
+      content: comment.current,
+    };
+    dispatch(addComment(userData));
+    comment.current = "";
+    closeModal();
+  };
+
   return (
     <ModalBackground
       onClick={closeModal}
       style={showModal ? { display: "block" } : { display: "none" }}
     >
       <ModalContainer onClick={e => e.stopPropagation()}>
-        <Modal>
+        <Modal onSubmit={onSubmitHandler}>
           <BoringAvatar />
-          <MainTextArea width="80vw" height="40px" placeholder="댓글추가 ..." />
+          <MainTextArea
+            width="80vw"
+            height="40px"
+            placeholder="댓글추가 ..."
+            onChange={onChangeHandler}
+          />
           <SendCommentBtn>
             <MdSend />
           </SendCommentBtn>
@@ -46,7 +82,7 @@ const ModalContainer = styled.div`
   transform: translate(-50%, -50%);
 `;
 
-const Modal = styled.div`
+const Modal = styled.form`
   width: 100vw;
   height: 80px;
   background-color: white;

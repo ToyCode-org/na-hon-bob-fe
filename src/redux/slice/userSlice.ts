@@ -6,7 +6,7 @@ export const getMyInfo = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const { data } = await userAPI.getMyInfo();
-      return thunkAPI.fulfillWithValue(data);
+      return thunkAPI.fulfillWithValue(data.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -69,7 +69,7 @@ export const userSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(getMyInfo.fulfilled, (state, action) => {
-      state.user = action.payload.data;
+      state.user = action.payload;
       state.isLoading = false;
     });
     builder.addCase(updateAvatar.pending, (state, action) => {

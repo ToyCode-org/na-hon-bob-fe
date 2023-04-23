@@ -44,7 +44,6 @@ export const HomeGrid = () => {
             post_id,
             thumbnail,
             title,
-            discription,
             createdAt,
             user: { nickname, avatar },
           } = recipy;

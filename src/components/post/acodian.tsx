@@ -1,14 +1,24 @@
 import styled from "styled-components";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { BoringAvatar } from "./boringAvatar";
-import { commentAPI } from "@/api/api";
 import { Comment } from "./comment";
 import { CommentsData } from ".";
 import { RiCloseLine } from "react-icons/ri";
 import { CommentModal } from "./commentModal";
+import { useAppDispatch, useAppSelector } from "@/redux/useRedux";
+import { getCommentAll } from "@/redux/slice/commentSlice";
+import { useRouter } from "next/router";
 
 export const Acodian = () => {
+  const {
+    query: { id },
+  } = useRouter();
+  const dispatch = useAppDispatch();
+  const { comment, isLoading, error, totalPages } = useAppSelector(
+    state => state.commentSlice,
+  );
+
   const closeDetailse = () => {
     const details = document.querySelector("details");
     details?.removeAttribute("open");
@@ -23,21 +33,18 @@ export const Acodian = () => {
     setShowModal(false);
   };
 
-  const [commentData, setCommentData] = useState<CommentsData[]>([]);
-  const getCommentData = async () => {
-    const res = await commentAPI.getCommentByPostIdPaging(18, 1);
-    setCommentData(res.data.data);
-  };
+  const page = useRef(1);
+
   useEffect(() => {
-    getCommentData();
+    dispatch(getCommentAll({ post_id: Number(id), page: page.current }));
   }, []);
-  console.log(commentData);
+  console.log(comment);
   return (
     <AcodianWrap>
       <CommentsLine>
-        <summary>댓글보기 ({commentData.length})</summary>
+        <summary>댓글보기 ({comment.length})</summary>
         <CommentsLineTop>
-          <span>댓글 ({commentData.length})</span>
+          <span>댓글 ({comment.length})</span>
           <CloseBtn onClick={closeDetailse}>
             <RiCloseLine />
           </CloseBtn>
@@ -47,11 +54,15 @@ export const Acodian = () => {
           <BoringAvatar />
           <span onClick={openModal}>댓글 추가 ...</span>
         </AddComment>
-        {commentData.map(comment => {
+        {comment.map(comment => {
           return <Comment key={comment.comment_id} commentData={comment} />;
         })}
       </CommentsLine>
-      <CommentModal closeModal={closeModal} showModal={showModal} />
+      <CommentModal
+        closeModal={closeModal}
+        showModal={showModal}
+        page={page.current}
+      />
     </AcodianWrap>
   );
 };
