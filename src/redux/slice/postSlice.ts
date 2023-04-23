@@ -92,8 +92,8 @@ export const postSlice = createSlice({
     });
     builder.addCase(getPostAll.fulfilled, (state, action) => {
       state.totalPages = action.payload.totalPages;
+      state.hasNextPage = state.page < state.totalPages;
       state.page += 1;
-      state.hasNextPage = state.page <= state.totalPages;
       state.post = state.post.concat(action.payload.data);
       state.isLoading = false;
     });

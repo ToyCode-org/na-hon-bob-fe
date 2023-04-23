@@ -15,7 +15,6 @@ export const HomeGrid = () => {
   const { post, isLoading, error, page, hasNextPage } = useAppSelector(
     state => state.postSlice,
   );
-  console.log(post);
 
   const getPosts = async () => {
     if (hasNextPage && !isLoading) {
