@@ -22,3 +22,7 @@ export const goPost = (id: number) => {
 export const goEditPost = (id: number) => {
   router.push({ pathname: "/post/edit", query: { id: `${id}` } });
 };
+
+export const goSearchPost = (keyword: string) => {
+  router.push({ pathname: "/post/search", query: { keyword: `${keyword}` } });
+};

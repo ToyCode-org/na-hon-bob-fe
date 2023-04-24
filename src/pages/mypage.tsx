@@ -16,6 +16,7 @@ import { MainButton } from "@/components/tagsComponents/buttons";
 import { BoringAvatar } from "@/components/post/boringAvatar";
 import { BiEdit } from "react-icons/bi";
 import { RiCloseCircleLine } from "react-icons/ri";
+import { postAPI } from "@/api/api";
 
 export default function Mypage() {
   const dispatch = useAppDispatch();

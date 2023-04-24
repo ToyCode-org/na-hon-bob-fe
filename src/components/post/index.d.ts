@@ -35,6 +35,18 @@ export type UpdateDispatch = {
   formData: postFormData;
 };
 
+export type GetSearchPost = {
+  posts: Post[];
+  totalPages: number;
+};
+
+export type SearchState = {
+  post: Post[];
+  page: number;
+  totalPages: number;
+  hasNextPage: boolean;
+};
+
 // comment
 export type CommentsData = {
   comment_id: number;

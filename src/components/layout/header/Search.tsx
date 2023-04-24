@@ -3,6 +3,7 @@ import { BsSearch } from "react-icons/bs";
 import { FormEvents, InputEvent, InputTarget } from "@/components/sign";
 import { MainInput } from "@/components/tagsComponents/inputs";
 import { useRef } from "react";
+import { goSearchPost } from "@/router/router";
 
 export const Search = () => {
   const inputData = useRef("");
@@ -17,7 +18,7 @@ export const Search = () => {
     if (inputData.current === "") {
       alert("내용을 입력해주세요!");
     } else {
-      console.log(inputData.current, "검색!");
+      goSearchPost(inputData.current);
     }
   };
   return (

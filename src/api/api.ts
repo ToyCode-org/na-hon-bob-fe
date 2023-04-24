@@ -24,7 +24,9 @@ export const postAPI = {
     auth.get(`/post/${post_id}`, {
       withCredentials: false,
     }),
-  getMyPost: (page: number) => auth.get(`/post/me?page=${page}&limit=10`),
+  getMyPost: (page: number) => auth.get(`/post/me?page=${page}&limit=20`),
+  getSearchPost: (page: number, search: string) =>
+    auth.get(`/post/search/${search}?page=${page}&limit=20`),
   uploadImageToIBB: (base64Image: any) => auth.post("/post/imgbb", base64Image),
   createPost: (postData: postFormData) => auth.post("/post", postData),
   updatePost: (post_id: number, postData: postFormData) =>
