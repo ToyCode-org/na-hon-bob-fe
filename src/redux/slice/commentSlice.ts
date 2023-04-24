@@ -8,7 +8,7 @@ import {
 } from "@/components/post";
 
 export const getCommentAll = createAsyncThunk(
-  "GET_ALL",
+  "GET_ALL_COMMENT",
   async (payload: GetCommentDispatch, thunkAPI) => {
     try {
       const { data } = await commentAPI.getCommentByPostIdPaging(
@@ -23,7 +23,7 @@ export const getCommentAll = createAsyncThunk(
 );
 
 export const addComment = createAsyncThunk(
-  "POST_ADD",
+  "ADD_COMMENT",
   async (payload: AddCommentDispatch, thunkAPI) => {
     try {
       if (payload.page === 1) {
@@ -31,11 +31,7 @@ export const addComment = createAsyncThunk(
           payload.post_id,
           payload.content,
         );
-        const reduce = {
-          ...payload,
-          reduceData: { ...data.data, isEditable: true },
-        };
-        return thunkAPI.fulfillWithValue(reduce);
+        return thunkAPI.fulfillWithValue(data);
       }
       await commentAPI.createComment(payload.post_id, payload.content);
     } catch (errer) {
@@ -45,7 +41,7 @@ export const addComment = createAsyncThunk(
 );
 
 export const updateComment = createAsyncThunk(
-  "POST_UPDATAE",
+  "UPDATAE_COMMENT",
   async (payload: EditCommentDispatch, thunkAPI) => {
     try {
       await commentAPI.editComment(payload.comment_id, payload.content);
@@ -57,7 +53,7 @@ export const updateComment = createAsyncThunk(
 );
 
 export const deleteComment = createAsyncThunk(
-  "DELETE_ONE",
+  "DELETE_ONE_COMMENT",
   async (payload: number, thunkAPI) => {
     try {
       await commentAPI.deleteComment(payload);
@@ -72,7 +68,9 @@ interface InitalState {
   comment: CommentsData[];
   isLoading: boolean;
   error: null | string;
+  page: number;
   totalPages: number;
+  hasNextPage: boolean;
 }
 
 /* InitialState */
@@ -81,7 +79,9 @@ const initialState: InitalState = {
   comment: [],
   isLoading: false,
   error: null,
+  page: 1,
   totalPages: 1,
+  hasNextPage: true,
 };
 
 export const commentSlice = createSlice({
@@ -93,8 +93,15 @@ export const commentSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(getCommentAll.fulfilled, (state, action) => {
-      state.comment = action.payload.data;
       state.totalPages = action.payload.totalPages;
+      state.hasNextPage = state.page < action.payload.totalPages;
+      if (state.page === 1) {
+        state.comment = action.payload.data;
+      } else {
+        const newState = state.comment.concat(action.payload.data);
+        state.comment = newState;
+      }
+      state.page += 1;
       state.isLoading = false;
     });
     builder.addCase(addComment.pending, (state, action) => {

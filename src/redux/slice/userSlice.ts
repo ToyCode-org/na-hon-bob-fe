@@ -2,7 +2,7 @@ import { userAPI } from "@/api/api";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 export const getMyInfo = createAsyncThunk(
-  "GET_ONE",
+  "GET_MY_INFO",
   async (payload, thunkAPI) => {
     try {
       const { data } = await userAPI.getMyInfo();
@@ -14,7 +14,7 @@ export const getMyInfo = createAsyncThunk(
 );
 
 export const updateAvatar = createAsyncThunk(
-  "POST_UPDATAE_AVATAR",
+  "UPDATAE_AVATAR",
   async (payload: string, thunkAPI) => {
     try {
       const { data } = await userAPI.editAvatar(payload);
@@ -25,7 +25,7 @@ export const updateAvatar = createAsyncThunk(
   },
 );
 export const updateNickname = createAsyncThunk(
-  "POST_UPDATAE_NICKNAME",
+  "UPDATAE_NICKNAME",
   async (payload: string, thunkAPI) => {
     try {
       const { data } = await userAPI.editNickname(payload);
@@ -37,7 +37,7 @@ export const updateNickname = createAsyncThunk(
 );
 
 export const deleteUser = createAsyncThunk(
-  "DELETE_ONE",
+  "DELETE_ONE_USER",
   async (payload, thunkAPI) => {
     try {
       const { data } = await userAPI.deleteUser();

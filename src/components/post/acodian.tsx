@@ -15,7 +15,9 @@ export const Acodian = () => {
   } = useRouter();
   const dispatch = useAppDispatch();
   const { user } = useAppSelector(state => state.userSlice);
-  const { comment } = useAppSelector(state => state.commentSlice);
+  const { comment, isLoading, page, hasNextPage } = useAppSelector(
+    state => state.commentSlice,
+  );
 
   const closeDetailse = () => {
     const details = document.querySelector("details");
@@ -31,16 +33,28 @@ export const Acodian = () => {
     setShowModal(false);
   };
 
-  const page = useRef(1);
+  const getComment = async () => {
+    if (hasNextPage && !isLoading) {
+      dispatch(getCommentAll({ post_id: Number(id), page }));
+    }
+  };
 
-  useEffect(() => {
-    dispatch(getCommentAll({ post_id: Number(id), page: page.current }));
-  }, []);
+  const commentObserverRef: any = useRef();
+  const commentObserver = async (node: any) => {
+    if (isLoading) return;
+    if (commentObserverRef.current) commentObserverRef.current.disconnect();
+    commentObserverRef.current = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && hasNextPage) {
+        getComment();
+      }
+    });
+    node && commentObserverRef.current.observe(node);
+  };
 
   return (
     <AcodianWrap>
       <CommentsLine>
-        <summary>댓글보기 ({comment.length})</summary>
+        <summary>댓글보기</summary>
         <CommentsLineTop>
           <span>댓글 ({comment.length})</span>
           <CloseBtn onClick={closeDetailse}>
@@ -59,12 +73,13 @@ export const Acodian = () => {
         {comment.map(comment => {
           return <Comment key={comment.comment_id} commentData={comment} />;
         })}
+        <IoTarget
+          id="observeTarget_comment"
+          ref={commentObserver}
+          style={isLoading ? { display: "none" } : { display: "block" }}
+        ></IoTarget>
       </CommentsLine>
-      <CommentModal
-        closeModal={closeModal}
-        showModal={showModal}
-        page={page.current}
-      />
+      <CommentModal closeModal={closeModal} showModal={showModal} page={page} />
     </AcodianWrap>
   );
 };
@@ -153,3 +168,5 @@ const AddComment = styled.div`
     font-size: 14px;
   }
 `;
+
+const IoTarget = styled.div``;

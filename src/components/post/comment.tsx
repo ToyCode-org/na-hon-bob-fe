@@ -56,17 +56,22 @@ export const Comment = ({ commentData }: Props) => {
       },
     );
   };
-  console.log(menuOpen);
+
   return (
     <Container>
       <CommentsWrap>
         <UserInfo>
-          {user.avatar === "" ? (
+          {commentData.user.avatar === "" ? (
             <BoringAvatar />
           ) : (
-            <Image src={user.avatar} width={40} height={40} alt="profile" />
+            <Image
+              src={commentData.user.avatar}
+              width={40}
+              height={40}
+              alt="profile"
+            />
           )}
-          <span>닉네임</span>
+          <span>{commentData.user.nickname}</span>
         </UserInfo>
         <MenuIcon
           onClick={commentMenuHandler}

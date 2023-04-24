@@ -1,9 +1,9 @@
 import { postAPI } from "@/api/api";
-import { UpdateDispatch, postFormData } from "@/components/post";
+import { Post, UpdateDispatch, postFormData } from "@/components/post";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 export const getPostAll = createAsyncThunk(
-  "GET_ALL",
+  "GET_ALL_POST",
   async (payload: number, thunkAPI) => {
     try {
       const { data } = await postAPI.getAllPost(payload);
@@ -42,7 +42,7 @@ export const updatePost = createAsyncThunk(
 );
 
 export const deletePost = createAsyncThunk(
-  "DELETE_ONE",
+  "DELETE_ONE_POST",
   async (payload: number, thunkAPI) => {
     try {
       await postAPI.deletePost(payload);
@@ -52,15 +52,6 @@ export const deletePost = createAsyncThunk(
     }
   },
 );
-
-type Post = {
-  createdAt: string;
-  post_id: number;
-  thumbnail: string;
-  title: string;
-  user: { nickname: string; avatar: string };
-  user_id: number;
-};
 
 interface InitalState {
   post: Post[];

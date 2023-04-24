@@ -10,9 +10,9 @@ interface Props {
 export const Layout = ({ children }: Props) => {
   return (
     <LayoutWrap>
+      <ContentWrap>{children}</ContentWrap>
       <LayoutHead />
       <Header />
-      <ContentWrap>{children}</ContentWrap>
     </LayoutWrap>
   );
 };

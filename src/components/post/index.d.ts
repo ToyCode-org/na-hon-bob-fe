@@ -5,6 +5,15 @@ export type postFormData = {
   description: string;
 };
 
+export type Post = {
+  createdAt: string;
+  post_id: number;
+  thumbnail: string;
+  title: string;
+  user: { nickname: string; avatar: string };
+  user_id: number;
+};
+
 export type UpdateDispatch = {
   post_id: number;
   formData: postFormData;

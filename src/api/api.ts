@@ -36,7 +36,7 @@ export const commentAPI = {
   getAllComment: () => auth.get("/comment"),
   getCommentByPostId: (post_id: number) => auth.get(`/comment/post/${post_id}`),
   getCommentByPostIdPaging: (post_id: number, page: number) =>
-    auth.get(`/comment/post/${post_id}?page=${page}&limit=20`),
+    auth.get(`/comment/post/${post_id}?page=${page}&limit=10`),
   createComment: (post_id: number, content: string) =>
     auth.post(`/comment/post/${post_id}`, { content }),
   editComment: (comment_id: number, content: string) =>
