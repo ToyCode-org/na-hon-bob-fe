@@ -1,8 +1,22 @@
+export type User = {
+  id: number;
+  avatar: string;
+  nickname: string;
+};
+
 export type postFormData = {
   thumbnail: string;
   title: string;
   ingredient: string;
   description: string;
+};
+
+export type AddFormData = {
+  thumbnail: string;
+  title: string;
+  ingredient: string;
+  description: string;
+  user: User;
 };
 
 export type Post = {

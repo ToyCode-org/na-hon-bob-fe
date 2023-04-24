@@ -1,5 +1,5 @@
 import { postAPI } from "@/api/api";
-import { Post, UpdateDispatch, postFormData } from "@/components/post";
+import { AddFormData, Post, UpdateDispatch } from "@/components/post";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 export const getPostAll = createAsyncThunk(
@@ -16,10 +16,27 @@ export const getPostAll = createAsyncThunk(
 
 export const addPost = createAsyncThunk(
   "POST_ADD",
-  async (payload: postFormData, thunkAPI) => {
+  async (payload: AddFormData, thunkAPI) => {
     try {
-      const { data } = await postAPI.createPost(payload);
-      return thunkAPI.fulfillWithValue(data.data);
+      const {
+        thumbnail,
+        title,
+        ingredient,
+        description,
+        user: { nickname, avatar },
+      } = payload;
+      const arg = {
+        thumbnail,
+        title,
+        ingredient,
+        description,
+      };
+      const user = {
+        nickname,
+        avatar,
+      };
+      const { data } = await postAPI.createPost(arg);
+      return thunkAPI.fulfillWithValue({ ...data.data, user });
     } catch (errer) {
       return thunkAPI.rejectWithValue(errer);
     }
@@ -103,8 +120,8 @@ export const postSlice = createSlice({
         post.post_id === action.payload.post_id
           ? {
               ...post,
-              thumbnail: post.thumbnail,
-              title: post.title,
+              thumbnail: action.payload.thumbnail,
+              title: action.payload.title,
             }
           : post,
       );

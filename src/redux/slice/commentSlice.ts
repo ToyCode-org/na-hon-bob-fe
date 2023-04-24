@@ -26,14 +26,15 @@ export const addComment = createAsyncThunk(
   "ADD_COMMENT",
   async (payload: AddCommentDispatch, thunkAPI) => {
     try {
-      if (payload.page === 1) {
-        const { data } = await commentAPI.createComment(
-          payload.post_id,
-          payload.content,
-        );
-        return thunkAPI.fulfillWithValue(data);
-      }
-      await commentAPI.createComment(payload.post_id, payload.content);
+      const { data } = await commentAPI.createComment(
+        payload.post_id,
+        payload.content,
+      );
+      const user = {
+        nickname: payload.nickname,
+        avatar: payload.avatar,
+      };
+      return thunkAPI.fulfillWithValue({ ...data, user });
     } catch (errer) {
       return thunkAPI.rejectWithValue(errer);
     }
@@ -108,8 +109,10 @@ export const commentSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(addComment.fulfilled, (state, action) => {
-      state.comment.unshift(action.payload?.reduceData);
-      state.comment.pop();
+      state.comment.unshift({
+        ...action.payload.data,
+        user: action.payload.user,
+      });
       state.isLoading = false;
     });
     builder.addCase(updateComment.fulfilled, (state, action) => {

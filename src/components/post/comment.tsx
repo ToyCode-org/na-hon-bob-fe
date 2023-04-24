@@ -4,7 +4,7 @@ import { BoringAvatar } from "./boringAvatar";
 import { CommentsData } from ".";
 import { useState } from "react";
 import { TimeToToday } from "@/util/timeToToday";
-import { MainInput } from "../tagsComponents/inputs";
+import { MainInput, MainTextArea } from "../tagsComponents/inputs";
 import { MainButton } from "../tagsComponents/buttons";
 import { FormEvents } from "../sign";
 import { swalQuestion } from "@/swal/swal";
@@ -84,7 +84,7 @@ export const Comment = ({ commentData }: Props) => {
         <Content>{commentData.content}</Content>
       ) : (
         <EditForm onSubmit={editSubmitHandler}>
-          <MainInput
+          <MainTextArea
             id="editComment"
             width="80%"
             height="40px"

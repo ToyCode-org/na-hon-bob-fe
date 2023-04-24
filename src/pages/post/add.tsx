@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { goHome } from "@/router/router";
 import { imageUpload } from "@/util/imageUploadTest";
 import { swalError, swalQuestion, swalSuccess } from "@/swal/swal";
-import { useAppDispatch } from "@/redux/useRedux";
+import { useAppDispatch, useAppSelector } from "@/redux/useRedux";
 import { addPost } from "@/redux/slice/postSlice";
 import { MainInput, MainTextArea } from "@/components/tagsComponents/inputs";
 import { MainButton, CancelButton } from "@/components/tagsComponents/buttons";
@@ -19,6 +19,7 @@ import { AiOutlineCloseCircle } from "react-icons/ai";
 
 export default function AddPost() {
   const dispatch = useAppDispatch();
+  const { user } = useAppSelector(state => state.userSlice);
   const [viewImage, setViewImage] = useState<string | ArrayBuffer | null>("");
   const [uploadImage, setUploadImage] = useState<string | Blob>("");
 
@@ -52,7 +53,6 @@ export default function AddPost() {
   const placeholderArray = ["오늘의 요리는?", "재료", "레시피"];
 
   const [ingredientArr, setIngredientArr] = useState<string[]>([]);
-  // ["라면", "스프", "참깨"]
   const [formState, setFormState] = useState(formDataInit);
 
   const addIngredient = (e: ButtonEvent) => {
@@ -104,6 +104,7 @@ export default function AddPost() {
               title,
               ingredient,
               description,
+              user,
             };
             dispatch(addPost(formData));
             swalSuccess("저장 완료!").then(() => {

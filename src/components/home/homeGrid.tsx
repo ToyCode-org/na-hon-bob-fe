@@ -3,36 +3,29 @@ import Image from "next/image";
 import { useRef } from "react";
 import { goPost } from "../../router/router";
 import { BoringAvatar } from "../post/boringAvatar";
-import { useAppDispatch, useAppSelector } from "@/redux/useRedux";
-import { getPostAll } from "@/redux/slice/postSlice";
 import { MediaQuery } from "@/hooks/useMediaQuery";
 import { TimeToToday } from "@/util/timeToToday";
 import { EclipsLoadingSpinner } from "@/util/eclipsLoadingSpinner";
+import { Post } from "../post";
 
-export const HomeGrid = () => {
+interface Props {
+  post: Post[];
+  isLoading: boolean;
+  // error: null | string;
+  // page: number;
+  // hasNextPage: boolean;
+  observer: (node: any) => void;
+}
+
+export const HomeGrid = ({
+  post,
+  isLoading,
+  // error,
+  // page,
+  // hasNextPage,
+  observer,
+}: Props) => {
   const mediaData = MediaQuery();
-  const dispatch = useAppDispatch();
-  const { post, isLoading, error, page, hasNextPage } = useAppSelector(
-    state => state.postSlice,
-  );
-
-  const getPosts = async () => {
-    if (hasNextPage && !isLoading) {
-      dispatch(getPostAll(page));
-    }
-  };
-
-  const observerRef: any = useRef();
-  const observer = (node: any) => {
-    if (isLoading) return;
-    if (observerRef.current) observerRef.current.disconnect();
-    observerRef.current = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting && hasNextPage) {
-        getPosts();
-      }
-    });
-    node && observerRef.current.observe(node);
-  };
 
   return (
     <GridContainer>
