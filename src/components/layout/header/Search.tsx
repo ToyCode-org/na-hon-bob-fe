@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { BsSearch } from "react-icons/bs";
 import { FormEvents, InputEvent, InputTarget } from "@/components/sign";
 import { MainInput } from "@/components/tagsComponents/inputs";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 
 export const Search = () => {
   const inputData = useRef("");

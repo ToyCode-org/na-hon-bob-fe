@@ -4,11 +4,11 @@ import { BoringAvatar } from "./boringAvatar";
 import { CommentsData } from ".";
 import { useState } from "react";
 import { TimeToToday } from "@/util/timeToToday";
-import { MainInput, MainTextArea } from "../tagsComponents/inputs";
+import { MainTextArea } from "../tagsComponents/inputs";
 import { MainButton } from "../tagsComponents/buttons";
 import { FormEvents } from "../sign";
-import { swalQuestion } from "@/swal/swal";
-import { useAppDispatch, useAppSelector } from "@/redux/useRedux";
+import { swalError, swalQuestion } from "@/swal/swal";
+import { useAppDispatch } from "@/redux/useRedux";
 import { deleteComment, updateComment } from "@/redux/slice/commentSlice";
 import { CiMenuKebab } from "react-icons/ci";
 import { RiCloseLine } from "react-icons/ri";
@@ -19,7 +19,6 @@ interface Props {
 
 export const Comment = ({ commentData }: Props) => {
   const dispatch = useAppDispatch();
-  const { user } = useAppSelector(state => state.userSlice);
 
   const [menuOpen, setmenuOpen] = useState({
     menuOpen: false,
@@ -50,7 +49,7 @@ export const Comment = ({ commentData }: Props) => {
           try {
             dispatch(deleteComment(commentData.comment_id));
           } catch (e) {
-            console.log(e);
+            swalError("알 수 없는 오류입니다.");
           }
         }
       },

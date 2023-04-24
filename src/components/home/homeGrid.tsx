@@ -11,20 +11,10 @@ import { Post } from "../post";
 interface Props {
   post: Post[];
   isLoading: boolean;
-  // error: null | string;
-  // page: number;
-  // hasNextPage: boolean;
   observer: (node: any) => void;
 }
 
-export const HomeGrid = ({
-  post,
-  isLoading,
-  // error,
-  // page,
-  // hasNextPage,
-  observer,
-}: Props) => {
+export const HomeGrid = ({ post, isLoading, observer }: Props) => {
   const mediaData = MediaQuery();
 
   return (

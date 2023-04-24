@@ -40,14 +40,7 @@ export default function Home() {
         <meta property="og:url" content="http://www.mysite.com" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <HomeGrid
-        post={post}
-        isLoading={isLoading}
-        // error={error}
-        // page={page}
-        // hasNextPage={hasNextPage}
-        observer={observer}
-      />
+      <HomeGrid post={post} isLoading={isLoading} observer={observer} />
     </>
   );
 }

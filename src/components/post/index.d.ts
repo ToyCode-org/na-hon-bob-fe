@@ -1,9 +1,11 @@
+// user
 export type User = {
   id: number;
   avatar: string;
   nickname: string;
 };
 
+// post
 export type postFormData = {
   thumbnail: string;
   title: string;
@@ -33,6 +35,7 @@ export type UpdateDispatch = {
   formData: postFormData;
 };
 
+// comment
 export type CommentsData = {
   comment_id: number;
   content: string;
