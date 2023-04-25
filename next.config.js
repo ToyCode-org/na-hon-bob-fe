@@ -6,6 +6,7 @@ const nextConfig = {
   },
   env: {
     NEXT_IMG_API_KEY: process.env.NEXT_IMG_API_KEY,
+    NEXT_APP_BASE_URL: process.env.NEXT_APP_BASE_URL,
   },
   images: {
     domains: ["i.ibb.co"],
