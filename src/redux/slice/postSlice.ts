@@ -2,6 +2,17 @@ import { postAPI } from "@/api/api";
 import { AddFormData, Post, UpdateDispatch } from "@/components/post";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
+export const forceLoading = createAsyncThunk(
+  "FORCE_LOADING_TRUE",
+  async (payload, thunkAPI) => {
+    try {
+      return thunkAPI.fulfillWithValue(true);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
+
 export const getPostAll = createAsyncThunk(
   "GET_ALL_POST",
   async (payload: number, thunkAPI) => {
@@ -95,6 +106,9 @@ export const postSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: builder => {
+    builder.addCase(forceLoading.pending, (state, action) => {
+      state.isLoading = true;
+    });
     builder.addCase(getPostAll.pending, (state, action) => {
       state.isLoading = true;
     });

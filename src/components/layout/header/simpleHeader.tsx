@@ -30,9 +30,7 @@ export const SimpleHeader = ({ isLogin, logoutHandler }: Props) => {
         onClick={sideMenuClose}
       />
       <SideMenu
-        style={
-          isOpen ? { transform: "translate(-37%, -18%)", opacity: "1" } : {}
-        }
+        style={isOpen ? { transform: "translateX(-37%)", opacity: "1" } : {}}
       >
         <Identity
           onClick={sideMenuOpen}
@@ -106,14 +104,16 @@ const Background = styled.div`
   }
 `;
 const SideMenu = styled.div`
+  position: fixed;
   padding: 10px;
   width: 270px;
-  height: 103vh;
+  height: 100vh;
   background-color: ${props => props.theme.menuBackground};
   border-right: 1px solid ${props => props.theme.menuBorder};
   transition: 0.4s;
   opacity: 0.7;
-  transform: translate(-150%, -18%);
+  top: 0;
+  transform: translateX(-150%);
 `;
 
 const Sign = styled.div`

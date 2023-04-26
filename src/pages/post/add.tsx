@@ -5,7 +5,7 @@ import { goHome } from "@/router/router";
 import { imageUpload } from "@/util/imageUploadTest";
 import { swalError, swalQuestion, swalSuccess } from "@/swal/swal";
 import { useAppDispatch, useAppSelector } from "@/redux/useRedux";
-import { addPost } from "@/redux/slice/postSlice";
+import { addPost, forceLoading } from "@/redux/slice/postSlice";
 import { MainInput, MainTextArea } from "@/components/tagsComponents/inputs";
 import { MainButton, CancelButton } from "@/components/tagsComponents/buttons";
 import {
@@ -16,10 +16,12 @@ import {
 } from "@/components/sign";
 import { BsCameraFill } from "react-icons/bs";
 import { AiOutlineCloseCircle } from "react-icons/ai";
+import { EclipsLoadingSpinner } from "@/util/eclipsLoadingSpinner";
 
 export default function AddPost() {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector(state => state.userSlice);
+  const { isLoading } = useAppSelector(state => state.postSlice);
   const [viewImage, setViewImage] = useState<string | ArrayBuffer | null>("");
   const [uploadImage, setUploadImage] = useState<string | Blob>("");
 
@@ -97,6 +99,7 @@ export default function AddPost() {
       swalQuestion("레시피를 저장할까요?", "").then(async res => {
         if (res.value) {
           try {
+            dispatch(forceLoading());
             const uploadUrl = await imageUpload(uploadImage as Blob);
             const ingredient = ingredientArr.join(",");
             const formData = {
@@ -120,6 +123,7 @@ export default function AddPost() {
 
   return (
     <Container>
+      {isLoading ? <EclipsLoadingSpinner /> : null}
       <AddRecipyForm onChange={onChangehansler} onSubmit={onSubmitHandler}>
         <label htmlFor="addImage">
           <AddImage style={viewImage === "" ? {} : { display: "none" }}>

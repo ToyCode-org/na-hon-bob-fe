@@ -3,7 +3,7 @@ import { HomeGrid } from "@/components/home/homeGrid";
 import { useState, useEffect, useRef } from "react";
 import { postAPI } from "@/api/api";
 import { useRouter } from "next/router";
-import { GetSearchPost, Post, SearchState } from "@/components/post";
+import { Post } from "@/components/post";
 
 export default function SearchPost() {
   const {
@@ -17,7 +17,7 @@ export default function SearchPost() {
     totalPages: 1,
     isLoading: false,
   });
-  console.log(searchPost);
+
   const getSearchPost = async (page: number, keyword: string) => {
     const { data } = await postAPI.getSearchPost(page, keyword);
     if (data.totalPages < infiRef.current.page) {

@@ -16,14 +16,16 @@ import { swalError, swalQuestion, swalSuccess } from "@/swal/swal";
 import { useRouter } from "next/router";
 import { postAPI } from "@/api/api";
 import { goHome, goPost } from "@/router/router";
-import { useAppDispatch } from "@/redux/useRedux";
-import { updatePost } from "@/redux/slice/postSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/useRedux";
+import { forceLoading, updatePost } from "@/redux/slice/postSlice";
+import { EclipsLoadingSpinner } from "@/util/eclipsLoadingSpinner";
 
 export default function Edit() {
   const {
     query: { id },
   } = useRouter();
   const dispatch = useAppDispatch();
+  const { isLoading } = useAppSelector(state => state.postSlice);
   const [viewImage, setViewImage] = useState<string | ArrayBuffer | null>("");
   const [uploadImage, setUploadImage] = useState<string | Blob>("");
 
@@ -119,6 +121,7 @@ export default function Edit() {
       swalQuestion("레시피를 저장할까요?", "").then(async res => {
         if (res.value) {
           try {
+            dispatch(forceLoading());
             const uploadUrl = await imageUpload(uploadImage as Blob);
             const ingredient = ingredientArr.join(",");
             const formData = {
@@ -146,6 +149,7 @@ export default function Edit() {
 
   return (
     <Container>
+      {isLoading ? <EclipsLoadingSpinner /> : null}
       <AddRecipyForm onChange={onChangehansler} onSubmit={onSubmitHandler}>
         <label htmlFor="addImage">
           <AddImage style={viewImage === "" ? {} : { display: "none" }}>
