@@ -7,16 +7,10 @@ axios.defaults.headers["Content-Type"] = "application/json";
 
 export const base = axios.create({
   baseURL: BASE_URL,
-  headers: {
-    "Access-Control-Allow-Origin": process.env.NEXT_APP_ALLOW_ORIGIN,
-  },
 });
 
 export const auth = axios.create({
   baseURL: BASE_URL,
-  headers: {
-    "Access-Control-Allow-Origin": process.env.NEXT_APP_ALLOW_ORIGIN,
-  },
 });
 
 auth.interceptors.request.use(config => {
