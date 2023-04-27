@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = process.env.NEXT_APP_BASE_URL;
+const BASE_URL = process.env.NEXT_APP_BASE_URL + "/api";
 
 axios.defaults.withCredentials = true;
 axios.defaults.headers["Content-Type"] = "application/json";
