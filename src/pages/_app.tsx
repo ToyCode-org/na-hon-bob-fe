@@ -8,11 +8,6 @@ import { Layout } from "@/components/layout/layout";
 import { EclipsLoadingSpinner } from "@/util/eclipsLoadingSpinner";
 import { usePageLoading } from "@/hooks/usePageLoading";
 
-const ORIGIN = window.location.hostname;
-if (ORIGIN.includes("www.")) {
-  window.location.href = ORIGIN.replace("www.", "") + window.location.pathname;
-}
-
 export default function App({ Component, pageProps }: AppProps) {
   const isLoading = usePageLoading();
 
