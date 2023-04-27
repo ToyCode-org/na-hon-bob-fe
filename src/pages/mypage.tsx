@@ -64,11 +64,11 @@ export default function Mypage() {
   return (
     <Container>
       <Avatar>
-        {user.avatar === "" ? (
+        {user?.avatar === "" ? (
           <BoringAvatar />
         ) : (
           <Image
-            src={user.avatar}
+            src={user?.avatar}
             width={300}
             height={300}
             alt="프로필"

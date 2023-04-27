@@ -6,7 +6,7 @@ export const getMyInfo = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const { data } = await userAPI.getMyInfo();
-      return thunkAPI.fulfillWithValue(data.data);
+      return thunkAPI.fulfillWithValue(data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -48,14 +48,16 @@ export const deleteUser = createAsyncThunk(
   },
 );
 
+const userInit = {
+  id: 0,
+  nickname: "",
+  avatar: "",
+};
 /* InitialState */
 // data, isLoading, error로 상태관리
 const initialState = {
-  user: {
-    id: 0,
-    nickname: "",
-    avatar: "",
-  },
+  user: userInit,
+  isLogin: false,
   isLoading: false,
   error: null,
 };
@@ -69,7 +71,13 @@ export const userSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(getMyInfo.fulfilled, (state, action) => {
-      state.user = action.payload;
+      if (action.payload.isLogin) {
+        state.user = action.payload.data;
+        state.isLogin = true;
+      } else {
+        state.user = userInit;
+        state.isLogin = false;
+      }
       state.isLoading = false;
     });
     builder.addCase(updateAvatar.pending, (state, action) => {

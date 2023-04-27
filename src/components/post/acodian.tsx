@@ -7,7 +7,8 @@ import { Comment } from "./comment";
 import { RiCloseLine } from "react-icons/ri";
 import { CommentModal } from "./commentModal";
 import { useAppDispatch, useAppSelector } from "@/redux/useRedux";
-import { getCommentAll } from "@/redux/slice/commentSlice";
+import { getCommentAll, initComment } from "@/redux/slice/commentSlice";
+import { swalError } from "@/swal/swal";
 
 export const Acodian = () => {
   const {
@@ -15,7 +16,7 @@ export const Acodian = () => {
   } = useRouter();
   const dispatch = useAppDispatch();
   const { user } = useAppSelector(state => state.userSlice);
-  const { comment, isLoading, page, hasNextPage } = useAppSelector(
+  const { comment, isLoading, hasNextPage } = useAppSelector(
     state => state.commentSlice,
   );
 
@@ -27,15 +28,21 @@ export const Acodian = () => {
   const [showModal, setShowModal] = useState(false);
 
   const openModal = () => {
-    setShowModal(true);
+    if (user.id === 0) {
+      swalError("로그인이 필요합니다.");
+    } else {
+      setShowModal(true);
+    }
   };
   const closeModal = () => {
     setShowModal(false);
   };
 
+  const page = useRef(1);
   const getComment = async () => {
     if (hasNextPage && !isLoading) {
-      dispatch(getCommentAll({ post_id: Number(id), page }));
+      dispatch(getCommentAll({ post_id: Number(id), page: page.current }));
+      page.current += 1;
     }
   };
 
@@ -51,6 +58,12 @@ export const Acodian = () => {
     node && commentObserverRef.current.observe(node);
   };
 
+  useEffect(() => {
+    return () => {
+      dispatch(initComment());
+    };
+  }, []);
+
   return (
     <AcodianWrap>
       <CommentsLine>
@@ -63,14 +76,14 @@ export const Acodian = () => {
         </CommentsLineTop>
         <p>댓글을 사용할 때는 타인을 존중해주세요</p>
         <AddComment>
-          {user.avatar === "" ? (
+          {user.id === 0 || user.avatar === "" ? (
             <BoringAvatar />
           ) : (
-            <Image src={user.avatar} width={40} height={40} alt="profile" />
+            <Image src={user?.avatar} width={40} height={40} alt="profile" />
           )}
           <span onClick={openModal}>댓글 추가 ...</span>
         </AddComment>
-        {comment.map(comment => {
+        {comment?.map(comment => {
           return <Comment key={comment.comment_id} commentData={comment} />;
         })}
         <IoTarget
@@ -79,7 +92,11 @@ export const Acodian = () => {
           style={isLoading ? { display: "none" } : { display: "block" }}
         ></IoTarget>
       </CommentsLine>
-      <CommentModal closeModal={closeModal} showModal={showModal} page={page} />
+      <CommentModal
+        closeModal={closeModal}
+        showModal={showModal}
+        page={page.current}
+      />
     </AcodianWrap>
   );
 };

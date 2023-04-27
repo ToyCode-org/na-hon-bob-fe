@@ -4,8 +4,8 @@ import { useState, useEffect } from "react";
 export const useMyPostCheck = (userIdInPost: number) => {
   const [isMyPost, setIsMyPost] = useState(false);
   const getMyinfo = async () => {
-    const res = await userAPI.getMyInfo();
-    if (res.data.data.id === userIdInPost) {
+    const { data } = await userAPI.getMyInfo();
+    if (data?.data?.id === userIdInPost) {
       setIsMyPost(true);
     }
   };

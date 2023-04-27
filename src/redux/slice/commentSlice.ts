@@ -7,6 +7,17 @@ import {
   GetCommentDispatch,
 } from "@/components/post";
 
+export const initComment = createAsyncThunk(
+  "INIT_COMMENT",
+  async (payload, thunkAPI) => {
+    try {
+      return thunkAPI.fulfillWithValue("init");
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
+
 export const getCommentAll = createAsyncThunk(
   "GET_ALL_COMMENT",
   async (payload: GetCommentDispatch, thunkAPI) => {
@@ -15,7 +26,8 @@ export const getCommentAll = createAsyncThunk(
         payload.post_id,
         payload.page,
       );
-      return thunkAPI.fulfillWithValue(data);
+      const page = payload.page;
+      return thunkAPI.fulfillWithValue({ ...data, page });
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -69,7 +81,6 @@ interface InitalState {
   comment: CommentsData[];
   isLoading: boolean;
   error: null | string;
-  page: number;
   totalPages: number;
   hasNextPage: boolean;
 }
@@ -80,7 +91,6 @@ const initialState: InitalState = {
   comment: [],
   isLoading: false,
   error: null,
-  page: 1,
   totalPages: 1,
   hasNextPage: true,
 };
@@ -90,19 +100,21 @@ export const commentSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: builder => {
+    builder.addCase(initComment.fulfilled, (state, action) => {
+      state.comment = [];
+      state.hasNextPage = true;
+    });
     builder.addCase(getCommentAll.pending, (state, action) => {
       state.isLoading = true;
     });
     builder.addCase(getCommentAll.fulfilled, (state, action) => {
-      state.totalPages = action.payload.totalPages;
-      state.hasNextPage = state.page < action.payload.totalPages;
-      if (state.page === 1) {
-        state.comment = action.payload.data;
-      } else {
-        const newState = state.comment.concat(action.payload.data);
-        state.comment = newState;
-      }
-      state.page += 1;
+      const page = action.payload.page;
+      const totalPages = action.payload.totalPages;
+      const comments = action.payload.data;
+      const newState = state.comment.concat(comments);
+      state.comment = newState;
+      state.totalPages = totalPages;
+      state.hasNextPage = page < totalPages;
       state.isLoading = false;
     });
     builder.addCase(addComment.pending, (state, action) => {

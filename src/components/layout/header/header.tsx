@@ -9,14 +9,16 @@ import { SimpleHeader } from "./simpleHeader";
 import { goHome, goAddPost } from "@/router/router";
 import { useLoginCheck } from "@/hooks/useLoginCheck";
 import { Search } from "./Search";
-import { userLogout } from "@/components/sign/signFNs";
-import { useAppDispatch } from "@/redux/useRedux";
+import { useAppDispatch, useAppSelector } from "@/redux/useRedux";
 import { getMyInfo } from "@/redux/slice/userSlice";
+import { userAPI } from "@/api/api";
+import { swalError } from "@/swal/swal";
 
 export const Header = () => {
   const dispatch = useAppDispatch();
+  const { isLogin } = useAppSelector(state => state.userSlice);
   const { pathname } = useRouter();
-  const { isLogin, setisLogin } = useLoginCheck();
+
   const mediaData = MediaQuery();
 
   const noHeader =
@@ -24,14 +26,21 @@ export const Header = () => {
       ? { display: "none" }
       : {};
 
-  const logoutHandler = () => {
-    userLogout();
-    setisLogin(false);
+  const logoutHandler = async () => {
+    try {
+      const res = await userAPI.logout();
+      if (res.data.status === "ok") {
+        dispatch(getMyInfo());
+        return true;
+      }
+    } catch (error) {
+      return swalError("알 수 없는 오류입니다.");
+    }
   };
 
   useEffect(() => {
     dispatch(getMyInfo());
-  }, []);
+  }, [pathname]);
 
   return (
     <Container style={noHeader}>

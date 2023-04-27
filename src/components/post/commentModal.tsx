@@ -48,10 +48,10 @@ export const CommentModal = ({ closeModal, showModal, page }: Props) => {
     >
       <ModalContainer onClick={e => e.stopPropagation()}>
         <Modal onSubmit={onSubmitHandler}>
-          {user.avatar === "" ? (
+          {user?.avatar === "" ? (
             <BoringAvatar />
           ) : (
-            <Image src={user.avatar} width={40} height={40} alt="profile" />
+            <Image src={user?.avatar} width={40} height={40} alt="profile" />
           )}
           <MainTextArea
             width="80vw"

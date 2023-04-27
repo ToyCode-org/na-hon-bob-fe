@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { PostHead } from "@/components/meta/posthead";
 import Image from "next/image";
 import { GetServerSideProps } from "next";
 import { ParsedUrlQuery } from "querystring";
@@ -59,6 +60,11 @@ export default function Post({
 
   return (
     <Container>
+      <PostHead
+        title={title}
+        ingredient={ingredient}
+        description={description}
+      />
       <IconBtn style={isMyData ? {} : { display: "none" }}>
         <BiEdit onClick={() => goEditPost(post_id)} />
         <CgCloseR className="delete" onClick={deletePostById} />

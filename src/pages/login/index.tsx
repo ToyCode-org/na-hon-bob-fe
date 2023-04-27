@@ -7,8 +7,11 @@ import { MainInput } from "@/components/tagsComponents/inputs";
 import { MainButton } from "@/components/tagsComponents/buttons";
 import { inputDataMaker, userLogin } from "@/components/sign/signFNs";
 import { FormEvents, InputTarget } from "@/components/sign";
+import { useAppDispatch } from "@/redux/useRedux";
+import { getMyInfo } from "@/redux/slice/userSlice";
 
 export default function Login() {
+  const dispatch = useAppDispatch();
   const inputArray = [
     inputDataMaker("email", "email", "이메일"),
     inputDataMaker("password", "password", "비밀번호"),
