@@ -19,6 +19,7 @@ import { goHome, goPost } from "@/router/router";
 import { useAppDispatch, useAppSelector } from "@/redux/useRedux";
 import { forceLoading, updatePost } from "@/redux/slice/postSlice";
 import { EclipsLoadingSpinner } from "@/util/eclipsLoadingSpinner";
+import { cancelPosting } from "@/components/post/postFNs";
 
 export default function Edit() {
   const {
@@ -115,36 +116,35 @@ export default function Edit() {
   const onSubmitHandler = async (e: FormEvents) => {
     e.preventDefault();
     const { title, ingredient, description } = formState;
-    if (title === "" || description === "") {
-      swalError("내용을 입력해주세요");
-    } else {
-      swalQuestion("레시피를 저장할까요?", "").then(async res => {
-        if (res.value) {
-          try {
-            dispatch(forceLoading());
-            const uploadUrl = await imageUpload(uploadImage as Blob);
-            const ingredient = ingredientArr.join(",");
-            const formData = {
-              thumbnail: uploadUrl,
-              title,
-              ingredient,
-              description,
-            };
-            dispatch(
-              updatePost({
-                post_id: Number(id),
-                formData,
-              }),
-            );
-            swalSuccess("저장 완료!").then(() => {
-              goPost(Number(id));
-            });
-          } catch (error) {
-            swalError("알 수 없는 오류입니다.");
-          }
+    if (title === "") return swalError("제목을 입력해주세요");
+    if (description === "") return swalError("내용을 입력해주세요.");
+
+    swalQuestion("레시피를 저장할까요?", "").then(async res => {
+      if (res.value) {
+        try {
+          dispatch(forceLoading());
+          const uploadUrl = await imageUpload(uploadImage as Blob);
+          const ingredient = ingredientArr.join(",");
+          const formData = {
+            thumbnail: uploadUrl,
+            title,
+            ingredient,
+            description,
+          };
+          dispatch(
+            updatePost({
+              post_id: Number(id),
+              formData,
+            }),
+          );
+          swalSuccess("저장 완료!").then(() => {
+            goPost(Number(id));
+          });
+        } catch (error) {
+          swalError("알 수 없는 오류입니다.");
         }
-      });
-    }
+      }
+    });
   };
 
   return (
@@ -255,7 +255,7 @@ export default function Edit() {
             width="80px"
             height="40px"
             content="홈으로"
-            onClick={goHome}
+            onClick={cancelPosting}
           />
         </ButtonsWrap>
       </AddRecipyForm>

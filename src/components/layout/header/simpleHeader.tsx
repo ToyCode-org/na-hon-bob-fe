@@ -64,6 +64,9 @@ export const SimpleHeader = ({ isLogin, logoutHandler }: Props) => {
         <hr />
         <ManuCategory />
       </SideMenu>
+      <SearchPosition>
+        <Search />
+      </SearchPosition>
     </>
   );
 };
@@ -130,4 +133,10 @@ const Sign = styled.div`
       color: ${props => props.theme.FontHoverColor};
     }
   }
+`;
+
+const SearchPosition = styled.div`
+  position: absolute;
+  top: 25px;
+  right: 25px;
 `;

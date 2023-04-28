@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { useState, useEffect } from "react";
 import { BsSearch } from "react-icons/bs";
 import { FormEvents, InputEvent, InputTarget } from "@/components/sign";
 import { MainInput } from "@/components/tagsComponents/inputs";
@@ -13,6 +14,7 @@ export const Search = () => {
     inputData.current = target.value;
   };
 
+  const [searchOpen, setSearchOpen] = useState(false);
   const searchHandler = (e: FormEvents) => {
     e.preventDefault();
     if (inputData.current === "") {
@@ -21,18 +23,42 @@ export const Search = () => {
       goSearchPost(inputData.current);
     }
   };
+
+  const searchInputHandler = () => {
+    setSearchOpen(!searchOpen);
+  };
+
+  useEffect(() => {
+    if (searchOpen) {
+      const searchInput = document.getElementById(
+        "searchInput",
+      ) as HTMLInputElement;
+      searchInput?.focus();
+    }
+  }, [searchOpen]);
+
   return (
     <SearchWrap onSubmit={searchHandler}>
-      <MainInput
-        type="text"
-        width="200px"
-        height="40px"
-        placeholder="내용을 입력해주세요!"
-        onChange={onChangeHandler}
-      />
-      <button>
-        <BsSearch />
-      </button>
+      {searchOpen ? (
+        <>
+          <MainInput
+            id="searchInput"
+            type="text"
+            width="200px"
+            height="40px"
+            placeholder="내용을 입력해주세요!"
+            onChange={onChangeHandler}
+            onBlur={searchInputHandler}
+          />
+          <button>
+            <BsSearch />
+          </button>
+        </>
+      ) : (
+        <button type="button" onClick={searchInputHandler}>
+          <BsSearch />
+        </button>
+      )}
     </SearchWrap>
   );
 };
@@ -44,6 +70,16 @@ const SearchWrap = styled.form`
     position: absolute;
     transform: translate(-105%, 0%);
     border-radius: 15px;
+    transition: 0.3s;
+    animation: searchOpen 0.3s;
+    @keyframes searchOpen {
+      0% {
+        width: 0px;
+      }
+      100% {
+        width: 200px;
+      }
+    }
   }
   & button {
     background: none;

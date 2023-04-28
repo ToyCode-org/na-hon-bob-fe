@@ -17,6 +17,7 @@ import {
 import { BsCameraFill } from "react-icons/bs";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { EclipsLoadingSpinner } from "@/util/eclipsLoadingSpinner";
+import { cancelPosting } from "@/components/post/postFNs";
 
 export default function AddPost() {
   const dispatch = useAppDispatch();
@@ -88,37 +89,32 @@ export default function AddPost() {
   const onSubmitHandler = async (e: FormEvents) => {
     e.preventDefault();
     const { title, description } = formState;
-    if (
-      title === "" ||
-      ingredientArr.length === 0 ||
-      description === "" ||
-      uploadImage === ""
-    ) {
-      swalError("내용을 입력해주세요");
-    } else {
-      swalQuestion("레시피를 저장할까요?", "").then(async res => {
-        if (res.value) {
-          try {
-            dispatch(forceLoading());
-            const uploadUrl = await imageUpload(uploadImage as Blob);
-            const ingredient = ingredientArr.join(",");
-            const formData = {
-              thumbnail: uploadUrl,
-              title,
-              ingredient,
-              description,
-              user,
-            };
-            dispatch(addPost(formData));
-            swalSuccess("저장 완료!").then(() => {
-              goHome();
-            });
-          } catch (error) {
-            swalError("알 수 없는 오류입니다.");
-          }
+    if (uploadImage === "") return swalError("사진이 없어요!");
+    if (title === "") return swalError("제목을 입력해주세요");
+    if (description === "") return swalError("내용을 입력해주세요.");
+
+    swalQuestion("레시피를 저장할까요?", "").then(async res => {
+      if (res.value) {
+        try {
+          dispatch(forceLoading());
+          const uploadUrl = await imageUpload(uploadImage as Blob);
+          const ingredient = ingredientArr.join(",");
+          const formData = {
+            thumbnail: uploadUrl,
+            title,
+            ingredient,
+            description,
+            user,
+          };
+          dispatch(addPost(formData));
+          swalSuccess("저장 완료!").then(() => {
+            goHome();
+          });
+        } catch (error) {
+          swalError("알 수 없는 오류입니다.");
         }
-      });
-    }
+      }
+    });
   };
 
   return (
@@ -228,7 +224,7 @@ export default function AddPost() {
             width="80px"
             height="40px"
             content="홈으로"
-            onClick={goHome}
+            onClick={cancelPosting}
           />
         </ButtonsWrap>
       </AddRecipyForm>

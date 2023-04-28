@@ -8,7 +8,6 @@ import { MediaQuery } from "@/hooks/useMediaQuery";
 import { MainCategory } from "./category";
 import { SimpleHeader } from "./simpleHeader";
 import { goHome, goAddPost } from "@/router/router";
-import { useLoginCheck } from "@/hooks/useLoginCheck";
 import { Search } from "./Search";
 import { useAppDispatch, useAppSelector } from "@/redux/useRedux";
 import { getMyInfo } from "@/redux/slice/userSlice";
