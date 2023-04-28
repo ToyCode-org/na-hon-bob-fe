@@ -123,7 +123,8 @@ export default function Edit() {
       if (res.value) {
         try {
           dispatch(forceLoading());
-          const uploadUrl = await imageUpload(uploadImage as Blob);
+          const uploadUrl =
+            uploadImage === "" ? "" : await imageUpload(uploadImage as Blob);
           const ingredient = ingredientArr.join(",");
           const formData = {
             thumbnail: uploadUrl,
