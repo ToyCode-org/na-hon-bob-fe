@@ -18,7 +18,7 @@ export const SimpleHeader = ({ isLogin, logoutHandler }: Props) => {
     <>
       <Identity
         onClick={goHome}
-        style={{ textAlign: "center", fontSize: "1.6rem" }}
+        style={{ textAlign: "center", fontSize: "1.4rem" }}
       >
         나혼밥 레시피
       </Identity>

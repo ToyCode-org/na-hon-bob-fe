@@ -15,8 +15,13 @@ export const EclipsLoadingSpinner = () => {
 
 const LoadingSpinner = styled.div`
   position: fixed;
-  top: 45%;
-  left: 45%;
+  top: 46%;
+  left: 47%;
+
+  @media only all and (max-width: 767px) {
+    top: 45%;
+    left: 44%;
+  }
   .lds-ellipsis {
     display: inline-block;
     position: relative;

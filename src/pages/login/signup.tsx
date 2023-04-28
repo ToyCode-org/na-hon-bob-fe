@@ -212,6 +212,7 @@ export default function SignUp() {
 
 const Container = styled.div`
   margin: 0 auto;
+  margin-bottom: 100px;
   position: fixed;
   top: 0;
   left: 0;
@@ -231,6 +232,13 @@ const FormHead = styled.div`
   align-items: center;
   width: 300px;
   cursor: pointer;
+  @media only all and (max-width: 767px) {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    background-color: white;
+  }
 `;
 const Identity = styled.span`
   margin: 0 25px;
@@ -249,6 +257,9 @@ const SignUpWrap = styled.form`
   & p {
     margin: 20px 0 0 0;
     padding: 5px;
+  }
+  @media only all and (max-width: 767px) {
+    margin-top: 50px;
   }
 `;
 

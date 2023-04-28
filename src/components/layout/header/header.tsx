@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect } from "react";
 import { MainButton } from "../../tagsComponents/buttons";
 import { useRouter } from "next/router";
@@ -44,6 +45,9 @@ export const Header = () => {
 
   return (
     <Container style={noHeader}>
+      <Logo>
+        <Image src={"/images/egg.png"} alt="logo" width={50} height={50} />
+      </Logo>
       {mediaData === 4 ? (
         <HeadersWrap>
           <FirstHeader>
@@ -77,6 +81,15 @@ export const Header = () => {
     </Container>
   );
 };
+
+const Logo = styled.div`
+  position: absolute;
+  top: 15px;
+  left: 20px;
+  @media only all and (max-width: 1024px) {
+    display: none;
+  }
+`;
 
 const Container = styled.header`
   padding: 0 100px;
