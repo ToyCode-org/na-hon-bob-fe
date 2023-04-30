@@ -1,4 +1,5 @@
 import { userAPI } from "@/api/api";
+import { swalError } from "@/swal/swal";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 export const getMyInfo = createAsyncThunk(
@@ -93,6 +94,9 @@ export const userSlice = createSlice({
     builder.addCase(updateNickname.fulfilled, (state, action) => {
       state.user = { ...state.user, nickname: action.payload.data.nickname };
       state.isLoading = false;
+    });
+    builder.addCase(updateNickname.rejected, (state, action) => {
+      swalError("사용할 수 없는 닉네임입니다.");
     });
   },
 });

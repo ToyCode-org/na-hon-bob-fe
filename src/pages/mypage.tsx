@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, FormEvent } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/useRedux";
 import {
   getMyInfo,
@@ -44,7 +44,7 @@ export default function Mypage() {
 
   const [editNickname, setEditNickname] = useState({
     editMode: false,
-    nickname: "",
+    nickname: user.nickname,
   });
   const editmodeHandler = () => {
     setEditNickname(prev => ({ ...prev, editMode: !prev.editMode }));
@@ -56,7 +56,13 @@ export default function Mypage() {
     setEditNickname(prev => ({ ...prev, nickname: value }));
   };
 
-  const onSubmitHandler = async () => {
+  const onSubmitHandler = async (e: FormEvent) => {
+    e.preventDefault();
+    if (editNickname.nickname === "") return;
+    if (editNickname.nickname.length < 2) {
+      swalError("닉네임은 2자 이상, 15자 이하로 작성해주세요.");
+      return;
+    }
     dispatch(updateNickname(editNickname.nickname));
     editmodeHandler();
   };
@@ -94,6 +100,7 @@ export default function Mypage() {
               height="30px"
               placeholder="2~15자"
               onChange={editChangeHandler}
+              defaultValue={user?.nickname}
             />
             <MainButton
               type="submit"
