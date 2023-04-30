@@ -88,9 +88,11 @@ const ListItem = styled.li`
   font-size: 1rem;
   cursor: pointer;
   transition: 0.3s;
-  &:hover {
-    & .thumbnail {
-      height: 220px;
+  @media only all and (min-width: 768px) {
+    &:hover {
+      & .thumbnail {
+        height: 220px;
+      }
     }
   }
   @media only all and (max-width: 767px) {
