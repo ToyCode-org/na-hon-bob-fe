@@ -66,6 +66,10 @@
 <img src="https://img.shields.io/badge/GoogleCloud-4285F4?style=flat&logo=google&logoColor=white" />
 </div>
 
-<br>
+<br><br>
 
-[![나혼밥 레시피](http://img.youtube.com/vi/D4AGb8DNhas/0.jpg)](https://www.youtube.com/watch?v=D4AGb8DNhas) 
+## 배포환경 시연
+
+https://user-images.githubusercontent.com/85297720/235346689-6fbf2c01-b80b-4fbf-bd0b-7cf05986c0b5.mp4
+
+
