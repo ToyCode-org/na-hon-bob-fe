@@ -124,6 +124,7 @@ export const commentSlice = createSlice({
       state.comment.unshift({
         ...action.payload.data,
         user: action.payload.user,
+        isEditable: true,
       });
       state.isLoading = false;
     });

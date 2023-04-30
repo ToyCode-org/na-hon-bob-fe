@@ -31,14 +31,16 @@ export const HomeGrid = ({ post, isLoading, observer }: Props) => {
           } = recipy;
           return (
             <ListItem key={index} onClick={() => goPost(post_id)}>
-              <Image
-                className="profile"
-                src={`${thumbnail}`}
-                width={100}
-                height={100}
-                alt="thumnail"
-                priority
-              />
+              <ImageCover>
+                <Image
+                  className="thumbnail"
+                  src={`${thumbnail}`}
+                  width={248}
+                  height={200}
+                  alt="thumnail"
+                  priority
+                />
+              </ImageCover>
               <ContentWrap>
                 <UserInfo>
                   {avatar === "" ? (
@@ -85,21 +87,32 @@ const ListItem = styled.li`
   border-radius: 5px;
   font-size: 1rem;
   cursor: pointer;
+  transition: 0.3s;
+  &:hover {
+    & .thumbnail {
+      height: 220px;
+    }
+  }
   @media only all and (max-width: 767px) {
     width: 100%;
-    height: 83%;
+    height: 90%;
     margin-bottom: 50px;
   }
   @media only all and (min-width: 768px) and (max-width: 1023px) {
     height: 40vw;
   }
-  & .profile {
-    width: 248px;
-    min-height: 190px;
-    width: 100%;
+`;
+
+const ImageCover = styled.div`
+  width: 100%;
+  min-height: 200px;
+  overflow: hidden;
+  & .thumbnail {
     border-bottom: 1px solid ${props => props.theme.componentBorderColor};
+    transition: 0.3s;
 
     @media only all and (max-width: 767px) {
+      width: 100%;
       height: 400px;
     }
   }
