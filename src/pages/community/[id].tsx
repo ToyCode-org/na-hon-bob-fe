@@ -49,14 +49,16 @@ export default function Community() {
   return (
     <Container>
       <ContentWrap>
-        <IconBtn style={communityState.isEditable ? {} : { display: "none" }}>
-          <BiEdit onClick={() => goEditCommunity(Number(query.id))} />
-          <CgCloseR
-            className="delete"
-            onClick={() => deleteCommunity(Number(query.id))}
-          />
-        </IconBtn>
-        <Title>{communityState.title}</Title>
+        <ContentHeader>
+          <Title>{communityState.title}</Title>
+          <IconBtn style={communityState.isEditable ? {} : { display: "none" }}>
+            <BiEdit onClick={() => goEditCommunity(Number(query.id))} />
+            <CgCloseR
+              className="delete"
+              onClick={() => deleteCommunity(Number(query.id))}
+            />
+          </IconBtn>
+        </ContentHeader>
         <Content>{communityState.content}</Content>
       </ContentWrap>
       <CommunityComment />
@@ -65,22 +67,33 @@ export default function Community() {
 }
 
 const Container = styled.div`
+  margin: 0 auto;
   margin-top: 150px;
   margin-bottom: 100px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 700px;
+  @media only all and (max-width: 767px) {
+    width: 100%;
+  }
 `;
 
 const ContentWrap = styled.div`
-  width: 700px;
+  width: 100%;
   min-height: 300px;
   border: 1px solid lightgray;
 `;
 
+const ContentHeader = styled.div`
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid lightgray;
+`;
+
 const IconBtn = styled.div`
-  position: absolute;
-  transform: translate(600px, 70%);
   & svg {
     margin: 0 5px;
     font-size: 30px;
@@ -91,14 +104,15 @@ const IconBtn = styled.div`
       color: red;
     }
   }
+  @media only all and (max-width: 767px) {
+    /* transform: translate(750%, 70%); */
+  }
 `;
 
 const Title = styled.h2`
-  padding: 20px;
   display: flex;
   align-items: center;
   height: 80px;
-  border-bottom: 1px solid lightgray;
 `;
 
 const Content = styled.pre`

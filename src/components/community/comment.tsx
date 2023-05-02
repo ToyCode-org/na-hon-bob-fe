@@ -11,7 +11,7 @@ import { CommunityCommentList } from "./commentList";
 import { community_commentAPI } from "@/api/api";
 import { Paging } from "@/util/paging";
 import { CommunityList } from ".";
-import { swalError, swalQuestion, swalSuccess } from "@/swal/swal";
+import { swalError, swalQuestion } from "@/swal/swal";
 
 export const CommunityComment = () => {
   const { query } = useRouter();
@@ -133,6 +133,9 @@ export const CommunityComment = () => {
 const Container = styled.div`
   margin-top: 50px;
   width: 700px;
+  @media only all and (max-width: 767px) {
+    width: 100%;
+  }
 `;
 
 const CommentForm = styled.form`

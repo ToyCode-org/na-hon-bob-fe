@@ -57,13 +57,15 @@ export const CommunityCommentList = ({
 
   return (
     <CommentList>
-      <UserInfo>
-        {avatar === "" ? (
-          <BoringAvatar />
-        ) : (
-          <Image src={avatar} width={50} height={50} alt="profile" />
-        )}
-        <span>{nickname}</span>
+      <CardHeader>
+        <UserInfo>
+          {avatar === "" ? (
+            <BoringAvatar />
+          ) : (
+            <Image src={avatar} width={50} height={50} alt="profile" />
+          )}
+          <span>{nickname}</span>
+        </UserInfo>
         <IconBtn style={isEditable ? {} : { display: "none" }}>
           <BiEdit onClick={editModeHandler} />
           <CgCloseR
@@ -71,7 +73,7 @@ export const CommunityCommentList = ({
             onClick={() => deleteCommentHandler(community_comment_id)}
           />
         </IconBtn>
-      </UserInfo>
+      </CardHeader>
       <Content>
         {cardState.editMode ? (
           <>
@@ -110,18 +112,21 @@ const CommentList = styled.li`
   border: 1px solid lightgray;
 `;
 
-const UserInfo = styled.div`
+const CardHeader = styled.div`
   display: flex;
+  justify-content: space-between;
   align-items: center;
   & img {
     margin-right: 10px;
     border-radius: 50px;
   }
 `;
+const UserInfo = styled.div`
+  display: flex;
+  align-items: center;
+`;
 
 const IconBtn = styled.div`
-  position: absolute;
-  transform: translate(620px, -40%);
   & svg {
     margin: 0 5px;
     font-size: 20px;
@@ -132,8 +137,9 @@ const IconBtn = styled.div`
       color: red;
     }
   }
-  @media only all and (max-width: 767px) {
-  }
+  /* @media only all and (max-width: 767px) {
+    transform: translate(635%, -40%);
+  } */
 `;
 
 const Content = styled.div`
