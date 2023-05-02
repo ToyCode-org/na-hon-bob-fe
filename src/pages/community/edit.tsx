@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useRouter } from "next/router";
+import { useState, useEffect } from "react";
 import {
   MainInput,
   MainTextArea,
@@ -7,12 +8,30 @@ import {
 } from "@/components/tagsComponents/inputs";
 import { MainButton, SubButton } from "@/components/tagsComponents/buttons";
 import { FormEvents } from "@/components/sign";
+import { goBack, forceGoBack } from "@/router/router";
+import { swalError, swalQuestion, swalSuccess } from "@/swal/swal";
+import { communityAPI } from "@/api/api";
 
 export default function EidtCommunity() {
+  const { query } = useRouter();
   const [formData, setFormData] = useState({
     title: "",
     content: "",
   });
+
+  const getOneCommunity = async (community_id: number) => {
+    const {
+      data: {
+        data: { title, content },
+      },
+    } = await communityAPI.getOne(community_id);
+    setFormData(prev => ({ ...prev, title, content }));
+  };
+  useEffect(() => {
+    if (Number(query.id) >= 0) {
+      getOneCommunity(Number(query.id));
+    }
+  }, [query.id]);
 
   const onChangeHandler = (e: FormEvents) => {
     const target = e.target as HTMLInputElement | HTMLTextAreaElement;
@@ -23,9 +42,19 @@ export default function EidtCommunity() {
 
   const onSubmitHandler = (e: FormEvents) => {
     e.preventDefault();
-    console.log("submit");
+    swalQuestion("저장할까요?", "").then(async res => {
+      if (res.value) {
+        try {
+          await communityAPI.updateCommunity(Number(query.id), formData);
+          swalSuccess("저장완료!").then(() => {
+            forceGoBack();
+          });
+        } catch (error) {
+          swalError("알 수 없는 오류입니다.");
+        }
+      }
+    });
   };
-  console.log(formData);
   return (
     <Container>
       <CommunityForm onChange={onChangeHandler} onSubmit={onSubmitHandler}>
@@ -35,6 +64,7 @@ export default function EidtCommunity() {
           height="60px"
           placeholder="제목"
           maxLength={20}
+          defaultValue={formData.title}
         />
         <MaxLengthChecker length={formData.title.length} maxLength={20} />
         <MainTextArea
@@ -43,6 +73,7 @@ export default function EidtCommunity() {
           height="150px"
           placeholder="내용"
           maxLength={500}
+          defaultValue={formData.content}
         />
         <MaxLengthChecker length={formData.content.length} maxLength={500} />
         <ButtonsWrap>
@@ -57,6 +88,7 @@ export default function EidtCommunity() {
             width="100px"
             height="40px"
             content="돌아가기"
+            onClick={goBack}
           />
         </ButtonsWrap>
       </CommunityForm>

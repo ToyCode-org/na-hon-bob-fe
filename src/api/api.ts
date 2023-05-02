@@ -54,7 +54,7 @@ export const commentAPI = {
 
 export const communityAPI = {
   getAllCommunity: (page: number) =>
-    auth.get(`/community?page=${page}&limit=20`),
+    auth.get(`/community?page=${page}&limit=10`),
   getOne: (community_id: number) => auth.get(`/community/${community_id}`),
   createCommunity: (formData: CreateCommunity) =>
     auth.post("/community", formData),
@@ -67,7 +67,7 @@ export const communityAPI = {
 export const community_commentAPI = {
   getAllComment: (community_id: number, page: number) =>
     auth.get(
-      `/community_comment?community_id=${community_id}&page=${page}&limit=20`,
+      `/community_comment?community_id=${community_id}&page=${page}&limit=10`,
     ),
   createComment: (community_id: number, formData: CreateCommunityComment) =>
     auth.post(`/community_comment?community_id=${community_id}`, formData),

@@ -7,7 +7,7 @@ import {
 } from ".";
 import { userAPI } from "@/api/api";
 import Router from "next/router";
-import { swalTimer, swalSuccess, swalError } from "@/swal/swal";
+import { swalTimer, swalSuccess, swalError, swalQuestion } from "@/swal/swal";
 
 export const inputDataMaker = (
   type: string,

@@ -16,6 +16,10 @@ export const goBack = () => {
   });
 };
 
+export const forceGoBack = () => {
+  router.back();
+};
+
 export const goLogin = () => {
   router.push("/login");
 };
@@ -37,4 +41,12 @@ export const goEditPost = (id: number) => {
 
 export const goSearchPost = (keyword: string) => {
   router.push({ pathname: "/post/search", query: { keyword: `${keyword}` } });
+};
+
+export const goCommunity = () => {
+  router.push("/community");
+};
+
+export const goEditCommunity = (id: number) => {
+  router.push({ pathname: "/community/edit", query: { id: `${id}` } });
 };

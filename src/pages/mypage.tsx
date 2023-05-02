@@ -9,14 +9,13 @@ import {
 } from "@/redux/slice/userSlice";
 import { swalError } from "@/swal/swal";
 import { imageUpload } from "@/util/imageUploadTest";
-import { InputTarget } from "@/components/sign";
-import { InputEvent } from "@/components/sign";
+import { InputTarget, InputEvent } from "@/components/sign";
+import { deleteUser } from "@/components/mypage/mypageFNs";
 import { MainInput } from "@/components/tagsComponents/inputs";
 import { MainButton } from "@/components/tagsComponents/buttons";
 import { BoringAvatar } from "@/components/post/boringAvatar";
 import { BiEdit } from "react-icons/bi";
 import { RiCloseCircleLine } from "react-icons/ri";
-import { postAPI } from "@/api/api";
 
 export default function Mypage() {
   const dispatch = useAppDispatch();
@@ -117,6 +116,7 @@ export default function Mypage() {
           </>
         )}
       </UserInfo>
+      {/* <p onClick={deleteUser}>회원탈퇴</p> */}
     </Container>
   );
 }

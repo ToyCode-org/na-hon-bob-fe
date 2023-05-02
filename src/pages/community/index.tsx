@@ -1,31 +1,60 @@
 import styled from "styled-components";
 import Link from "next/link";
+import { useState, useEffect } from "react";
 import { MediaQuery } from "../../hooks/useMediaQuery";
 import { AiOutlineLike } from "react-icons/ai";
+import { communityAPI } from "@/api/api";
+import { TimeToToday } from "@/util/timeToToday";
+import { Paging } from "@/util/paging";
 
 export default function Community() {
   const display = MediaQuery();
-  const mock = new Array(50).fill(0);
+
+  const [{ communitys, page, totalPages }, setCommunitys] = useState({
+    communitys: [],
+    page: 1,
+    totalPages: 1,
+  });
+  const getCommunitys = async (pageNum: number) => {
+    const { data } = await communityAPI.getAllCommunity(pageNum);
+    setCommunitys(prev => ({ ...prev, totalPages: data.totalPages }));
+    setCommunitys(prev => ({ ...prev, communitys: data.data }));
+  };
+
+  const pageHandler = (page: number) => {
+    setCommunitys(prev => ({ ...prev, page: page }));
+  };
+
+  useEffect(() => {
+    getCommunitys(page);
+  }, [page]);
 
   return (
     <Container>
       <CommunityWrap>
-        {mock.map((v, i) => {
+        {communitys?.map((community, index) => {
+          const {
+            community_id,
+            title,
+            createdAt,
+            user: { nickname },
+            likes_count,
+          } = community;
           return (
-            <CommunityItems key={i}>
-              <Link href={`/community/${i}`}>
+            <CommunityItems key={index}>
+              <Link href={`/community/${community_id}`}>
                 <LikeBox>
                   <div>
                     <AiOutlineLike />
                   </div>
-                  <span>0</span>
+                  <span>{likes_count}</span>
                 </LikeBox>
                 <Content>
-                  <Title>제목 [0]</Title>
+                  <Title>{title}</Title>
                   <SubInfo>
-                    <span>닉네임</span>
+                    <span>{nickname}</span>
                     {" | "}
-                    <span>몇분전</span>
+                    <span>{TimeToToday(+new Date(createdAt))}</span>
                   </SubInfo>
                 </Content>
               </Link>
@@ -33,12 +62,21 @@ export default function Community() {
           );
         })}
       </CommunityWrap>
+      <Paging
+        activePage={page}
+        totalPage={totalPages}
+        prevPageText={"<"}
+        nextPageText={">"}
+        handlePageChange={pageHandler}
+        maxItems={5}
+      />
     </Container>
   );
 }
 
 const Container = styled.div`
   margin-top: 150px;
+  padding-bottom: 100px;
 `;
 
 const CommunityWrap = styled.ul`
@@ -60,6 +98,9 @@ const CommunityItems = styled.li`
     &:hover {
       background-color: ${props => props.theme.hoverBackground};
     }
+  }
+  @media only all and (max-width: 767px) {
+    width: 100%;
   }
 `;
 

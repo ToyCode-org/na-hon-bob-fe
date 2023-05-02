@@ -82,6 +82,7 @@ export const MainTextArea = ({
       name={name}
       autoComplete="off"
       maxLength={maxLength || 1000}
+      spellCheck="false"
       style={
         border !== ""
           ? {

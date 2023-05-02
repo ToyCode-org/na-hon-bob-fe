@@ -33,6 +33,12 @@ export const light = {
 
   // createdAt
   createdAt: "gray",
+
+  // pagination
+  pagingButton: "#fff09d",
+  activeHoverButton: "gold",
+  prevNextButton: "#ffe972",
+  noPrevNextButton: "#fff7cb",
 };
 
 export const dark = {

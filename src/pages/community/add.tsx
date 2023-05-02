@@ -7,7 +7,9 @@ import {
 } from "@/components/tagsComponents/inputs";
 import { MainButton, SubButton } from "@/components/tagsComponents/buttons";
 import { FormEvents } from "@/components/sign";
-import { goBack } from "@/router/router";
+import { goBack, goCommunity } from "@/router/router";
+import { swalError, swalQuestion, swalSuccess } from "@/swal/swal";
+import { communityAPI } from "@/api/api";
 
 export default function AddCommunity() {
   const [formData, setFormData] = useState({
@@ -24,9 +26,20 @@ export default function AddCommunity() {
 
   const onSubmitHandler = (e: FormEvents) => {
     e.preventDefault();
-    console.log("submit");
+    swalQuestion("저장할까요?", "").then(async res => {
+      if (res.value) {
+        try {
+          await communityAPI.createCommunity(formData);
+          swalSuccess("저장완료!").then(() => {
+            goCommunity();
+          });
+        } catch (error) {
+          swalError("알 수 없는 오류입니다.");
+        }
+      }
+    });
   };
-  console.log(formData);
+
   return (
     <Container>
       <CommunityForm onChange={onChangeHandler} onSubmit={onSubmitHandler}>

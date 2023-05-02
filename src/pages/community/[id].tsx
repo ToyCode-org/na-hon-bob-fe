@@ -1,63 +1,106 @@
-import { communityAPI, community_commentAPI } from "@/api/api";
 import styled from "styled-components";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import { CommunityComment } from "@/components/community/comment";
+import { BiEdit } from "react-icons/bi";
+import { CgCloseR } from "react-icons/cg";
+import { communityAPI } from "@/api/api";
+import { forceGoBack, goEditCommunity } from "@/router/router";
+import { swalQuestion, swalSuccess } from "@/swal/swal";
 
 export default function Community() {
-  const cFormData = {
-    title: "test",
-    content: "test",
+  const { query } = useRouter();
+  const [communityState, setCommunityState] = useState({
+    community_id: 0,
+    content: "",
+    createdAt: "",
+    isEditable: false,
+    isLiked: false,
+    likeUsers: [],
+    likes_count: 0,
+    title: "",
+    user: { nickname: "", avatar: "" },
+    user_id: 0,
+  });
+
+  const getOneCommunity = async (community_id: number) => {
+    const { data } = await communityAPI.getOne(community_id);
+    setCommunityState(data.data);
   };
-  const cUpdate = {
-    title: "editttt",
-    content: "editttt",
+  useEffect(() => {
+    if (Number(query.id) >= 0) {
+      getOneCommunity(Number(query.id));
+    }
+  }, [query.id]);
+
+  const deleteCommunity = async (community_id: number) => {
+    swalQuestion("정말 삭제할까요?", "삭제한 데이터는 복구되지 않습니다.").then(
+      async res => {
+        if (res.value) {
+          await communityAPI.deleteCommunity(community_id);
+          swalSuccess("삭제완료").then(() => {
+            forceGoBack();
+          });
+        }
+      },
+    );
   };
-  const test1 = async () => {
-    const data = await communityAPI.getAllCommunity(1);
-    console.log(data);
-  };
-  const test2 = async () => {
-    const data = await communityAPI.createCommunity(cFormData);
-    console.log(data);
-  };
-  const test3 = async () => {
-    const data = await communityAPI.updateCommunity(2, cUpdate);
-    console.log(data);
-  };
-  const test4 = async () => {
-    const data = await communityAPI.deleteCommunity(3);
-    console.log(data);
-  };
-  const ccFormData = {
-    content: "test",
-  };
-  const ccUpdate = {
-    content: "editttttt",
-  };
-  const test5 = async () => {
-    const data = await community_commentAPI.getAllComment(3, 1);
-    console.log(data);
-  };
-  const test6 = async () => {
-    const data = await community_commentAPI.createComment(4, ccFormData);
-    console.log(data);
-  };
-  const test7 = async () => {
-    const data = await community_commentAPI.editComment(1, ccUpdate);
-    console.log(data);
-  };
-  const test8 = async () => {
-    const data = await community_commentAPI.deleteComment(2);
-    console.log(data);
-  };
+
   return (
-    <div>
-      <div onClick={test1}>게시글 조회 테스트</div>
-      <div onClick={test2}>게시글 생성 테스트</div>
-      <div onClick={test3}>게시글 수정 테스트</div>
-      <div onClick={test4}>게시글 삭제 테스트</div>
-      <div onClick={test5}>댓글 조회 테스트</div>
-      <div onClick={test6}>댓글 생성 테스트</div>
-      <div onClick={test7}>댓글 수정 테스트</div>
-      <div onClick={test8}>댓글 삭제 테스트</div>
-    </div>
+    <Container>
+      <ContentWrap>
+        <IconBtn style={communityState.isEditable ? {} : { display: "none" }}>
+          <BiEdit onClick={() => goEditCommunity(Number(query.id))} />
+          <CgCloseR
+            className="delete"
+            onClick={() => deleteCommunity(Number(query.id))}
+          />
+        </IconBtn>
+        <Title>{communityState.title}</Title>
+        <Content>{communityState.content}</Content>
+      </ContentWrap>
+      <CommunityComment />
+    </Container>
   );
 }
+
+const Container = styled.div`
+  margin-top: 150px;
+  margin-bottom: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const ContentWrap = styled.div`
+  width: 700px;
+  min-height: 300px;
+  border: 1px solid lightgray;
+`;
+
+const IconBtn = styled.div`
+  position: absolute;
+  transform: translate(600px, 70%);
+  & svg {
+    margin: 0 5px;
+    font-size: 30px;
+    background-color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    &.delete {
+      color: red;
+    }
+  }
+`;
+
+const Title = styled.h2`
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  height: 80px;
+  border-bottom: 1px solid lightgray;
+`;
+
+const Content = styled.pre`
+  padding: 20px;
+`;
