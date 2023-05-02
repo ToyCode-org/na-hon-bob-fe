@@ -22,7 +22,7 @@ export const MainCategory = () => {
     <Category>
       {categories.map((cate, index) => {
         const { name, link } = cate;
-        if (index >= 1) {
+        if (index >= 2) {
           return (
             <Link
               key={index}
