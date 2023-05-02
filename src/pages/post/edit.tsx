@@ -9,7 +9,11 @@ import {
   FormEvents,
   ButtonEvent,
 } from "@/components/sign";
-import { MainInput, MainTextArea } from "@/components/tagsComponents/inputs";
+import {
+  MainInput,
+  MainTextArea,
+  MaxLengthChecker,
+} from "@/components/tagsComponents/inputs";
 import { MainButton, CancelButton } from "@/components/tagsComponents/buttons";
 import { imageUpload } from "@/util/imageUploadTest";
 import { swalError, swalQuestion, swalSuccess } from "@/swal/swal";
@@ -185,7 +189,7 @@ export default function Edit() {
                         id={name}
                         name={name}
                         onKeyDown={addIngredient}
-                        maxLength={10}
+                        maxLength={20}
                         placeholder={placeholderArray[index]}
                         autoComplete="off"
                         width="350px"
@@ -200,14 +204,21 @@ export default function Edit() {
                       />
                     </AddIngredientDiv>
                   ) : (
-                    <MainInput
-                      id={name}
-                      name={name}
-                      placeholder={placeholderArray[index]}
-                      autoComplete="off"
-                      width="350px"
-                      height="50px"
-                    />
+                    <>
+                      <MainInput
+                        id={name}
+                        name={name}
+                        placeholder={placeholderArray[index]}
+                        autoComplete="off"
+                        width="350px"
+                        height="50px"
+                        maxLength={15}
+                      />
+                      <MaxLengthChecker
+                        length={formState.title.length}
+                        maxLength={15}
+                      />
+                    </>
                   )}
                 </React.Fragment>
               );
@@ -238,6 +249,11 @@ export default function Edit() {
                     placeholder={placeholderArray[index]}
                     width="350px"
                     height="280px"
+                    maxLength={500}
+                  />
+                  <MaxLengthChecker
+                    length={formState.title.length}
+                    maxLength={500}
                   />
                 </React.Fragment>
               );

@@ -6,7 +6,11 @@ import { imageUpload } from "@/util/imageUploadTest";
 import { swalError, swalQuestion, swalSuccess } from "@/swal/swal";
 import { useAppDispatch, useAppSelector } from "@/redux/useRedux";
 import { addPost, forceLoading } from "@/redux/slice/postSlice";
-import { MainInput, MainTextArea } from "@/components/tagsComponents/inputs";
+import {
+  MainInput,
+  MainTextArea,
+  MaxLengthChecker,
+} from "@/components/tagsComponents/inputs";
 import { MainButton, CancelButton } from "@/components/tagsComponents/buttons";
 import {
   InputEvent,
@@ -152,15 +156,16 @@ export default function AddPost() {
                   {index === 1 ? (
                     <AddIngredientDiv>
                       <MainInput
-                        id="ingredient"
+                        id={name}
                         name={name}
                         onKeyDown={addIngredient}
-                        maxLength={10}
+                        maxLength={20}
                         placeholder={placeholderArray[index]}
                         autoComplete="off"
                         width="350px"
                         height="50px"
                       />
+
                       <MainButton
                         onClick={addIngredient}
                         type="button"
@@ -170,13 +175,20 @@ export default function AddPost() {
                       />
                     </AddIngredientDiv>
                   ) : (
-                    <MainInput
-                      name={name}
-                      placeholder={placeholderArray[index]}
-                      autoComplete="off"
-                      width="350px"
-                      height="50px"
-                    />
+                    <>
+                      <MainInput
+                        name={name}
+                        placeholder={placeholderArray[index]}
+                        maxLength={15}
+                        autoComplete="off"
+                        width="350px"
+                        height="50px"
+                      />
+                      <MaxLengthChecker
+                        length={formState.title.length}
+                        maxLength={15}
+                      />
+                    </>
                   )}
                 </React.Fragment>
               );
@@ -206,6 +218,11 @@ export default function AddPost() {
                     placeholder={placeholderArray[index]}
                     width="350px"
                     height="280px"
+                    maxLength={500}
+                  />
+                  <MaxLengthChecker
+                    length={formState.description.length}
+                    maxLength={500}
                   />
                 </React.Fragment>
               );

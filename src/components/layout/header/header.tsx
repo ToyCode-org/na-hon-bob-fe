@@ -45,7 +45,13 @@ export const Header = () => {
   return (
     <Container style={noHeader}>
       <Logo>
-        <Image src={"/images/egg.png"} alt="logo" width={50} height={50} />
+        <Image
+          src={"/images/egg.png"}
+          alt="logo"
+          width={50}
+          height={50}
+          priority
+        />
       </Logo>
       {mediaData === 4 ? (
         <HeadersWrap>

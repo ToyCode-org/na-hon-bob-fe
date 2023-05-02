@@ -1,7 +1,19 @@
+import { swalQuestion } from "@/swal/swal";
 import router from "next/router";
 
 export const goHome = () => {
   router.push("/");
+};
+
+export const goBack = () => {
+  swalQuestion(
+    "이전 페이지로 돌아갈까요?",
+    "작성된 내용은 저장되지 않습니다.",
+  ).then(res => {
+    if (res.value) {
+      router.back();
+    }
+  });
 };
 
 export const goLogin = () => {

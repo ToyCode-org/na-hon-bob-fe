@@ -102,7 +102,8 @@ const TextArea = styled.textarea`
   border-radius: 5px;
   font-size: 1.2rem;
   resize: none;
-  white-space: pre;
+  white-space: pre-wrap;
+  overflow: hidden;
   &:hover {
     background: ${props => props.theme.inputBorderColor};
   }
@@ -111,4 +112,23 @@ const TextArea = styled.textarea`
     border-color: ${props => props.theme.hoverBorderColor};
     box-shadow: 0 0 1px ${props => props.theme.hoverBorderColor};
   }
+`;
+
+interface MaxLengthProps {
+  length: number;
+  maxLength: number;
+}
+export const MaxLengthChecker = ({ length, maxLength }: MaxLengthProps) => {
+  return (
+    <MaxLength>
+      {length} / {maxLength}
+    </MaxLength>
+  );
+};
+
+const MaxLength = styled.p`
+  margin-bottom: 10px;
+  text-align: right;
+  font-size: 0.9rem;
+  color: ${props => props.theme.subFontColor};
 `;

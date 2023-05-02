@@ -1,6 +1,12 @@
 import { auth, base } from "./instance";
 import { FormData, LoginFormData } from "@/components/sign";
 import { postFormData } from "@/components/post";
+import {
+  CreateCommunity,
+  CreateCommunityComment,
+  UpdateCommunity,
+  UpdateCommunityComment,
+} from "@/components/community";
 
 export const userAPI = {
   sendVerificationCode: (email: string) =>
@@ -44,4 +50,31 @@ export const commentAPI = {
   editComment: (comment_id: number, content: string) =>
     auth.put(`/comment/${comment_id}`, { content }),
   deleteComment: (comment_id: number) => auth.delete(`/comment/${comment_id}`),
+};
+
+export const communityAPI = {
+  getAllCommunity: (page: number) =>
+    auth.get(`/community?page=${page}&limit=20`),
+  getOne: (community_id: number) => auth.get(`/community/${community_id}`),
+  createCommunity: (formData: CreateCommunity) =>
+    auth.post("/community", formData),
+  updateCommunity: (community_id: number, formData: UpdateCommunity) =>
+    auth.put(`/community/${community_id}`, formData),
+  deleteCommunity: (community_id: number) =>
+    auth.delete(`/community/${community_id}`),
+};
+
+export const community_commentAPI = {
+  getAllComment: (community_id: number, page: number) =>
+    auth.get(
+      `/community_comment?community_id=${community_id}&page=${page}&limit=20`,
+    ),
+  createComment: (community_id: number, formData: CreateCommunityComment) =>
+    auth.post(`/community_comment?community_id=${community_id}`, formData),
+  editComment: (
+    community_comment_id: number,
+    formData: UpdateCommunityComment,
+  ) => auth.put(`/community_comment/${community_comment_id}`, formData),
+  deleteComment: (community_comment_id: number) =>
+    auth.delete(`/community_comment/${community_comment_id}`),
 };
