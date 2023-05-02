@@ -47,6 +47,10 @@ export const goCommunity = () => {
   router.push("/community");
 };
 
+export const goAddCommunity = () => {
+  router.push("/community/add");
+};
+
 export const goEditCommunity = (id: number) => {
   router.push({ pathname: "/community/edit", query: { id: `${id}` } });
 };

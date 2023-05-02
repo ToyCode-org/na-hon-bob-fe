@@ -10,7 +10,8 @@ const makeCategory = (name: string, link: string) => {
 };
 
 const categories = [
-  makeCategory("글쓰기", "/post/add"),
+  makeCategory("레시피 글쓰기", "/post/add"),
+  makeCategory("커뮤니티 글쓰기", "/community/add"),
   makeCategory("레시피", "/"),
   makeCategory("커뮤니티", "/community"),
 ];

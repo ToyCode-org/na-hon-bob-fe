@@ -1,13 +1,13 @@
 import styled from "styled-components";
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { MainButton } from "../../tagsComponents/buttons";
 import { useRouter } from "next/router";
 import { MediaQuery } from "@/hooks/useMediaQuery";
 import { MainCategory } from "./category";
 import { SimpleHeader } from "./simpleHeader";
-import { goHome, goAddPost } from "@/router/router";
+import { goHome, goAddPost, goAddCommunity } from "@/router/router";
 import { Search } from "./Search";
 import { useAppDispatch, useAppSelector } from "@/redux/useRedux";
 import { getMyInfo } from "@/redux/slice/userSlice";
@@ -41,6 +41,11 @@ export const Header = () => {
   useEffect(() => {
     dispatch(getMyInfo());
   }, [pathname]);
+
+  const [selectPosting, setSelectPosting] = useState(false);
+  const selectPostingHandler = () => {
+    setSelectPosting(prev => !prev);
+  };
 
   return (
     <Container style={noHeader}>
@@ -76,8 +81,26 @@ export const Header = () => {
               width="80px"
               height="30px"
               content="글쓰기"
-              onClick={goAddPost}
+              onClick={selectPostingHandler}
             />
+            <PostingSelector style={selectPosting ? {} : { display: "none" }}>
+              <li
+                onClick={() => {
+                  goAddPost();
+                  selectPostingHandler();
+                }}
+              >
+                레시피
+              </li>
+              <li
+                onClick={() => {
+                  goAddCommunity();
+                  selectPostingHandler();
+                }}
+              >
+                커뮤니티
+              </li>
+            </PostingSelector>
           </SecondHeader>
         </HeadersWrap>
       ) : (
@@ -142,6 +165,46 @@ const Sign = styled.div`
     cursor: pointer;
     &:hover {
       color: ${props => props.theme.FontHoverColor};
+    }
+  }
+`;
+
+const PostingSelector = styled.ul`
+  position: absolute;
+  top: 60px;
+  right: 100px;
+  list-style: none;
+  background-color: white;
+  border: 1px solid lightgray;
+  border-radius: 10px;
+  z-index: 1;
+
+  animation: selectPostOn 0.3s;
+  @keyframes selectPostOn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  & li {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90px;
+    height: 50px;
+    transition: 0.3s;
+    cursor: pointer;
+    &:hover {
+      background-color: ${props => props.theme.hoverBackground};
+    }
+    &:first-child {
+      border-radius: 10px 10px 0 0;
+    }
+    &:last-child {
+      border-radius: 0 0 10px 10px;
     }
   }
 `;
