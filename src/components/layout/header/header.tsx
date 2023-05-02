@@ -171,8 +171,7 @@ const Sign = styled.div`
 
 const PostingSelector = styled.ul`
   position: absolute;
-  top: 60px;
-  right: 100px;
+  transform: translate(245%, 75%);
   list-style: none;
   background-color: white;
   border: 1px solid lightgray;
