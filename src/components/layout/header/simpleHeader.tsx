@@ -16,12 +16,7 @@ export const SimpleHeader = ({ isLogin, logoutHandler }: Props) => {
 
   return (
     <>
-      <Identity
-        onClick={goHome}
-        style={{ textAlign: "center", fontSize: "1.4rem" }}
-      >
-        나혼밥 레시피
-      </Identity>
+      <Identity onClick={goHome}>나혼밥 레시피</Identity>
       <Menu>
         <TiThMenu onClick={sideMenuOpen} />
       </Menu>
@@ -32,12 +27,7 @@ export const SimpleHeader = ({ isLogin, logoutHandler }: Props) => {
       <SideMenu
         style={isOpen ? { transform: "translateX(-37%)", opacity: "1" } : {}}
       >
-        <Identity
-          onClick={sideMenuOpen}
-          style={{ textAlign: "center", fontSize: "1.6rem" }}
-        >
-          나혼밥 레시피
-        </Identity>
+        <Identity onClick={sideMenuOpen}>나혼밥 레시피</Identity>
         <Sign>
           {!isLogin ? (
             <>
@@ -70,12 +60,6 @@ export const SimpleHeader = ({ isLogin, logoutHandler }: Props) => {
     </>
   );
 };
-
-const Identity = styled.h1`
-  font-size: 1.3rem;
-  font-weight: bold;
-  cursor: pointer;
-`;
 
 const Menu = styled.span`
   & svg {
@@ -117,6 +101,13 @@ const SideMenu = styled.div`
   opacity: 0.7;
   top: 0;
   transform: translateX(-150%);
+`;
+
+const Identity = styled.div`
+  font-size: 1.6rem;
+  text-align: center;
+  font-weight: bold;
+  cursor: pointer;
 `;
 
 const Sign = styled.div`

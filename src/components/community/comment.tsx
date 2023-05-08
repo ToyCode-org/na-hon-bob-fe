@@ -118,14 +118,16 @@ export const CommunityComment = () => {
           );
         })}
       </CommentWrap>
-      <Paging
-        activePage={page}
-        totalPage={totalPages}
-        prevPageText={"<"}
-        nextPageText={">"}
-        handlePageChange={pagingHandler}
-        maxItems={5}
-      />
+      {commentList.length === 0 ? null : (
+        <Paging
+          activePage={page}
+          totalPage={totalPages}
+          prevPageText={"<"}
+          nextPageText={">"}
+          handlePageChange={pagingHandler}
+          maxItems={5}
+        />
+      )}
     </Container>
   );
 };
@@ -139,10 +141,11 @@ const Container = styled.div`
 `;
 
 const CommentForm = styled.form`
+  width: 100%;
   display: flex;
   justify-content: space-between;
   & img {
-    margin: 0 10px;
+    margin: 0 5px;
     border-radius: 50px;
   }
 `;

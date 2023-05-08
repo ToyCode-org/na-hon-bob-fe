@@ -10,8 +10,6 @@ const makeCategory = (name: string, link: string) => {
 };
 
 const categories = [
-  makeCategory("레시피 글쓰기", "/post/add"),
-  makeCategory("커뮤니티 글쓰기", "/community/add"),
   makeCategory("레시피", "/"),
   makeCategory("커뮤니티", "/community"),
 ];
@@ -22,17 +20,15 @@ export const MainCategory = () => {
     <Category>
       {categories.map((cate, index) => {
         const { name, link } = cate;
-        if (index >= 2) {
-          return (
-            <Link
-              key={index}
-              href={link}
-              style={router.pathname === link ? { color: "gold" } : {}}
-            >
-              {name}
-            </Link>
-          );
-        }
+        return (
+          <Link
+            key={index}
+            href={link}
+            style={router.pathname === link ? { color: "gold" } : {}}
+          >
+            {name}
+          </Link>
+        );
       })}
     </Category>
   );
@@ -47,12 +43,19 @@ const Category = styled.nav`
   }
 `;
 
+const menuCategories = [
+  makeCategory("레시피 글쓰기", "/post/add"),
+  makeCategory("커뮤니티 글쓰기", "/community/add"),
+  makeCategory("레시피", "/"),
+  makeCategory("커뮤니티", "/community"),
+];
+
 export const ManuCategory = () => {
   const router = useRouter();
 
   return (
     <MenuCategory>
-      {categories.map((cate, index) => {
+      {menuCategories.map((cate, index) => {
         const { name, link } = cate;
         return (
           <Link

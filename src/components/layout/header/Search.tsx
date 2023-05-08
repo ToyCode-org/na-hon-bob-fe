@@ -46,7 +46,7 @@ export const Search = () => {
             type="text"
             width="200px"
             height="40px"
-            placeholder="내용을 입력해주세요!"
+            placeholder="레시피 검색!"
             onChange={onChangeHandler}
             onBlur={searchInputHandler}
           />

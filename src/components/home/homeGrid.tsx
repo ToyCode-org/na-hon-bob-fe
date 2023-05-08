@@ -70,6 +70,7 @@ const GridContainer = styled.main`
   margin-top: 150px;
   width: 100%;
 `;
+
 const GridWrap = styled.ul`
   display: grid;
   justify-content: center;
