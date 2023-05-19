@@ -68,6 +68,12 @@
 
 <br><br>
 
+## 사이트 구성
+
+![나혼밥 SW 아키텍처](https://github.com/ToyCode-org/na-hon-bob-fe/assets/85297720/0fc4eacf-7ad8-4517-b65f-571e8f011e7c)
+
+<br><br>
+
 ## 배포환경 시연
 
 https://user-images.githubusercontent.com/85297720/235346689-6fbf2c01-b80b-4fbf-bd0b-7cf05986c0b5.mp4
