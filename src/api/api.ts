@@ -62,6 +62,8 @@ export const communityAPI = {
     auth.put(`/community/${community_id}`, formData),
   deleteCommunity: (community_id: number) =>
     auth.delete(`/community/${community_id}`),
+  updateLike: (community_id: number) =>
+    auth.post(`/community-likes/${community_id}`),
 };
 
 export const community_commentAPI = {
@@ -77,4 +79,6 @@ export const community_commentAPI = {
   ) => auth.put(`/community_comment/${community_comment_id}`, formData),
   deleteComment: (community_comment_id: number) =>
     auth.delete(`/community_comment/${community_comment_id}`),
+  updateLike: (community_comment_id: number) =>
+    auth.post(`/comment-likes/${community_comment_id}`),
 };

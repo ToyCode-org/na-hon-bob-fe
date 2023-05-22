@@ -116,7 +116,7 @@ export default function Mypage() {
           </>
         )}
       </UserInfo>
-      {/* <p onClick={deleteUser}>회원탈퇴</p> */}
+      <p onClick={deleteUser}>회원탈퇴</p>
     </Container>
   );
 }

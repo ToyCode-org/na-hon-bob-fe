@@ -6,7 +6,8 @@ import { BiEdit } from "react-icons/bi";
 import { CgCloseR } from "react-icons/cg";
 import { communityAPI } from "@/api/api";
 import { forceGoBack, goEditCommunity } from "@/router/router";
-import { swalQuestion, swalSuccess } from "@/swal/swal";
+import { swalError, swalQuestion, swalSuccess } from "@/swal/swal";
+import { AiOutlineLike, AiTwotoneLike } from "react-icons/ai";
 
 export default function Community() {
   const { query } = useRouter();
@@ -46,6 +47,27 @@ export default function Community() {
     );
   };
 
+  const updateLike = async () => {
+    try {
+      await communityAPI.updateLike(Number(query.id));
+      if (communityState.isLiked) {
+        setCommunityState(prev => ({
+          ...prev,
+          isLiked: false,
+          likes_count: prev.likes_count - 1,
+        }));
+      } else {
+        setCommunityState(prev => ({
+          ...prev,
+          isLiked: true,
+          likes_count: prev.likes_count + 1,
+        }));
+      }
+    } catch (error) {
+      swalError("알 수 없는 오류입니다.");
+    }
+  };
+
   return (
     <Container>
       <ContentWrap>
@@ -61,6 +83,12 @@ export default function Community() {
         </ContentHeader>
         <Content>{communityState.content}</Content>
       </ContentWrap>
+      <ContentFooter>
+        <LikeBox onClick={updateLike}>
+          {communityState.isLiked ? <AiTwotoneLike /> : <AiOutlineLike />}
+          {communityState.likes_count}
+        </LikeBox>
+      </ContentFooter>
       <CommunityComment />
     </Container>
   );
@@ -83,6 +111,28 @@ const ContentWrap = styled.div`
   width: 100%;
   min-height: 300px;
   border: 1px solid lightgray;
+  border-bottom: none;
+`;
+
+const ContentFooter = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 80px;
+  border: 1px solid lightgray;
+  border-top: none;
+`;
+
+const LikeBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 60px;
+  height: 60px;
+  border: 1px solid lightgray;
+  user-select: none;
 `;
 
 const ContentHeader = styled.div`

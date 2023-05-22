@@ -11,6 +11,7 @@ import { MainTextArea } from "../tagsComponents/inputs";
 import { MainButton } from "../tagsComponents/buttons";
 import { TextAreaEvent } from "../sign";
 import { community_commentAPI } from "@/api/api";
+import { swalError } from "@/swal/swal";
 
 interface Props {
   commentItem: CommunityList;
@@ -55,6 +56,27 @@ export const CommunityCommentList = ({
     editModeHandler();
   };
 
+  const updateLikeHandler = async () => {
+    try {
+      await community_commentAPI.updateLike(community_comment_id);
+      if (cardState.isLiked) {
+        setCardState(prev => ({
+          ...prev,
+          isLiked: false,
+          likes_count: prev.likes_count - 1,
+        }));
+      } else {
+        setCardState(prev => ({
+          ...prev,
+          isLiked: true,
+          likes_count: prev.likes_count + 1,
+        }));
+      }
+    } catch (error) {
+      swalError("알 수 없는 오류입니다.");
+    }
+  };
+
   return (
     <CommentList>
       <CardHeader>
@@ -96,7 +118,7 @@ export const CommunityCommentList = ({
         )}
       </Content>
       <CardFooter>
-        <span>
+        <span onClick={updateLikeHandler}>
           {cardState.isLiked ? <AiTwotoneLike /> : <AiOutlineLike />}
           {cardState.likes_count}
         </span>
@@ -152,6 +174,7 @@ const CardFooter = styled.div`
   justify-content: flex-end;
   font-size: 0.9rem;
   color: gray;
+  user-select: none;
   & svg {
     margin-right: 5px;
     font-size: 1.4rem;

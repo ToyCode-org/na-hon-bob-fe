@@ -67,7 +67,11 @@ export const CommunityComment = () => {
     if (list.length === 10) {
       list.pop();
     }
-    setCommentLists(prev => ({ ...prev, commentList: list }));
+    setCommentLists(prev => ({
+      ...prev,
+      commentList: list,
+      totalPages: prev.totalPages === 0 ? 1 : prev.totalPages,
+    }));
     const contentInput = document.getElementById("content") as HTMLInputElement;
     contentInput.value = "";
   };
