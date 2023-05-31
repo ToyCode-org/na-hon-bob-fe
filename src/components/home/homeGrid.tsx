@@ -92,7 +92,7 @@ const ListItem = styled.li`
   @media only all and (min-width: 768px) {
     &:hover {
       & .thumbnail {
-        height: 220px;
+        transform: scale(1.1);
       }
     }
   }
